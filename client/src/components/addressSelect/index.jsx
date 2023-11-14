@@ -4,7 +4,7 @@ import { Philippines } from "../../services/fakeDb";
 import CustomSelect from "../customSelect";
 
 export default function AddressSelect({
-  handleChange,
+  handleChange = () => {},
   address = { region: "", province: "", city: "", barangay: "" },
   size = "3",
   label = "Address Information",
@@ -41,7 +41,7 @@ export default function AddressSelect({
           <CustomSelect
             choices={Philippines.Regions}
             preValue={address.region}
-            onChange={e => handleAddress("region", e)}
+            onChange={(e) => handleAddress("region", e)}
             label="Region"
             values="name"
             texts="name"
@@ -51,7 +51,7 @@ export default function AddressSelect({
           <CustomSelect
             choices={Philippines.Provinces(address.region)}
             preValue={address.province}
-            onChange={e => handleAddress("province", e)}
+            onChange={(e) => handleAddress("province", e)}
             label="Province"
             values="name"
             texts="name"
@@ -61,7 +61,7 @@ export default function AddressSelect({
           <CustomSelect
             choices={Philippines.Cities(address.province)}
             preValue={address.city}
-            onChange={e => handleAddress("city", e)}
+            onChange={(e) => handleAddress("city", e)}
             label="City/Municipality"
             values="name"
             texts="name"
@@ -71,7 +71,7 @@ export default function AddressSelect({
           <CustomSelect
             choices={Philippines.Barangays(address.city)}
             preValue={address.barangay}
-            onChange={e => handleAddress("barangay", e === "none" ? "" : e)}
+            onChange={(e) => handleAddress("barangay", e === "none" ? "" : e)}
             label="Barangay"
             values="name"
             texts="name"
