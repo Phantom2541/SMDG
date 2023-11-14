@@ -1,19 +1,19 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+// import { useDispatch, useSelector } from "react-redux";
 import {
-  MDBBtn,
+  // MDBBtn,
   MDBModal,
   MDBModalBody,
-  MDBIcon,
+  // MDBIcon,
   MDBModalHeader,
-  MDBInput,
+  // MDBInput,
 } from "mdbreact";
 import Cards from "./card";
 
 // declare your expected items
-const _form = {
-  name: "",
-};
+// const _form = {
+//   name: "",
+// };
 
 export default function ModalPreview({ show, toggle, selected, willCreate }) {
   return (

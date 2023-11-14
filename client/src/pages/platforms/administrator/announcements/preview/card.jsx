@@ -7,7 +7,7 @@ import {
   MDBMask,
   MDBBtnGroup,
   MDBBtn,
-  MDBInput,
+  // MDBInput,
 } from "mdbreact";
 import React from "react";
 import "./gallery.css";
@@ -43,14 +43,14 @@ export default function Cards() {
           <div className="file-column">
             <img
               src="https://mdbootstrap.com/img/Photos/Slides/img%20(134).jpg"
-              alt="Sample photo"
+              alt="Sample test"
               className="file-img"
             />
           </div>
           <div className="file-column">
             <img
               src="https://mdbootstrap.com/img/Photos/Slides/img%20(134).jpg"
-              alt="Sample photo"
+              alt="Sample test"
               className="file-img"
             />
           </div>
@@ -59,14 +59,14 @@ export default function Cards() {
           <div className="file-column">
             <img
               src="https://mdbootstrap.com/img/Photos/Slides/img%20(134).jpg"
-              alt="Sample photo"
+              alt="Sample test"
               className="file-img"
             />
           </div>
           <div className="file-column">
             <img
               src="https://mdbcdn.b-cdn.net/img/new/fluid/city/055.webp"
-              alt="Sample photo"
+              alt="Sample test"
               className="file-img"
             />
           </div>
@@ -75,7 +75,7 @@ export default function Cards() {
               <img
                 src="https://mdbootstrap.com/img/Photos/Others/nature-sm.webp"
                 className="file-img"
-                alt="sample image"
+                alt="sample test"
               />
               <MDBMask className="flex-center" overlay="black-strong">
                 <p className="white-text">+6</p>
