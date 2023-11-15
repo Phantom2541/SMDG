@@ -18,22 +18,17 @@ const grades = [
 
 export default function Learners() {
   return (
-    <MDBCard>
-      <MDBCardBody>
-        <h3>Learners</h3>
-        <form>
-          <select className="form-control">
-            {grades.map((grade) => (
-              <option value={grade} key={grade}>
-                {grade}
-              </option>
-            ))}
-          </select>
-          <MDBBtn color="primary" type="submit">
-            Submit
-          </MDBBtn>
-        </form>
-      </MDBCardBody>
-    </MDBCard>
+    <form>
+      <select className="form-control">
+        {grades.map((grade) => (
+          <option value={grade} key={grade}>
+            {grade}
+          </option>
+        ))}
+      </select>
+      <MDBBtn style={{ float: "right" }} color="primary" type="submit">
+        Submit
+      </MDBBtn>
+    </form>
   );
 }
