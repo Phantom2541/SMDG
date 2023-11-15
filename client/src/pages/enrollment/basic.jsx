@@ -40,8 +40,7 @@ export default function Basic({ setActiveStep, handleForm }) {
             }
           />
         </div>
-      </div>
-      <div className="row">
+
         <div className="col-5">
           <MDBInput label="Last Name" />
         </div>
