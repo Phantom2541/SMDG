@@ -36,15 +36,15 @@ export default function CustomSelect({
   return (
     <MDBSelect
       label={label}
-      getValue={array => {
+      getValue={(array) => {
         if (multiple)
           return onChange(
-            getObject ? choices.filter(c => array.includes(c[values])) : array
+            getObject ? choices.filter((c) => array.includes(c[values])) : array
           );
 
         onChange(
           getObject
-            ? choices.find(choice => choice[values] === array[0])
+            ? choices.find((choice) => choice[values] === array[0])
             : array[0]
         );
       }}

@@ -10,6 +10,9 @@ Vice Principal (one)
 -manage subjects
 -manage department heads
 
+Secretary (many)
+-add employees
+
 Registrar (many)
 -manage enrollments
 -manage payments
@@ -37,6 +40,7 @@ base roles
 -administrator
 -principal
 -vicePrincipal
+-secretary
 -registrar
 -head
 -master

@@ -9,6 +9,8 @@ import capitalize from "./capitalize";
 import swalConfirmation from "./swalConfirmation";
 import fullName from "./fullName";
 import fullAddress from "./fullAddress";
+import formatGradeLvl from "./formatGradeLvl";
+import getAge from "./getAge";
 
 const ENDPOINT = "http://localhost:5000";
 // const ENDPOINT = window.location.origin;
@@ -21,6 +23,8 @@ const PresetImage = (gender) => {
 };
 
 export {
+  getAge,
+  formatGradeLvl,
   fullAddress,
   fullName,
   swalConfirmation,

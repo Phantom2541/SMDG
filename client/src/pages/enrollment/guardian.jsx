@@ -1,7 +1,7 @@
-import { MDBBtn, MDBCard, MDBCardBody, MDBInput } from "mdbreact";
+import { MDBBtn, MDBInput } from "mdbreact";
 import React from "react";
 
-export default function Guardians() {
+export default function Guardian() {
   return (
     <form>
       <div>

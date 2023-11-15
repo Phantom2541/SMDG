@@ -1,21 +1,44 @@
 import React from "react";
-import {
-  MDBBtn,
-  MDBCard,
-  MDBCardBody,
-  MDBDatePicker,
-  MDBInput,
-} from "mdbreact";
+import { MDBBtn, MDBDatePicker, MDBInput } from "mdbreact";
+import { getAge } from "../../services/utilities";
 
-export default function Basic() {
+export default function Basic({ setActiveStep, handleForm }) {
+  const { form, setForm } = handleForm;
+
+  const handleChange = (key, value) => setForm({ ...form, [key]: value });
+
+  const { psa, isMale, dob, motherTongue, mobile, "4ps": fourPs } = form;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!mobile.startsWith("9")) return console.log("error");
+
+    console.log(form);
+
+    // setActiveStep(0);
+  };
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
+      mobile
       <div className="row">
-        <div class="col-6">
-          <MDBInput label="PSA Birth Certificate No. (if available upon registration)" />
+        <div className="col-6">
+          <MDBInput
+            label="PSA Birth Certificate No. (if available upon registration)"
+            value={psa}
+            onChange={(e) => handleChange("psa", e.target.value.toUpperCase())}
+          />
         </div>
         <div className="col-6">
-          <MDBInput label="Reference No." />
+          <MDBInput
+            label="Mobile No. (+63)"
+            maxLength={10}
+            value={mobile}
+            onChange={(e) =>
+              handleChange("mobile", e.target.value.replace(/\D/g, ""))
+            }
+          />
         </div>
       </div>
       <div className="row">
@@ -24,13 +47,24 @@ export default function Basic() {
         </div>
         <div className="col-2">
           <label className="mb-0">Birthdate</label>
-          <MDBDatePicker className="mt-1" />
+          <MDBDatePicker
+            className="mt-1"
+            autoOk
+            value={dob}
+            getValue={(e) => handleChange("dob", e)}
+          />
         </div>
         <div className="col-2">
-          <MDBInput label="Age" />
+          <MDBInput label="Age" readOnly value={getAge(dob.toDateString())} />
         </div>
         <div className="col-3">
-          <MDBInput label="Mother Tongue" />
+          <MDBInput
+            label="Mother Tongue (ex: TAGALOG, ENGLISH)"
+            value={motherTongue}
+            onChange={(e) =>
+              handleChange("motherTongue", e.target.value.toUpperCase())
+            }
+          />
         </div>
       </div>
       <div className="row">
@@ -38,25 +72,27 @@ export default function Basic() {
           <MDBInput label="First Name" />
         </div>
         <div className="col-2">
-          <div class="form-check">
+          <div className="form-check">
             <input
-              class="form-check-input"
+              className="form-check-input"
               type="checkbox"
-              value=""
+              checked={isMale}
+              onChange={() => handleChange("isMale", !isMale)}
               id="Male"
             />
-            <label class="form-check-label" for="Male">
+            <label className="form-check-label" htmlFor="Male">
               Male
             </label>
           </div>
-          <div class="form-check">
+          <div className="form-check">
             <input
-              class="form-check-input"
+              className="form-check-input"
               type="checkbox"
-              value=""
+              checked={!isMale}
+              onChange={() => handleChange("isMale", !isMale)}
               id="Female"
             />
-            <label class="form-check-label" for="Female">
+            <label className="form-check-label" htmlFor="Female">
               Female
             </label>
           </div>
@@ -83,13 +119,26 @@ export default function Basic() {
       <div className="row">
         <div className="col-5">
           <label>Is your family a beneficiary of 4Ps? </label>
-          <MDBInput label="If Yes, write the 4Ps Household ID Number" />
+          <MDBInput
+            label="If Yes, write the 4Ps Household ID Number"
+            value={fourPs}
+            onChange={(e) => handleChange("4ps", e.target.value.toUpperCase())}
+          />
         </div>
         <div className="col-7">
-          <label>Is the child a Learner with Disability?</label>
+          <label>Do you have a Disability?</label>
           <MDBInput label="If Yes, specify the type of disability" />
         </div>
       </div>
+      <MDBBtn
+        onClick={() => setActiveStep(0)}
+        style={{ float: "left" }}
+        color="none"
+        type="button"
+        className="z-depth-0"
+      >
+        Return
+      </MDBBtn>
       <MDBBtn style={{ float: "right" }} color="primary" type="submit">
         Submit
       </MDBBtn>
