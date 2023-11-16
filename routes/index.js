@@ -1,11 +1,66 @@
+const fs = require("fs"),
+  path = require("path"),
+  { red, blue, green } = require("colorette");
+
+const verifyPath = (path) =>
+  new Promise((resolve, reject) =>
+    fs.readdirSync(path, (err, files) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(files);
+      }
+    })
+  );
+
+const generateRoutes = async (app, folder, src) => {
+  //read files except index.js
+  const files = fs.readdirSync(src).filter((r) => r !== "index.js");
+
+  //loop files
+  for (const file of files) {
+    //detect if file
+    if (file.includes(".js")) {
+      //for creating logs and api path
+      const formatPath = (api = false) => {
+        if (!folder) return "";
+        const baseSrc = src.slice(9, src.length);
+
+        if (api) return `${baseSrc}/`;
+
+        return `[${baseSrc.split("/").join("][")}]`;
+      };
+
+      const [name] = file.split("."),
+        pathName = `./${folder && `${folder}/`}${file}`;
+
+      //create route
+      app.use(`/${formatPath(true)}${name}`, require(pathName));
+
+      //log if success
+      console.log(
+        blue(`[Route]${formatPath()}[${file}] created successfully.`)
+      );
+      continue;
+    }
+
+    //recursive function
+    generateRoutes(app, file, `${src}/${file}`);
+  }
+};
+
 module.exports = (app) => {
+  //generate base routes
+  generateRoutes(app, "", "./routes");
+  console.log(green("[Routes] generated successfully."));
+
   // List of available Routes
   require("../migrations/Routes")(app);
-  app.use("/users", require("./Users"));
-  app.use("/auth", require("./Auth"));
-  app.use("/violations", require("./Violations"));
-  app.use("/announcements", require("./Announcements"));
-  app.use("/chats", require("./Chats"));
-  app.use("/warnings", require("./Warnings"));
-  app.use("/messages", require("./Messages"));
+  // app.use("/users", require("./Users"));
+  // app.use("/auth", require("./Auth"));
+  // app.use("/violations", require("./Violations"));
+  // app.use("/announcements", require("./Announcements"));
+  // app.use("/chats", require("./Chats"));
+  // app.use("/warnings", require("./Warnings"));
+  // app.use("/messages", require("./Messages"));
 };

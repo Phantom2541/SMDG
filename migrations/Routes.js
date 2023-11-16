@@ -1,11 +1,6 @@
 const router = require("express").Router(),
-  users = require("./Users"),
-  roles = require("./Roles");
+  users = require("./Users");
 
-module.exports = app => {
-  app.use(
-    "/migrate",
-    router.post("/users", users),
-    router.post("/roles", roles)
-  );
+module.exports = (app) => {
+  app.use("/migrate", router.post("/users", users));
 };

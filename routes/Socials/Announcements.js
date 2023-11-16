@@ -1,6 +1,11 @@
 const router = require("express").Router(),
-  { browse, save, update, destroy } = require("../controllers/Chats"),
-  { validate } = require("../middleware/jwt");
+  {
+    browse,
+    save,
+    update,
+    destroy,
+  } = require("../../controllers/socials/Announcements"),
+  { validate } = require("../../middleware/jwt");
 
 router
   .get("/browse", browse)

@@ -1,6 +1,6 @@
-const Entity = require("../models/Violations"),
-  handleDuplicate = require("../config/duplicate"),
-  bulkWrite = require("../config/bulkWrite");
+const Entity = require("../../models/socials/Violations"),
+  handleDuplicate = require("../../config/duplicate"),
+  bulkWrite = require("../../config/bulkWrite");
 
 exports.save = (req, res) =>
   Entity.create(req.body)

@@ -1,11 +1,10 @@
-const Entity = require("../models/Messages"),
-  handleDuplicate = require("../config/duplicate");
+const Entity = require("../../models/socials/Chats");
 
 exports.save = (req, res) =>
   Entity.create(req.body)
     .then((payload) =>
       res.status(201).json({
-        success: "Message Saved Successfully.",
+        success: "Chat Saved Successfully.",
         payload,
       })
     )
@@ -13,11 +12,15 @@ exports.save = (req, res) =>
 
 exports.browse = (req, res) =>
   Entity.find(req.query)
+    .populate({
+      path: "participants",
+      select: "-password",
+    })
     .sort({ createdAt: -1 })
     .lean()
     .then((payload) =>
       res.json({
-        success: "Messages Fetched Successfully.",
+        success: "Chats Fetched Successfully.",
         payload,
       })
     )
@@ -33,7 +36,7 @@ exports.update = (req, res) =>
         });
 
       res.json({
-        success: "Message Updated Successfully.",
+        success: "Chat Updated Successfully.",
         payload,
       });
     })
@@ -49,7 +52,7 @@ exports.destroy = (req, res) =>
         });
 
       res.json({
-        success: "Message Deleted Successfully.",
+        success: "Chat Deleted Successfully.",
         payload,
       });
     })

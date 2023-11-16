@@ -1,10 +1,11 @@
-const Entity = require("../models/Chats");
+const Entity = require("../../models/socials/Warnings"),
+  handleDuplicate = require("../../config/duplicate");
 
 exports.save = (req, res) =>
   Entity.create(req.body)
     .then((payload) =>
       res.status(201).json({
-        success: "Chat Saved Successfully.",
+        success: "Warning Saved Successfully.",
         payload,
       })
     )
@@ -13,14 +14,14 @@ exports.save = (req, res) =>
 exports.browse = (req, res) =>
   Entity.find(req.query)
     .populate({
-      path: "participants",
+      path: "createdBy",
       select: "-password",
     })
     .sort({ createdAt: -1 })
     .lean()
     .then((payload) =>
       res.json({
-        success: "Chats Fetched Successfully.",
+        success: "Warnings Fetched Successfully.",
         payload,
       })
     )
@@ -36,7 +37,7 @@ exports.update = (req, res) =>
         });
 
       res.json({
-        success: "Chat Updated Successfully.",
+        success: "Warning Updated Successfully.",
         payload,
       });
     })
@@ -52,7 +53,7 @@ exports.destroy = (req, res) =>
         });
 
       res.json({
-        success: "Chat Deleted Successfully.",
+        success: "Warning Deleted Successfully.",
         payload,
       });
     })

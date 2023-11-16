@@ -1,11 +1,11 @@
-const Entity = require("../models/Warnings"),
-  handleDuplicate = require("../config/duplicate");
+const Entity = require("../../models/socials/Messages"),
+  handleDuplicate = require("../../config/duplicate");
 
 exports.save = (req, res) =>
   Entity.create(req.body)
     .then((payload) =>
       res.status(201).json({
-        success: "Warning Saved Successfully.",
+        success: "Message Saved Successfully.",
         payload,
       })
     )
@@ -13,15 +13,11 @@ exports.save = (req, res) =>
 
 exports.browse = (req, res) =>
   Entity.find(req.query)
-    .populate({
-      path: "createdBy",
-      select: "-password",
-    })
     .sort({ createdAt: -1 })
     .lean()
     .then((payload) =>
       res.json({
-        success: "Warnings Fetched Successfully.",
+        success: "Messages Fetched Successfully.",
         payload,
       })
     )
@@ -37,7 +33,7 @@ exports.update = (req, res) =>
         });
 
       res.json({
-        success: "Warning Updated Successfully.",
+        success: "Message Updated Successfully.",
         payload,
       });
     })
@@ -53,7 +49,7 @@ exports.destroy = (req, res) =>
         });
 
       res.json({
-        success: "Warning Deleted Successfully.",
+        success: "Message Deleted Successfully.",
         payload,
       });
     })
