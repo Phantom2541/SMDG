@@ -46,10 +46,20 @@ exports.update = (req, res) => {
 
 exports.save = ({ body }, res) =>
   Entity.create(body)
-    .then((_payload) =>
+    .then((_payload) => {
+      const { employment, enrollment } = body;
+
+      if (employment) {
+        console.log("employee");
+      }
+
+      if (enrollment) {
+        console.log("student");
+      }
+
       res.status(201).json({
         success: "Registration Success, Proceed to Login",
         payload: { ..._payload._doc, password: undefined },
-      })
-    )
+      });
+    })
     .catch((error) => res.status(400).json({ error: handleDuplicate(error) }));

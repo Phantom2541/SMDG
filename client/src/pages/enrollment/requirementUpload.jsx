@@ -1,50 +1,36 @@
-import { MDBIcon, MDBMedia } from "mdbreact";
 import React, { useState } from "react";
+import { MDBIcon } from "mdbreact";
 
-export default function RequirementUpload() {
-  const [file, setFile] = useState(),
-    [uploadedFile, setUploadedFile] = useState(true);
+export default function RequirementUpload({
+  label = "1x1 ID Picture",
+  id = "1x1Picture",
+}) {
+  const [preview, setPreview] = useState(null),
+    [file, setFile] = useState(null);
 
   function handleChange(e) {
-    console.log(e.target.files);
-    setFile(URL.createObjectURL(e.target.files[0]));
-    setUploadedFile(file);
+    setPreview(URL.createObjectURL(e.target.files[0]));
+    setFile(file);
   }
 
   return (
-    <div className="row">
-      <div className="col">
-        <div className="card" style={{ width: "145px" }}>
-          <img
-            className="mb-1"
-            style={{ border: "none" }}
-            src={file}
-            id="defaultlabel"
-          />
-          {uploadedFile && (
-            <label
-              style={{ color: "grey" }}
-              className="postion-absolute text-center"
-              htmlFor="defaultlabel"
-            >
-              1 x 1 ID Picture
-            </label>
-          )}
-          <input
-            style={{ display: "none" }}
-            type="file"
-            id="customFile"
-            onChange={handleChange}
-          />
-          <label
-            className="btn-primary mb-0 p-2 w-30 text-center "
-            htmlFor="customFile"
-          >
+    <div className="card pt-2 text-center" style={{ width: "145px" }}>
+      {preview ? (
+        <img className="mb-1" src={preview} alt={preview} />
+      ) : (
+        <label style={{ color: "grey" }}>{label}</label>
+      )}
+      <input className="d-none" type="file" id={id} onChange={handleChange} />
+      <label className="cursor-pointer btn-primary mb-0 p-2 w-30" htmlFor={id}>
+        {preview ? (
+          label
+        ) : (
+          <>
             Upload File
             <MDBIcon className="ml-2" icon="upload" />
-          </label>
-        </div>
-      </div>
+          </>
+        )}
+      </label>
     </div>
   );
 }

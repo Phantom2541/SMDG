@@ -7,7 +7,6 @@ const userSchema = new mongoose.Schema(
       type: String,
       unique: true,
       required: true,
-      trim: true,
     },
     password: {
       type: String,
@@ -17,8 +16,7 @@ const userSchema = new mongoose.Schema(
     fullName: {
       fname: {
         type: String,
-        trim: true,
-        default: "",
+        required: true,
       },
       mname: {
         type: String,
@@ -27,8 +25,7 @@ const userSchema = new mongoose.Schema(
       },
       lname: {
         type: String,
-        trim: true,
-        default: "",
+        required: true,
       },
       suffix: {
         type: String,
@@ -36,7 +33,7 @@ const userSchema = new mongoose.Schema(
       },
     },
     address: {
-      permanent: {
+      current: {
         street: {
           type: String,
           trim: true,
@@ -49,18 +46,15 @@ const userSchema = new mongoose.Schema(
         },
         city: {
           type: String,
-          trim: true,
-          default: "",
+          required: true,
         },
         province: {
           type: String,
-          trim: true,
-          default: "",
+          required: true,
         },
         region: {
           type: String,
-          trim: true,
-          default: "",
+          required: true,
         },
         zip: {
           type: String,
@@ -68,7 +62,7 @@ const userSchema = new mongoose.Schema(
           default: "",
         },
       },
-      current: {
+      permanent: {
         street: {
           type: String,
           trim: true,
@@ -103,13 +97,11 @@ const userSchema = new mongoose.Schema(
     },
     dob: {
       type: String,
-      trim: true,
-      default: "",
+      required: true,
     },
     mobile: {
       type: String,
-      trim: true,
-      default: "",
+      required: true,
     },
     isMale: {
       type: Boolean,

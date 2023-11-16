@@ -11,6 +11,7 @@ import fullName from "./fullName";
 import fullAddress from "./fullAddress";
 import formatGradeLvl from "./formatGradeLvl";
 import getAge from "./getAge";
+import formatMobile from "./formatMobile";
 
 const ENDPOINT = "http://localhost:5000";
 // const ENDPOINT = window.location.origin;
@@ -23,6 +24,7 @@ const PresetImage = (gender) => {
 };
 
 export {
+  formatMobile,
   getAge,
   formatGradeLvl,
   fullAddress,

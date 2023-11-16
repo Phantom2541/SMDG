@@ -8,6 +8,8 @@ import {
   MDBCardTitle,
   MDBRow,
   MDBCol,
+  MDBIcon,
+  MDBContainer,
 } from "mdbreact";
 import Learner from "./learner";
 import Basic from "./basic";
@@ -103,65 +105,69 @@ export default function EnrollmentForm() {
   const { department, gradeLvl } = learner;
 
   return (
-    <MDBCard className="mt-4 ml-5 mr-5">
-      <MDBCardTitle className="mb-0">
-        <MDBRow>
-          <MDBCol>
-            <MDBMedia className="d-flex">
-              <MDBView waves>
-                <img
-                  style={{ height: "100px" }}
-                  className="rounded-circle"
-                  src="https://png.pngtree.com/png-clipart/20230313/original/pngtree-education-logo-and-school-badge-design-template-png-image_8986693.png"
-                  alt="Generic placeholder"
-                />
-              </MDBView>
-              <MDBMedia className="mt-4 ml-5">
-                <MDBView>
-                  <p style={{ fontWeight: "bolder", fontSize: "20px" }}>
-                    BASIC EDUCATION ENROLLMENT FORM
-                  </p>
+    <MDBContainer>
+      <MDBCard className="mt-4 mx-5">
+        <MDBCardTitle className="mb-0">
+          <MDBRow>
+            <MDBCol>
+              <MDBMedia className="d-flex">
+                <MDBView waves>
+                  <img
+                    style={{ height: "100px" }}
+                    className="rounded-circle"
+                    src="https://png.pngtree.com/png-clipart/20230313/original/pngtree-education-logo-and-school-badge-design-template-png-image_8986693.png"
+                    alt="Generic placeholder"
+                  />
                 </MDBView>
+                <MDBMedia className="mt-4 ml-5">
+                  <MDBView>
+                    <p style={{ fontWeight: "bolder", fontSize: "20px" }}>
+                      BASIC EDUCATION ENROLLMENT FORM
+                    </p>
+                  </MDBView>
+                </MDBMedia>
               </MDBMedia>
-            </MDBMedia>
-          </MDBCol>
-          <MDBCol>
-            SY {generateSY(true)} {formatGradeLvl(department, gradeLvl)}
-          </MDBCol>
-        </MDBRow>
-      </MDBCardTitle>
+            </MDBCol>
+            <MDBCol>
+              SY {generateSY(true)} {formatGradeLvl(department, gradeLvl)}
+            </MDBCol>
+          </MDBRow>
+        </MDBCardTitle>
 
-      <MDBCardHeader className="py-0">
-        <ul className="stepper stepper-horizontal my-0 py-0">
-          {steps.map((step, index) => {
-            const color =
-              activeStep === index
-                ? "primary"
-                : index < activeStep
-                ? "success"
-                : "light";
+        <MDBCardHeader className="py-0">
+          <ul className="stepper stepper-horizontal my-0 py-0">
+            {steps.map((step, index) => {
+              const color =
+                  activeStep === index
+                    ? "primary"
+                    : index < activeStep
+                    ? "success"
+                    : "light",
+                icon =
+                  color === "success" ? <MDBIcon icon="check" /> : index + 1;
 
-            return (
-              <li key={`step-${index}`} style={{ pointerEvents: "none" }}>
-                <a href="#!">
-                  <span className={`circle bg-${color}`}>{index + 1}</span>
-                  <span className="label">{step}</span>
-                </a>
-              </li>
-            );
-          })}
-        </ul>
-      </MDBCardHeader>
+              return (
+                <li key={`step-${index}`} style={{ pointerEvents: "none" }}>
+                  <a href="#!">
+                    <span className={`circle bg-${color}`}>{icon}</span>
+                    <span className="label">{step}</span>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </MDBCardHeader>
 
-      <MDBCardBody className="mx-5">
-        {
-          <Step
-            setActiveStep={setActiveStep}
-            handleForm={handleForm(activeStep)}
-            handleFinalSubmit={handleFinalSubmit}
-          />
-        }
-      </MDBCardBody>
-    </MDBCard>
+        <MDBCardBody className="mx-5">
+          {
+            <Step
+              setActiveStep={setActiveStep}
+              handleForm={handleForm(activeStep)}
+              handleFinalSubmit={handleFinalSubmit}
+            />
+          }
+        </MDBCardBody>
+      </MDBCard>
+    </MDBContainer>
   );
 }

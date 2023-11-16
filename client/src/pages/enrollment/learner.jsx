@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { MDBBtn, MDBCard, MDBCardBody, MDBInput } from "mdbreact";
+import { MDBBtn, MDBInput } from "mdbreact";
 import CustomSelect from "../../components/customSelect";
 import { Departments } from "../../services/fakeDb";
 import { formatGradeLvl } from "../../services/utilities";
