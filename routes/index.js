@@ -1,17 +1,5 @@
 const fs = require("fs"),
-  path = require("path"),
-  { red, blue, green } = require("colorette");
-
-const verifyPath = (path) =>
-  new Promise((resolve, reject) =>
-    fs.readdirSync(path, (err, files) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(files);
-      }
-    })
-  );
+  { blue, green } = require("colorette");
 
 const generateRoutes = async (app, folder, src) => {
   //read files except index.js
@@ -53,14 +41,4 @@ module.exports = (app) => {
   //generate base routes
   generateRoutes(app, "", "./routes");
   console.log(green("[Routes] generated successfully."));
-
-  // List of available Routes
-  require("../migrations/Routes")(app);
-  // app.use("/users", require("./Users"));
-  // app.use("/auth", require("./Auth"));
-  // app.use("/violations", require("./Violations"));
-  // app.use("/announcements", require("./Announcements"));
-  // app.use("/chats", require("./Chats"));
-  // app.use("/warnings", require("./Warnings"));
-  // app.use("/messages", require("./Messages"));
 };
