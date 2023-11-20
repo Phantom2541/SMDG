@@ -11,7 +11,7 @@ const name = "auth",
 
 const initialState = {
   auth: {},
-  role: "",
+  role: "ADMINISTRATOR",
   token,
   email,
   image,
@@ -123,7 +123,7 @@ export const reduxSlice = createSlice({
         state.token = token;
         state.email = user.email;
         state.auth = user;
-        state.role = user.role.access.toUpperCase();
+        // state.role = user.role.access.toUpperCase();
 
         state.message = success;
         state.didLogin = true;
@@ -162,7 +162,7 @@ export const reduxSlice = createSlice({
         const { payload } = action.payload;
         state.auth = payload;
         state.email = payload.email;
-        state.role = payload.role.access.toUpperCase();
+        // state.role = payload.role.access.toUpperCase();
         state.isLoading = false;
       })
       .addCase(VALIDATEREFRESH.rejected, (state, action) => {

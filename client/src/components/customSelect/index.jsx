@@ -7,6 +7,7 @@ import {
 } from "mdbreact";
 
 export default function CustomSelect({
+  uniqueId = "",
   choices = [],
   preValue = "",
   onChange = () => {},
@@ -53,7 +54,10 @@ export default function CustomSelect({
       color="primary"
     >
       <MDBSelectInput selected={preValue} />
-      <MDBSelectOptions search={choices.length >= 10} searchId={label}>
+      <MDBSelectOptions
+        search={choices.length >= 10}
+        searchId={`${label}${uniqueId}`}
+      >
         {choices.map((choice, index) => {
           const value = choice[values],
             text = choice[texts];

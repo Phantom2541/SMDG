@@ -1,6 +1,7 @@
 import Dashboard from "./dashboard";
 import Announcements from "./announcements";
 import Violations from "./violations";
+import Enrollment from "./enrollment";
 
 const access = [
   {
@@ -35,6 +36,12 @@ const access = [
     icon: "skull-crossbones",
     path: "/violations",
     component: Violations,
+  },
+  {
+    name: "Enrollment",
+    icon: "skull-crossbones",
+    path: "/enrollment",
+    component: Enrollment,
   },
 ];
 

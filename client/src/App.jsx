@@ -5,7 +5,6 @@ import Platforms from "./pages/platforms";
 import Home from "./pages/home";
 import { useDispatch, useSelector } from "react-redux";
 import { VALIDATEREFRESH } from "./services/redux/slices/auth";
-import EnrollmentForm from "./pages/enrollment";
 
 export default function App() {
   const { auth, token } = useSelector(({ auth }) => auth),
@@ -20,7 +19,6 @@ export default function App() {
   return (
     <Switch>
       <Route path="/" exact component={Home} />
-      <Route path="/enrollment" exact component={EnrollmentForm} />
       <Platforms />
     </Switch>
   );

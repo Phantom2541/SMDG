@@ -8,6 +8,7 @@ export default function AddressSelect({
   address = { region: "", province: "", city: "", barangay: "" },
   size = "3",
   label = "Address Information",
+  uniqueId = "",
 }) {
   const handleAddress = (key, value) => {
     const _address = { ...address };
@@ -45,6 +46,7 @@ export default function AddressSelect({
             label="Region"
             values="name"
             texts="name"
+            uniqueId={uniqueId}
           />
         </MDBCol>
         <MDBCol md={size}>
@@ -55,6 +57,7 @@ export default function AddressSelect({
             label="Province"
             values="name"
             texts="name"
+            uniqueId={uniqueId}
           />
         </MDBCol>
         <MDBCol md={size}>
@@ -65,6 +68,7 @@ export default function AddressSelect({
             label="City/Municipality"
             values="name"
             texts="name"
+            uniqueId={uniqueId}
           />
         </MDBCol>
         <MDBCol md={size}>
@@ -75,6 +79,7 @@ export default function AddressSelect({
             label="Barangay"
             values="name"
             texts="name"
+            uniqueId={uniqueId}
           />
         </MDBCol>
       </MDBRow>

@@ -9,9 +9,9 @@ const formatGradeLvl = (department, id) => {
 
   const level = id - 13;
 
-  const sup = ["st", "nd", "rd", "th"];
+  const sup = ["st", "nd", "rd"];
 
-  return `${level + 1}${sup[level]} Year ${name}`;
+  return `${level + 1}${sup[level] || "th"} Year ${name}`;
 };
 
 export default formatGradeLvl;
