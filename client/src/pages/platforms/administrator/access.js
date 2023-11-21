@@ -2,6 +2,7 @@ import Dashboard from "./dashboard";
 import Announcements from "./announcements";
 import Violations from "./violations";
 import Enrollment from "./enrollment";
+import Tree from "./orgChart";
 
 const access = [
   {
@@ -42,6 +43,12 @@ const access = [
     icon: "skull-crossbones",
     path: "/enrollment",
     component: Enrollment,
+  },
+  {
+    name: "Org Chart",
+    icon: "tree",
+    path: "/orgChart",
+    component: Tree,
   },
 ];
 

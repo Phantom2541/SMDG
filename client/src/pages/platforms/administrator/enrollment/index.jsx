@@ -119,7 +119,7 @@ export default function EnrollmentForm() {
       fullname = basic.fullName,
       mobile = basic.mobile,
       dob = basic.dob,
-      guardian = guardian.legal;
+      _guardian = guardian.legal;
 
     if (getAge(dob, true) < 6)
       return handleError(
@@ -149,7 +149,7 @@ export default function EnrollmentForm() {
         "Double check Personal Information"
       );
 
-    if (!fullName(guardian))
+    if (!fullName(_guardian))
       return handleError(
         "Invalid Legal Guardian Fullname",
         "First name and Last name are required.",
