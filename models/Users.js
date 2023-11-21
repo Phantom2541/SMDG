@@ -33,6 +33,10 @@ const userSchema = new mongoose.Schema(
       },
     },
     address: {
+      isSame: {
+        type: Boolean,
+        default: true,
+      },
       current: {
         street: {
           type: String,

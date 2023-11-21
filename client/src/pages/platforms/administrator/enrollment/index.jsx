@@ -12,7 +12,12 @@ import Basic from "./basic";
 import Address from "./address";
 import Guardian from "./guardian";
 // import Returning from "./returning";
-import { formatGradeLvl, fullAddress } from "../../../../services/utilities";
+import {
+  formatGradeLvl,
+  fullAddress,
+  fullName,
+  getAge,
+} from "../../../../services/utilities";
 import generateSY from "../../../../services/utilities/generateSY";
 import School from "../../../../services/fakeDb/school";
 import Swal from "sweetalert2";
@@ -25,17 +30,24 @@ const steps = [
   //   "Returnee / Transferee",
 ];
 
+const requirements = 6;
+
 export default function EnrollmentForm() {
   const [learner, setLearner] = useState({
       lrn: "",
-      type: "",
+      type: "new",
       department: "grade",
       gradeLvl: 1,
+      requirements: [],
     }),
     [basic, setBasic] = useState({
       psa: "TEST",
+      fullName: { fname: "", mname: "", lname: "", suffix: "" },
       isMale: false,
       dob: new Date(),
+      pob: "",
+      ip: "",
+      disability: "",
       motherTongue: "",
       mobile: "",
       "4ps": "",
@@ -74,7 +86,7 @@ export default function EnrollmentForm() {
         suffix: "",
         mobile: "",
       },
-      guardian: {
+      legal: {
         fname: "",
         mname: "",
         lname: "",
@@ -83,24 +95,76 @@ export default function EnrollmentForm() {
       },
     }),
     // [returning, setReturning] = useState({}),
-    [activeStep, setActiveStep] = useState(3);
+    [activeStep, setActiveStep] = useState(0);
+
+  const handleSave = (isPublished) => {
+    const form = { ...learner, ...basic, address, ...guardian, isPublished };
+
+    if (address.isSame) form.address.permanent = address.current;
+
+    console.log(form);
+  };
+
+  const handleError = (title, text, footer) =>
+    Swal.fire({
+      icon: "error",
+      title,
+      text,
+      footer,
+      showConfirmButton: false,
+    });
+
+  const handleValidation = () => {
+    const formRequirements = learner.requirements,
+      fullname = basic.fullName,
+      mobile = basic.mobile,
+      dob = basic.dob,
+      guardian = guardian.legal;
+
+    if (getAge(dob, true) < 6)
+      return handleError(
+        "Invalid Age",
+        "Minimum of 6 years old only.",
+        "Double check Personal Information"
+      );
+
+    if (!mobile || !mobile.startsWith("9") || mobile.length !== 10)
+      return handleError(
+        "Invalid Mobile",
+        "Please input valid mobile number.",
+        "Double check Personal Information"
+      );
+
+    if (!formRequirements.length || formRequirements.length !== requirements)
+      return handleError(
+        "Invalid Requirements",
+        "Please upload the photos.",
+        "Double check Education Information"
+      );
+
+    if (!fullName(fullname))
+      return handleError(
+        "Invalid Fullname",
+        "First name and Last name are required.",
+        "Double check Personal Information"
+      );
+
+    if (!fullName(guardian))
+      return handleError(
+        "Invalid Legal Guardian Fullname",
+        "First name and Last name are required.",
+        "Double check Guardian Information"
+      );
+
+    handleSave(true);
+  };
 
   const handleFinalSubmit = () => {
-    // console.log(learner);
-    // console.log(basic);
-    // console.log(address);
-    // console.log(guardian);
     Swal.fire({
       focusDeny: true,
       icon: "question",
       title: "Are you sure you want to submit?",
       text: "Once submitted you cannot edit your information.",
-      // html:
-      //   `<div class="btn-group z-depth-0">` +
-      //   `<button id="cancel" class="btn btn-sm btn-none">Cancel</button>` +
-      //   `<button id="save" class="btn btn-sm btn-info">Save</button>` +
-      //   `<button id="submit" class="btn btn-sm btn-primary">Submit</button>` +
-      //   `</div>`,
       confirmButtonText: `<span class="text-dark">Cancel</span>`,
       confirmButtonColor: "#fff",
 
@@ -112,28 +176,20 @@ export default function EnrollmentForm() {
       cancelButtonText: "Submit",
       cancelButtonColor: "#3B71CA",
     }).then((result) => {
-      var title = "Changes are not Saved!",
-        icon = "warning";
-
-      /* Read more about isConfirmed, isDenied below */
       if (result.isDenied) {
-        title = "Saved to Drafts!";
-        icon = "info";
+        handleSave(false);
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        title = "Enrollment Submitted!";
-        icon = "success";
+        handleValidation();
+      } else {
+        Swal.fire({
+          title: "Changes are not Saved!",
+          icon: "warning",
+          showConfirmButton: false,
+          timer: 2500,
+          timerProgressBar: true,
+        });
       }
-
-      Swal.fire({
-        title,
-        icon,
-        showConfirmButton: false,
-        timer: 2500,
-        timerProgressBar: true,
-      });
     });
-
-    // console.log(returning);
   };
 
   const componentMap = {
@@ -213,14 +269,6 @@ export default function EnrollmentForm() {
               <p style={{ fontSize: "17px" }}>
                 {formatGradeLvl(department, gradeLvl)}
               </p>
-
-              {/* <div>DRAFT</div> */}
-              {/* <div>
-                PENDING VALIDATION <MDBIcon icon="info" />
-              </div> */}
-              {/* <div>
-                ENROLLMENT DENIED <MDBIcon icon="info" />
-              </div> */}
             </div>
           </div>
         </MDBCardTitle>
@@ -241,12 +289,20 @@ export default function EnrollmentForm() {
                 <li key={`step-${index}`} style={{ pointerEvents: "none" }}>
                   <a href="#!">
                     <span className={`circle bg-${color}`}>{icon}</span>
-                    <span className="label">{step}</span>
+                    <span className="label">{step} Information</span>
                   </a>
                 </li>
               );
             })}
           </ul>
+          <MDBTypography
+            className="mb-0"
+            noteColor="info"
+            note
+            noteTitle="DRAFT: "
+          >
+            text
+          </MDBTypography>
         </MDBCardBody>
 
         <MDBCardBody className="mx-5">
@@ -256,16 +312,6 @@ export default function EnrollmentForm() {
             handleFinalSubmit={handleFinalSubmit}
           />
         </MDBCardBody>
-        <div className="card-footer">
-          <MDBTypography
-            className="mb-0"
-            noteColor="info"
-            note
-            noteTitle="DRAFT: "
-          >
-            text
-          </MDBTypography>
-        </div>
       </MDBCard>
     </MDBContainer>
   );

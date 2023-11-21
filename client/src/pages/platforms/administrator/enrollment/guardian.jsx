@@ -9,19 +9,67 @@ export default function Guardian({
   const { form, setForm } = handleForm;
 
   const handleChange = (obj, key, value) =>
-    setForm({ ...form, [obj]: { ...form[obj], [key]: value } });
+    setForm({ ...form, [obj]: { ...form[obj], [key]: value.toUpperCase() } });
 
   const handleSubmit = (e) => {
     e.preventDefault();
     handleFinalSubmit();
   };
 
-  const { father, mother, guardian } = form;
+  const { father, mother, legal } = form;
 
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label>Father's Name</label>
+        <span>Legal Guardian's Name</span>
+        <div className="row">
+          <div className="col-3">
+            <MDBInput
+              label="Last Name"
+              value={legal.lname}
+              onChange={(e) => handleChange("legal", "lname", e.target.value)}
+            />
+          </div>
+          <div className="col-3">
+            <MDBInput
+              label="First Name"
+              value={legal.fname}
+              onChange={(e) => handleChange("legal", "fname", e.target.value)}
+            />
+          </div>
+          <div className="col-3">
+            <MDBInput
+              label="Middle Name"
+              value={legal.mname}
+              onChange={(e) => handleChange("legal", "mname", e.target.value)}
+            />
+          </div>
+          <div className="col-1">
+            <MDBInput
+              label="Suffix"
+              value={legal.suffix}
+              onChange={(e) => handleChange("legal", "suffix", e.target.value)}
+            />
+          </div>
+          <div className="col-2">
+            <MDBInput
+              label="Mobile No. (+63)"
+              maxLength={10}
+              value={legal.mobile}
+              onChange={(e) =>
+                handleChange(
+                  "legal",
+                  "mobile",
+                  e.target.value.replace(/\D/g, "")
+                )
+              }
+            />
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <span>Father's Name</span>
         <div className="row">
           <div className="col-3">
             <MDBInput
@@ -69,7 +117,7 @@ export default function Guardian({
       </div>
 
       <div>
-        <label>Mother's Maiden Name</label>
+        <span>Mother's Maiden Name</span>
         <div className="row">
           <div className="col-3">
             <MDBInput
@@ -116,61 +164,6 @@ export default function Guardian({
         </div>
       </div>
 
-      <div>
-        <label>Legal Guardian's Name</label>
-        <div className="row">
-          <div className="col-3">
-            <MDBInput
-              label="Last Name"
-              value={guardian.lname}
-              onChange={(e) =>
-                handleChange("guardian", "lname", e.target.value)
-              }
-            />
-          </div>
-          <div className="col-3">
-            <MDBInput
-              label="First Name"
-              value={guardian.fname}
-              onChange={(e) =>
-                handleChange("guardian", "fname", e.target.value)
-              }
-            />
-          </div>
-          <div className="col-3">
-            <MDBInput
-              label="Middle Name"
-              value={guardian.mname}
-              onChange={(e) =>
-                handleChange("guardian", "mname", e.target.value)
-              }
-            />
-          </div>
-          <div className="col-1">
-            <MDBInput
-              label="Suffix"
-              value={guardian.suffix}
-              onChange={(e) =>
-                handleChange("guardian", "suffix", e.target.value)
-              }
-            />
-          </div>
-          <div className="col-2">
-            <MDBInput
-              label="Mobile No. (+63)"
-              maxLength={10}
-              value={guardian.mobile}
-              onChange={(e) =>
-                handleChange(
-                  "guardian",
-                  "mobile",
-                  e.target.value.replace(/\D/g, "")
-                )
-              }
-            />
-          </div>
-        </div>
-      </div>
       <MDBBtn
         onClick={() => setActiveStep(2)}
         style={{ float: "left" }}

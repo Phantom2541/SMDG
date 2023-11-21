@@ -6,13 +6,15 @@ const getAge = (dob, useNumber = false) => {
     months = Math.floor(ageInMilliseconds / 1000 / 60 / 60 / 24 / 30),
     days = Math.floor(ageInMilliseconds / 1000 / 60 / 60 / 24);
 
+  if (useNumber) return years;
+
   if (years === 0) {
     if (months === 0) return `${days} days`;
 
     return `${months} months`;
   }
 
-  return useNumber ? years : `${years} y/o`;
+  return `${years} y/o`;
 };
 
 export default getAge;

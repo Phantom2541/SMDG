@@ -1,6 +1,6 @@
 const fullName = (fullname, isComplete = false) => {
   if (typeof fullname !== "object" || !fullname.fname || !fullname.lname)
-    return "-";
+    return "";
 
   const { fname, mname = "", lname, suffix = "" } = fullname;
 
@@ -9,7 +9,7 @@ const fullName = (fullname, isComplete = false) => {
   if (mname && !isComplete) {
     middleName = `${mname
       .split(" ")
-      .map(middle => middle.charAt(0).toUpperCase())
+      .map((middle) => middle.charAt(0).toUpperCase())
       .join("")}.`;
   }
 

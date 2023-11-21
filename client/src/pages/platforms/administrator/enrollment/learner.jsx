@@ -37,7 +37,7 @@ export default function Learner({ setActiveStep, handleForm }) {
         <div className="col-6">
           <MDBInput
             value={lrn}
-            onChange={(e) => handleChange("lrn", e.target.value)}
+            onChange={(e) => handleChange("lrn", e.target.value.toUpperCase())}
             label="Learner Reference No. (LRN)"
           />
         </div>

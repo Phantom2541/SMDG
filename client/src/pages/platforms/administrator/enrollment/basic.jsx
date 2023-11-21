@@ -8,11 +8,8 @@ export default function Basic({ setActiveStep, handleForm }) {
   const handleChange = (key, value) => setForm({ ...form, [key]: value });
 
   const {
-    fname,
-    mname,
-    lname,
-    suffix,
-    PoB,
+    fullName,
+    pob,
     ip,
     disability,
     psa,
@@ -22,6 +19,8 @@ export default function Basic({ setActiveStep, handleForm }) {
     mobile,
     "4ps": fourPs,
   } = form;
+
+  const { fname, mname, lname, suffix } = fullName;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -60,7 +59,12 @@ export default function Basic({ setActiveStep, handleForm }) {
           <MDBInput
             label="Last Name"
             value={lname}
-            onChange={(e) => handleChange("lname", e.target.value)}
+            onChange={(e) =>
+              handleChange("fullName", {
+                ...fullName,
+                lname: e.target.value.toUpperCase(),
+              })
+            }
           />
         </div>
         <div className="col-2">
@@ -90,7 +94,12 @@ export default function Basic({ setActiveStep, handleForm }) {
           <MDBInput
             label="First Name"
             value={fname}
-            onChange={(e) => handleChange("fname", e.target.value)}
+            onChange={(e) =>
+              handleChange("fullName", {
+                ...fullName,
+                fname: e.target.value.toUpperCase(),
+              })
+            }
           />
         </div>
         <div className="col-2">
@@ -122,8 +131,8 @@ export default function Basic({ setActiveStep, handleForm }) {
         <div className="col-5">
           <MDBInput
             label="Place of Birth (Municipality/City)"
-            value={PoB}
-            onChange={(e) => handleChange("PoB", e.target.value)}
+            value={pob}
+            onChange={(e) => handleChange("pob", e.target.value.toUpperCase())}
           />
         </div>
       </div>
@@ -132,14 +141,24 @@ export default function Basic({ setActiveStep, handleForm }) {
           <MDBInput
             label="Middle Name"
             value={mname}
-            onChange={(e) => handleChange("mname", e.target.value)}
+            onChange={(e) =>
+              handleChange("fullName", {
+                ...fullName,
+                mname: e.target.value.toUpperCase(),
+              })
+            }
           />
         </div>
         <div className="col-2 border-right border-bottom">
           <MDBInput
             label="Extension Name"
             value={suffix}
-            onChange={(e) => handleChange("suffix", e.target.value)}
+            onChange={(e) =>
+              handleChange("fullName", {
+                ...fullName,
+                suffix: e.target.value.toUpperCase(),
+              })
+            }
           />
         </div>
         <div className="col-7">
@@ -147,7 +166,7 @@ export default function Basic({ setActiveStep, handleForm }) {
             label="Do you belong to any Indigenous Peoples Community/Cultural Community? If Yes, please specify"
             value={ip}
             className="mt-0"
-            onChange={(e) => handleChange("ip", e.target.value)}
+            onChange={(e) => handleChange("ip", e.target.value.toUpperCase())}
           />
         </div>
       </div>
@@ -165,7 +184,9 @@ export default function Basic({ setActiveStep, handleForm }) {
           <MDBInput
             label="If Yes, specify the type of disability"
             value={disability}
-            onChange={(e) => handleChange("disability", e.target.value)}
+            onChange={(e) =>
+              handleChange("disability", e.target.value.toUpperCase())
+            }
           />
         </div>
       </div>

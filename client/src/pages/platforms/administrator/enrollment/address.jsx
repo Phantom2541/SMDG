@@ -31,7 +31,10 @@ export default function Address({ setActiveStep, handleForm }) {
               label="Sitio/Street Name"
               value={current.street}
               onChange={(e) =>
-                handleChange("current", { ...current, street: e.target.value })
+                handleChange("current", {
+                  ...current,
+                  street: e.target.value.toUpperCase(),
+                })
               }
             />
           </div>
@@ -41,7 +44,10 @@ export default function Address({ setActiveStep, handleForm }) {
               label="Zip Code"
               value={current.zip}
               onChange={(e) =>
-                handleChange("current", { ...current, zip: e.target.value })
+                handleChange("current", {
+                  ...current,
+                  zip: e.target.value.toUpperCase(),
+                })
               }
             />
           </div>
@@ -101,7 +107,7 @@ export default function Address({ setActiveStep, handleForm }) {
                 onChange={(e) =>
                   handleChange("permanent", {
                     ...permanent,
-                    street: e.target.value,
+                    street: e.target.value.toUpperCase(),
                   })
                 }
               />
@@ -114,7 +120,7 @@ export default function Address({ setActiveStep, handleForm }) {
                 onChange={(e) =>
                   handleChange("permanent", {
                     ...permanent,
-                    zip: e.target.value,
+                    zip: e.target.value.toUpperCase(),
                   })
                 }
               />
