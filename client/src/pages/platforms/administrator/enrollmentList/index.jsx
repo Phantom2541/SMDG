@@ -191,7 +191,7 @@ const students = [
 export default function EnrollmentList() {
   const [show, setShow] = useState(false),
     [selected, setSelected] = useState({});
-
+  console.log(selected);
   return (
     <>
       <MDBCard narrow className="pb-3">

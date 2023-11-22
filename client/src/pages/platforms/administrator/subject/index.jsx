@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import Card from "./card";
-import { MDBBtn, MDBIcon, MDBSpinner } from "mdbreact";
+import { MDBBtn, MDBIcon } from "mdbreact";
 import Modal from "./modal";
 import Swal from "sweetalert2";
 
@@ -165,7 +165,7 @@ export default function Subjects() {
 
   useEffect(() => {
     setSubjects(collections);
-  }, [collections]);
+  }, []);
 
   const handleDelete = (_id) =>
     Swal.fire({

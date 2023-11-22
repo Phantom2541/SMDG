@@ -23,7 +23,7 @@ export default function Learner() {
       <MDBRow>
         <MDBCol>
           <img
-            alt="student 1 x 1 picture"
+            alt="student 1 x 1"
             src="https://pbs.twimg.com/media/BtFUrp6CEAEmsml.jpg:large"
             height="145px"
             width="auto"
