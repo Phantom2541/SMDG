@@ -9,9 +9,12 @@ import {
   MDBCollapseHeader,
   MDBIcon,
 } from "mdbreact";
+import { SubjectForm } from "./modal";
 
-export default function Card({ index }) {
-  const [isOpen, setIsOpen] = useState(false);
+export default function Card({ subject, handleDelete }) {
+  const [isOpen, setIsOpen] = useState(false),
+    [editState, setEditState] = useState(false),
+    [form, setForm] = useState(subject);
 
   useEffect(() => {
     setIsOpen(Math.random() < 0.5);
@@ -19,22 +22,27 @@ export default function Card({ index }) {
 
   const toggle = () => setIsOpen(!isOpen);
 
+  const handleSubmit = () => {
+    console.log("final submit", form);
+  };
+
+  const { title, isMajor, units, _id, description, lab, lec } = subject,
+    color = isMajor ? "indigo" : "blue-grey",
+    badgeTitle = isMajor ? `Laboratory: ${lab} UNITS, Lecture: ${lec}` : units;
+
   return (
-    <MDBCard className="mb-3 mx-3 shadow-box-example hoverable">
-      <MDBCollapseHeader
-        className={`${isOpen && "blue text-white"}`}
-        onClick={toggle}
-      >
+    <MDBCard className="mb-3 shadow-box-example hoverable">
+      <MDBCollapseHeader onClick={toggle}>
         <div className="d-flex justify-content-between align-items-center">
           {/* <MDBBadge color="indigo" className="mb-0 z-depth-0">
             MAJOR
           </MDBBadge> */}
-          <div>
-            <MDBBadge color="blue-grey" className="mb-0 z-depth-0 mr-1">
-              MINOR
+          <div title={`${badgeTitle} UNITS`}>
+            <MDBBadge color={color} className="mb-0 z-depth-0 mr-1">
+              {isMajor ? "MAJOR" : "MINOR"}
             </MDBBadge>
-            <MDBBadge color="blue-grey" className="mb-0 z-depth-0">
-              5 UNITS
+            <MDBBadge color={color} className="mb-0 z-depth-0">
+              {units} UNITS
             </MDBBadge>
           </div>
 
@@ -46,28 +54,41 @@ export default function Card({ index }) {
             }}
           />
         </div>
-        Collapsible Group Item #1 nc
+        {title}
       </MDBCollapseHeader>
-      <MDBCollapse id={String(index)} isOpen={isOpen}>
+      <MDBCollapse id={_id} isOpen={isOpen}>
         <MDBCardBody>
-          Pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
-          richardson ad squid. 3 wolf moon officia aute, non cupidatat
-          skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-          Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
-          single-origin coffee nulla assumenda shoreditch et. Nihil anim
-          keffiyeh helvetica, craft beer labore wes anderson cred nesciunt
-          sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings
-          occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt
-          you probably haven&apos;t heard of them accusamus labore sustainable
-          VHS.
-          <MDBBtnGroup className="w-100">
-            <MDBBtn title="Edit" className="p-1" color="info">
-              <MDBIcon icon="pen" />
-            </MDBBtn>
-            <MDBBtn title="Delete" className="p-1" color="danger">
-              <MDBIcon icon="trash" />
-            </MDBBtn>
-          </MDBBtnGroup>
+          {editState ? (
+            <SubjectForm
+              handleFinalSubmit={handleSubmit}
+              form={form}
+              setForm={setForm}
+              submitSize="sm"
+              handleCancel={() => setEditState(false)}
+            />
+          ) : (
+            <>
+              {description}
+              <MDBBtnGroup className="w-100">
+                <MDBBtn
+                  onClick={() => setEditState(true)}
+                  title="Update"
+                  className="p-1"
+                  color="info"
+                >
+                  <MDBIcon icon="pen" />
+                </MDBBtn>
+                <MDBBtn
+                  onClick={() => handleDelete(_id)}
+                  title="Delete"
+                  className="p-1"
+                  color="danger"
+                >
+                  <MDBIcon icon="trash" />
+                </MDBBtn>
+              </MDBBtnGroup>
+            </>
+          )}
         </MDBCardBody>
       </MDBCollapse>
     </MDBCard>

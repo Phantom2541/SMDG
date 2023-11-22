@@ -1,0 +1,15 @@
+create room (name, description, capacity)
+
+schedule (roomId, subjectId, start, end)
+
+sections ()
+
+pending, declined, validated, paid, enrolled
+
+enrollment approval list (search by isPublished: true, status: pending) (copy customers page)
+
+cashier list (search by isPublished: true, status: validated)
+
+registrar list (search by isPublished: true, status: paid)
+
+create COR template
