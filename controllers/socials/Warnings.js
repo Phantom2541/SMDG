@@ -1,4 +1,4 @@
-const Entity = require("../../models/socials/Warnings"),
+const Entity = require("../../models/Socials/Warnings"),
   handleDuplicate = require("../../config/duplicate");
 
 exports.save = (req, res) =>

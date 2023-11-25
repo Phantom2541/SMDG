@@ -4,7 +4,7 @@ const router = require("express").Router(),
     save,
     update,
     destroy,
-  } = require("../../controllers/Socials/Announcements"),
+  } = require("../../controllers/Admissions/Requirements"),
   { validate } = require("../../middleware/jwt");
 
 router

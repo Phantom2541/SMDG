@@ -1,4 +1,4 @@
-const Entity = require("../../models/socials/Messages"),
+const Entity = require("../../models/Socials/Messages"),
   handleDuplicate = require("../../config/duplicate");
 
 exports.save = (req, res) =>

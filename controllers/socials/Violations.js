@@ -1,4 +1,4 @@
-const Entity = require("../../models/socials/Violations"),
+const Entity = require("../../models/Socials/Violations"),
   handleDuplicate = require("../../config/duplicate"),
   bulkWrite = require("../../config/bulkWrite");
 

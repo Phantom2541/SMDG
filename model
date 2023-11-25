@@ -8,7 +8,7 @@ users
 
 requirements
 -title          | string required
--department     | enum [ grade, junior high, senior high ]
+-department     | enum [ grade, junior high, senior high, college ]
 
 (Files: subjects/batch)
 subjects

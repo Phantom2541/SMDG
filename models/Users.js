@@ -20,7 +20,6 @@ const userSchema = new mongoose.Schema(
       },
       mname: {
         type: String,
-        default: "",
         trim: true,
       },
       lname: {
@@ -29,7 +28,6 @@ const userSchema = new mongoose.Schema(
       },
       suffix: {
         type: String,
-        default: "",
       },
     },
     address: {
@@ -41,12 +39,10 @@ const userSchema = new mongoose.Schema(
         street: {
           type: String,
           trim: true,
-          default: "",
         },
         barangay: {
           type: String,
           trim: true,
-          default: "",
         },
         city: {
           type: String,
@@ -63,39 +59,32 @@ const userSchema = new mongoose.Schema(
         zip: {
           type: String,
           trim: true,
-          default: "",
         },
       },
       permanent: {
         street: {
           type: String,
           trim: true,
-          default: "",
         },
         barangay: {
           type: String,
           trim: true,
-          default: "",
         },
         city: {
           type: String,
           trim: true,
-          default: "",
         },
         province: {
           type: String,
           trim: true,
-          default: "",
         },
         region: {
           type: String,
           trim: true,
-          default: "",
         },
         zip: {
           type: String,
           trim: true,
-          default: "",
         },
       },
     },
@@ -118,12 +107,10 @@ const userSchema = new mongoose.Schema(
     deactivated: {
       by: {
         type: String,
-        default: "",
         trim: true,
       },
       at: {
         type: String,
-        default: "",
         trim: true,
       },
       for: {

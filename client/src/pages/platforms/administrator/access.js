@@ -3,7 +3,7 @@ import Announcements from "./announcements";
 import Violations from "./violations";
 import Enrollment from "./enrollment";
 import Tree from "./orgChart";
-import Subject from "./subject";
+import Subjects from "./subjects";
 import EnrollmentList from "./enrollmentList";
 
 const access = [
@@ -56,7 +56,7 @@ const access = [
     name: "Subject",
     icon: "book",
     path: "/subject",
-    component: Subject,
+    component: Subjects,
   },
   {
     name: "Enrollment List",
