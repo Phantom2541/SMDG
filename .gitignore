@@ -3,8 +3,6 @@
 # dependencies
 /node_modules
 /assets
-.env
-/env
 
 # testing
 /coverage
@@ -12,6 +10,7 @@
 # production
 
 # misc
+.env
 .DS_Store
 .env.local
 .env.development.local
