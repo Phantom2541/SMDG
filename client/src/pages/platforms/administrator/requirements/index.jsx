@@ -8,16 +8,40 @@ import {
   MDBTable,
   MDBView,
 } from "mdbreact";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Departments } from "../../../../services/fakeDb";
 import Modal from "./modal";
 import Swal from "sweetalert2";
+import {
+  BROWSE,
+  DESTROY,
+} from "../../../../services/redux/slices/admissions/requirements";
+import { useToasts } from "react-toast-notifications";
 
 export default function Requirements() {
   const [show, setShow] = useState(false),
+    { token } = useSelector(({ auth }) => auth),
     [requirements, setRequirements] = useState([]),
     [orderIndex, setOrderIndex] = useState(0),
-    { collections } = useSelector(({ requirements }) => requirements);
+    [selected, setSelected] = useState({}),
+    [willCreate, setWillCreate] = useState(true),
+    { collections, message, isSuccess } = useSelector(
+      ({ requirements }) => requirements
+    ),
+    dispatch = useDispatch(),
+    { addToast } = useToasts();
+
+  useEffect(() => {
+    if (message) {
+      addToast(message, {
+        appearance: isSuccess ? "success" : "error",
+      });
+    }
+  }, [isSuccess, message, addToast]);
+
+  useEffect(() => {
+    dispatch(BROWSE({ token }));
+  }, [dispatch, token]);
 
   useEffect(() => {
     setRequirements(() => {
@@ -52,7 +76,7 @@ export default function Requirements() {
     });
   }, [orderIndex, collections]);
 
-  const handleDelete = () =>
+  const handleDelete = (_id) =>
     Swal.fire({
       focusDeny: true,
       icon: "question",
@@ -66,7 +90,11 @@ export default function Requirements() {
       denyButtonColor: "#3B71CA",
     }).then((res) => {
       if (res.isDenied) {
-        console.log("deleted");
+        dispatch(
+          DESTROY({
+            data: { _id },
+          })
+        );
       } else {
         Swal.fire({
           title: "Changes are not Saved!",
@@ -87,7 +115,7 @@ export default function Requirements() {
         >
           <span className="ml-3">Requirement List</span>
 
-          <div className="d-flex form-group md-form py-0 my-0">
+          <div className="d-flex align-items-center md-form py-0 my-0">
             <input
               className="form-control w-80 text-white placeholder-white"
               type="text"
@@ -99,18 +127,18 @@ export default function Requirements() {
               type="submit"
               size="sm"
               color="info"
-              className="d-inline ml-2 px-2"
+              title="search"
+              className="w-25 px-0"
             >
               <MDBIcon icon="search" />
             </MDBBtn>
             <MDBBtn
-              className="d-inline  px-2"
+              type="submit"
               size="sm"
               color="primary"
-              title="Add"
-              onClick={() => {
-                setShow(true);
-              }}
+              title="Add Requirement"
+              className="w-25 px-0"
+              onClick={() => setShow(true)}
             >
               <MDBIcon icon="plus" />
             </MDBBtn>
@@ -142,10 +170,10 @@ export default function Requirements() {
               </tr>
             </thead>
             <tbody>
-              {requirements?.map((requirement, index) => {
-                const { title, department } = requirement;
+              {requirements?.map((requirement) => {
+                const { _id, title, department } = requirement;
                 return (
-                  <tr key={index}>
+                  <tr key={_id}>
                     <td>{title}</td>
                     <td>{Departments.getName(department)}</td>
 
@@ -157,10 +185,11 @@ export default function Requirements() {
                           color="info"
                           rounded
                           title="Update"
-                          //   onClick={() => {
-                          //     setSelected(student);
-                          //     setShow(true);
-                          //   }}
+                          onClick={() => {
+                            setWillCreate(false);
+                            setSelected(requirement);
+                            setShow(true);
+                          }}
                         >
                           <MDBIcon icon="pen" />
                         </MDBBtn>
@@ -170,7 +199,7 @@ export default function Requirements() {
                           rounded
                           color="danger"
                           title="Delete"
-                          onClick={handleDelete}
+                          onClick={() => handleDelete(_id)}
                         >
                           <MDBIcon icon="trash-alt" />
                         </MDBBtn>
@@ -183,7 +212,18 @@ export default function Requirements() {
           </MDBTable>
         </MDBCardBody>
       </MDBCard>
-      <Modal show={show} toggle={() => setShow(false)} />
+      <Modal
+        show={show}
+        toggle={() => {
+          if (!willCreate) {
+            setWillCreate(true);
+            setSelected({});
+          }
+          setShow(false);
+        }}
+        selected={selected}
+        willCreate={willCreate}
+      />
     </>
   );
 }
