@@ -1,6 +1,5 @@
 const Entity = require("../../models/Socials/Violations"),
-  handleDuplicate = require("../../config/duplicate"),
-  bulkWrite = require("../../config/bulkWrite");
+  handleDuplicate = require("../../config/duplicate");
 
 exports.save = (req, res) =>
   Entity.create(req.body)
@@ -61,10 +60,17 @@ exports.update = (req, res) =>
     .catch((error) => res.status(400).json({ error: handleDuplicate(error) }));
 
 exports.destroy = (req, res) =>
-  bulkWrite(
-    req,
-    res,
-    Entity,
-    "Violation Criterias Deleted Successfully.",
-    "deleteOne"
-  );
+  Entity.findByIdAndDelete(req.body._id)
+    .then((payload) => {
+      if (!payload)
+        return res.status(404).json({
+          error: "Invalid ID.",
+          message: "ID Not Found.",
+        });
+
+      res.json({
+        success: "Violation Criteria Deleted Successfully.",
+        payload,
+      });
+    })
+    .catch((error) => res.status(400).json({ error: error.message }));

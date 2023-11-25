@@ -55,9 +55,9 @@ const access = [
     component: Tree,
   },
   {
-    name: "Subject",
+    name: "Subjects",
     icon: "book",
-    path: "/subject",
+    path: "/subjects",
     component: Subjects,
   },
   {

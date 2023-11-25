@@ -174,6 +174,7 @@ const _form = {
   title: "",
   units: 1,
   description: "",
+  gradeLvl: 1,
   isMajor: false,
   lab: 1,
   lec: 1,

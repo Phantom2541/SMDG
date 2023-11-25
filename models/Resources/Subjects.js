@@ -16,6 +16,10 @@ const modelSchema = new mongoose.Schema(
     code: {
       type: Number,
     },
+    gradeLvl: {
+      type: Number,
+      required: true,
+    },
     description: {
       type: String,
       required: true,

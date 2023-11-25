@@ -106,8 +106,8 @@ const userSchema = new mongoose.Schema(
     },
     deactivated: {
       by: {
-        type: String,
-        trim: true,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Users",
       },
       at: {
         type: String,
