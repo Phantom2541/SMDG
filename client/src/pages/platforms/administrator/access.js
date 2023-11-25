@@ -6,6 +6,7 @@ import Tree from "./orgChart";
 import Subjects from "./subjects";
 import EnrollmentList from "./enrollmentList";
 import Requirements from "./requirements";
+import Rooms from "./rooms";
 
 const access = [
   {
@@ -70,6 +71,12 @@ const access = [
     icon: "list",
     path: "/requirements",
     component: Requirements,
+  },
+  {
+    name: "Rooms",
+    icon: "list",
+    path: "/rooms",
+    component: Rooms,
   },
 ];
 

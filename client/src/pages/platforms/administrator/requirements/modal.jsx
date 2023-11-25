@@ -71,6 +71,11 @@ export default function Modal({ show, toggle, selected = null, willCreate }) {
     toggle();
   };
 
+  const handleClose = () => {
+    setForm(_form);
+    toggle();
+  };
+
   const handleChange = (key, value) => setForm({ ...form, [key]: value });
 
   const { title, department } = form;
@@ -78,7 +83,7 @@ export default function Modal({ show, toggle, selected = null, willCreate }) {
   return (
     <MDBModal isOpen={show} toggle={toggle} backdrop disableFocusTrap={false}>
       <MDBModalHeader
-        toggle={toggle}
+        toggle={handleClose}
         className="light-blue darken-3 white-text"
       >
         <MDBIcon icon="user" className="mr-2" />
