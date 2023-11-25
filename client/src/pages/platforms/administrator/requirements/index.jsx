@@ -25,6 +25,7 @@ export default function Requirements() {
     [orderIndex, setOrderIndex] = useState(0),
     [selected, setSelected] = useState({}),
     [willCreate, setWillCreate] = useState(true),
+    [didSearch, setDidSearch] = useState(false),
     { collections, message, isSuccess } = useSelector(
       ({ requirements }) => requirements
     ),
@@ -106,6 +107,18 @@ export default function Requirements() {
       }
     });
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+
+    const key = e.target.searchKey.value.toUpperCase();
+
+    setRequirements(
+      collections.filter(({ title }) => title.toUpperCase().includes(key))
+    );
+
+    setDidSearch(true);
+  };
+
   return (
     <>
       <MDBCard narrow className="pb-3">
@@ -115,34 +128,46 @@ export default function Requirements() {
         >
           <span className="ml-3">Requirement List</span>
 
-          <div className="d-flex align-items-center md-form py-0 my-0">
-            <input
-              className="form-control w-80 text-white placeholder-white"
-              type="text"
-              placeholder="Title Search..."
-              name="searchKey"
-              required
-            />
-            <MDBBtn
-              type="submit"
-              size="sm"
-              color="info"
-              title="search"
-              className="w-25 px-0"
-            >
-              <MDBIcon icon="search" />
-            </MDBBtn>
-            <MDBBtn
-              type="submit"
-              size="sm"
-              color="primary"
-              title="Add Requirement"
-              className="w-25 px-0"
-              onClick={() => setShow(true)}
-            >
-              <MDBIcon icon="plus" />
-            </MDBBtn>
-          </div>
+          <form
+            id="requirements-inline-search"
+            onSubmit={handleSearch}
+            className="form-inline ml-2"
+          >
+            <div className="form-group md-form py-0 mt-0">
+              <input
+                className="form-control w-80 placeholder-white text-white"
+                type="text"
+                placeholder="Title Search..."
+                name="searchKey"
+                required
+              />
+              <MDBBtn
+                onClick={() => {
+                  if (!didSearch) return;
+
+                  setDidSearch(false);
+                  document.getElementById("requirements-inline-search").reset();
+                  setRequirements(collections);
+                }}
+                type={didSearch ? "button" : "submit"}
+                size="sm"
+                color="info"
+                className="d-inline ml-2 px-2"
+              >
+                <MDBIcon icon={didSearch ? "times" : "search"} />
+              </MDBBtn>
+              <MDBBtn
+                type="button"
+                size="sm"
+                color="primary"
+                className="d-inline  px-2"
+                onClick={() => setShow(true)}
+                title="Create a Subject"
+              >
+                <MDBIcon icon="plus" />
+              </MDBBtn>
+            </div>
+          </form>
         </MDBView>
         <MDBCardBody>
           <MDBTable responsive hover>

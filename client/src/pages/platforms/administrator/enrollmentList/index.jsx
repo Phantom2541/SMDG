@@ -189,9 +189,8 @@ const students = [
 ];
 
 export default function EnrollmentList() {
-  const [show, setShow] = useState(false),
-    [selected, setSelected] = useState({});
-  console.log(selected);
+  const [show, setShow] = useState(false);
+
   return (
     <>
       <MDBCard narrow className="pb-3">
@@ -201,18 +200,25 @@ export default function EnrollmentList() {
         >
           <span className="ml-3">Enrollment List</span>
 
-          <div className="d-flex align-items-center form-group md-form py-0 my-0">
-            <input
-              className="form-control w-80 text-white placeholder-white"
-              type="text"
-              placeholder="Name Search..."
-              name="searchKey"
-              required
-            />
-            <MDBBtn type="submit" size="sm" color="info" className="w-25 px-0">
-              <MDBIcon icon="search" />
-            </MDBBtn>
-          </div>
+          <form id="subject-inline-search" className="form-inline ml-2">
+            <div className="form-group md-form py-0 mt-0">
+              <input
+                className="form-control placeholder-white w-80"
+                type="text"
+                placeholder="Title Search..."
+                name="searchKey"
+                required
+              />
+              <MDBBtn
+                type="submit"
+                size="sm"
+                color="info"
+                className="d-inline ml-2 px-2"
+              >
+                <MDBIcon icon="search" />
+              </MDBBtn>
+            </div>
+          </form>
         </MDBView>
         <MDBCardBody>
           <MDBTable responsive hover>
@@ -249,7 +255,7 @@ export default function EnrollmentList() {
                         color="info"
                         title="Preview"
                         onClick={() => {
-                          setSelected(student);
+                          // setSelected(student);
                           setShow(true);
                         }}
                       >
