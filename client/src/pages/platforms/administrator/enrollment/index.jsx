@@ -19,7 +19,7 @@ import {
   getAge,
 } from "../../../../services/utilities";
 import generateSY from "../../../../services/utilities/generateSY";
-import School from "../../../../services/fakeDb/school";
+import { School } from "../../../../services/fakeDb";
 import Swal from "sweetalert2";
 
 const steps = [

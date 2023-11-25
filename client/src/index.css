@@ -34,3 +34,7 @@ code {
 .cursor-text {
   cursor: text;
 }
+
+.transition-all {
+  transition: all 0.5s;
+}

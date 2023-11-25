@@ -2,28 +2,12 @@ body {
   background-color: #eee;
 }
 
-.App {
-  text-align: center;
-}
+@media (max-width: 650px) {
+  body {
+    min-width: initial; /* Reset the min-width for smaller screens */
+  }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
+  /* Additional styles for smaller screens, e.g., styles for the modal */
 }
 
 .mdb-skin-custom .side-nav .collapsible li .collapsible-header {
@@ -86,9 +70,9 @@ footer.page-footer .footer-copyright {
 
 .cascading-admin-card .admin-up .fa,
 .z-depth-2 {
+  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   -webkit-box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2),
     0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .cascading-admin-card .admin-up .data {
