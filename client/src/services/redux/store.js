@@ -3,6 +3,7 @@ import auth from "./slices/auth";
 import users from "./slices/users";
 import violations from "./slices/violations";
 import announcements from "./slices/announcements";
+import requirements from "./slices/admissions/requirements";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     users,
     violations,
     announcements,
+    requirements,
   },
 });
 

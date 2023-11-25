@@ -6,6 +6,8 @@ import {
   MDBIcon,
   MDBModalHeader,
   MDBInput,
+  MDBRow,
+  MDBCol,
 } from "mdbreact";
 import Swal from "sweetalert2";
 
@@ -16,7 +18,7 @@ export const SubjectForm = ({
   submitSize = "",
   handleCancel = null,
 }) => {
-  const { title, units, description, isMajor, lec, lab } = form;
+  const { title, units, description, isMajor, lec, lab, code } = form;
 
   const handleChange = (key, value) => setForm({ ...form, [key]: value });
 
@@ -59,14 +61,10 @@ export const SubjectForm = ({
         </div>
         <div className="col-4">
           <MDBInput
-            label="Units"
+            label="Code"
             type="number"
-            max={3}
-            min={1}
-            readOnly={isMajor}
-            value={String(units)}
-            onChange={(e) => handleChange("units", Number(e.target.value))}
-            required
+            value={String(code)}
+            onChange={(e) => handleChange("code", Number(e.target.value))}
           />
         </div>
       </div>
@@ -86,7 +84,7 @@ export const SubjectForm = ({
             type="checkbox"
             checked={!isMajor}
             id="Minor"
-            onChange={() => handleChange("isMajor", !isMajor)}
+            onChange={() => handleChange("isMajor", false)}
           />
           <label className="form-check-label" htmlFor="Minor">
             MINOR
@@ -98,7 +96,7 @@ export const SubjectForm = ({
             type="checkbox"
             checked={isMajor}
             id="Major"
-            onChange={() => handleChange("isMajor", !isMajor)}
+            onChange={() => handleChange("isMajor", true)}
           />
           <label className="form-check-label" htmlFor="Major">
             MAJOR
@@ -106,10 +104,22 @@ export const SubjectForm = ({
         </div>
       </div>
 
-      {isMajor && (
-        <>
-          <div className="row">
-            <div className="col-6">
+      <MDBRow>
+        <MDBCol size={isMajor ? "4" : "12"}>
+          <MDBInput
+            label="Units"
+            type="number"
+            max={3}
+            min={1}
+            readOnly={isMajor}
+            value={String(units)}
+            onChange={(e) => handleChange("units", Number(e.target.value))}
+            required
+          />
+        </MDBCol>
+        {isMajor && (
+          <>
+            <MDBCol size="4">
               <MDBInput
                 label="Lecture"
                 type="number"
@@ -122,8 +132,8 @@ export const SubjectForm = ({
                   setForm({ ...form, lec: _lec, units: lab + _lec });
                 }}
               />
-            </div>
-            <div className="col-6">
+            </MDBCol>
+            <MDBCol size="4">
               <MDBInput
                 min={2}
                 max={3}
@@ -136,11 +146,10 @@ export const SubjectForm = ({
                   setForm({ ...form, lab: _lab, units: lec + _lab });
                 }}
               />
-            </div>
-          </div>
-          <i>Laboratory and Lecture will be computed as total units</i>
-        </>
-      )}
+            </MDBCol>
+          </>
+        )}
+      </MDBRow>
 
       <div className="mb-2 d-flex justify-content-between">
         <MDBBtn
@@ -168,6 +177,7 @@ const _form = {
   isMajor: false,
   lab: 1,
   lec: 1,
+  code: null,
 };
 
 export default function Modal({ show, toggle }) {

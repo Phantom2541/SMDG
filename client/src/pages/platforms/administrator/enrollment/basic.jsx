@@ -108,7 +108,7 @@ export default function Basic({ setActiveStep, handleForm }) {
               className="form-check-input"
               type="checkbox"
               checked={isMale}
-              onChange={() => handleChange("isMale", !isMale)}
+              onChange={() => handleChange("isMale", true)}
               id="Male"
             />
             <label className="form-check-label" htmlFor="Male">
@@ -120,7 +120,7 @@ export default function Basic({ setActiveStep, handleForm }) {
               className="form-check-input"
               type="checkbox"
               checked={!isMale}
-              onChange={() => handleChange("isMale", !isMale)}
+              onChange={() => handleChange("isMale", false)}
               id="Female"
             />
             <label className="form-check-label" htmlFor="Female">

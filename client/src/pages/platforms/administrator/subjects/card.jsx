@@ -26,7 +26,7 @@ export default function Card({ subject, handleDelete }) {
     console.log("final submit", form);
   };
 
-  const { title, isMajor, units, _id, description, lab, lec } = subject,
+  const { title, isMajor, units, _id, description, lab, lec, code } = subject,
     color = isMajor ? "indigo" : "blue-grey",
     badgeTitle = isMajor ? `Laboratory: ${lab} UNITS, Lecture: ${lec}` : units;
 
@@ -54,7 +54,7 @@ export default function Card({ subject, handleDelete }) {
             }}
           />
         </div>
-        {title}
+        {`${title} ${code}`}
       </MDBCollapseHeader>
       <MDBCollapse id={_id} isOpen={isOpen}>
         <MDBCardBody>

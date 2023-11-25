@@ -9,6 +9,7 @@ const collections = [
   {
     _id: "1",
     title: "Introduction to Programming",
+    code: "103",
     units: 2,
     description:
       "This course provides a comprehensive introduction to programming concepts and practices. Students will learn the fundamentals of writing code, solving problems, and designing algorithms. Topics include variables, control structures, functions, and an overview of different programming languages. The course aims to equip students with the foundational skills necessary for further studies in computer science.",
@@ -19,6 +20,7 @@ const collections = [
   {
     _id: "2",
     title: "Mathematics for Computer Science",
+    code: "101",
     units: 5,
     description:
       "This course is designed to strengthen students' mathematical foundation for computer science. It covers a wide range of mathematical topics including algebra, calculus, discrete mathematics, and logic. Emphasis is placed on the application of mathematical concepts to solving computational problems. The course is a fundamental prerequisite for advanced computer science courses.",
@@ -29,6 +31,7 @@ const collections = [
   {
     _id: "3",
     title: "Web Development Fundamentals",
+    code: "101",
     units: 2,
     description:
       "In this course, students will delve into the fundamental concepts of web development. Topics include HTML, CSS, and JavaScript, with an emphasis on creating dynamic and interactive web pages. Students will gain practical experience by working on hands-on projects that cover the essentials of front-end web development. No prior coding experience is required.",
@@ -39,6 +42,7 @@ const collections = [
   {
     _id: "4",
     title: "Data Structures and Algorithms",
+    code: "102",
     units: 5,
     description:
       "This course explores fundamental data structures and algorithms used in computer science. Topics include arrays, linked lists, stacks, queues, trees, and sorting algorithms. Students will analyze the efficiency of algorithms and learn how to choose the appropriate data structure for solving specific problems. The course is essential for developing strong problem-solving skills.",
@@ -49,6 +53,7 @@ const collections = [
   {
     _id: "5",
     title: "Digital Logic Design",
+    code: "104",
     units: 3,
     description:
       "Digital Logic Design is a foundational course that introduces students to the principles of digital circuits. Topics include Boolean algebra, logic gates, combinational and sequential circuits. Students will gain hands-on experience in designing and implementing digital circuits using simulation tools. The knowledge gained in this course is crucial for understanding computer architecture.",
@@ -59,6 +64,7 @@ const collections = [
   {
     _id: "6",
     title: "Operating Systems",
+    code: "101",
     units: 4,
     description:
       "Operating Systems is a core course that covers the principles and functions of operating systems. Topics include process management, memory management, file systems, and security. Students will gain practical experience by working with different operating systems and understanding their role in managing computer resources.",
@@ -69,6 +75,7 @@ const collections = [
   {
     _id: "7",
     title: "Introduction to Artificial Intelligence",
+    code: "102",
     units: 4,
     description:
       "This course provides an introduction to the exciting field of Artificial Intelligence (AI). Students will explore foundational concepts such as machine learning, natural language processing, and computer vision. Practical applications of AI in various industries will be discussed, and students will have the opportunity to work on AI projects.",
@@ -79,6 +86,7 @@ const collections = [
   {
     _id: "8",
     title: "Database Management Systems",
+    code: "102",
     units: 4,
     description:
       "Database Management Systems is a comprehensive course that covers the design and implementation of database systems. Topics include relational database models, SQL, normalization, and transaction management. Students will gain hands-on experience by working on database projects that address real-world scenarios.",
@@ -89,6 +97,7 @@ const collections = [
   {
     _id: "9",
     title: "Computer Networks",
+    code: "102",
     units: 4,
     description:
       "Computer Networks explores the fundamental principles of computer network architectures. Topics include networking protocols, data transmission, network security, and the design of scalable and reliable networks. The course combines theoretical knowledge with practical applications, allowing students to build and troubleshoot computer networks.",
@@ -99,6 +108,7 @@ const collections = [
   {
     _id: "10",
     title: "Software Engineering",
+    code: "101",
     units: 3,
     description:
       "Software Engineering is a critical course that focuses on the principles and practices of software development. Topics include software life cycle models, requirements engineering, design patterns, and testing. Students will collaborate on a software project to apply the concepts learned throughout the course.",
@@ -109,6 +119,7 @@ const collections = [
   {
     _id: "11",
     title: "Human-Computer Interaction",
+    code: "101",
     units: 3,
     description:
       "Human-Computer Interaction (HCI) explores the relationship between humans and computers. Topics include user interface design, usability testing, and interaction design principles. Students will learn how to create user-friendly interfaces and conduct evaluations to improve the overall user experience.",
@@ -119,6 +130,7 @@ const collections = [
   {
     _id: "12",
     title: "Cryptography",
+    code: "101",
     units: 3,
     description:
       "Cryptography is an introductory course that covers the principles of securing information through cryptographic techniques. Topics include encryption algorithms, public-key cryptography, and cryptographic protocols. Students will explore the applications of cryptography in ensuring data confidentiality and integrity.",
@@ -129,6 +141,7 @@ const collections = [
   {
     _id: "13",
     title: "Computer Graphics",
+    code: "103",
     units: 4,
     description:
       "Computer Graphics is an advanced course that explores the principles of creating and manipulating visual images. Topics include 2D and 3D graphics, rendering techniques, and computer animation. Students will have the opportunity to work on projects that involve creating realistic and interactive computer-generated graphics.",
@@ -139,6 +152,7 @@ const collections = [
   {
     _id: "14",
     title: "Network Security",
+    code: 105,
     units: 4,
     description:
       "Network Security is a crucial course that focuses on securing computer networks from unauthorized access and attacks. Topics include cryptography, firewalls, intrusion detection systems, and secure protocols. Students will gain practical skills in identifying and mitigating network security threats.",
@@ -149,6 +163,7 @@ const collections = [
   {
     _id: "15",
     title: "Mobile App Development",
+    code: 103,
     units: 3,
     description:
       "Mobile App Development introduces students to the principles and practices of developing applications for mobile platforms. Topics include mobile app architecture, user interface design, and platform-specific development. Students will create and deploy mobile apps for various devices.",

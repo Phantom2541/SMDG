@@ -17,15 +17,15 @@ import { School } from "../../services/fakeDb";
 import Register from "./register";
 import Login from "./login";
 import Footer from "./footer";
-import ContactUs from "./contactUs";
+// import ContactUs from "./contactUs";
 import Features from "./features";
 import BG1 from "../../assets/landing/bg1.jpg";
 import BG2 from "../../assets/landing/bg2.jpg";
 import BG3 from "../../assets/landing/bg3.jpg";
 import BG4 from "../../assets/landing/bg4.jpg";
 import BG5 from "../../assets/landing/bg5.jpg";
-import Mission from "./mission";
-import Vision from "./vision";
+// import Mission from "./mission";
+// import Vision from "./vision";
 import Core from "./core";
 
 const backgrounds = [BG1, BG2, BG3, BG4, BG5].sort(() => Math.random() - 0.5);
