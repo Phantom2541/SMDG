@@ -9,10 +9,7 @@ import {
   MDBView,
 } from "mdbreact";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  BROWSE,
-  DESTROY,
-} from "../../../../services/redux/slices/resources/sections";
+import { DESTROY } from "../../../../services/redux/slices/resources/sections";
 import { useToasts } from "react-toast-notifications";
 import Swal from "sweetalert2";
 import Modal from "./modal";
@@ -162,9 +159,10 @@ export default function Sections() {
                     className="text-primary"
                   />
                 </th>
-                <th className="th-lg ">Grade Level</th>
+                <th className="th-lg">Grade Level</th>
 
-                <th>Advisor</th>
+                <th className="th-lg">Advisor</th>
+                <th />
               </tr>
             </thead>
             <tbody>

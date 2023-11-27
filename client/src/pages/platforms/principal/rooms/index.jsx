@@ -169,9 +169,10 @@ export default function Rooms() {
                     className={`${!!orderIndex && "text-primary"}`}
                   />
                 </th>
-                <th className="th-lg ">Description</th>
+                <th className="th-lg">Description</th>
 
-                <th>Capacity</th>
+                <th className="th-lg">Capacity</th>
+                <th />
               </tr>
             </thead>
             <tbody>

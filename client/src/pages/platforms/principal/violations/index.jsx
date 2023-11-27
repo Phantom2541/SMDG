@@ -22,7 +22,7 @@ export default function Violations() {
     [orderIndex, setOrderIndex] = useState(0),
     [selected, setSelected] = useState({}),
     [didSearch, setDidSearch] = useState(false),
-    { token } = useSelector(({ auth }) => auth),
+    { token, auth } = useSelector(({ auth }) => auth),
     { collections, isSuccess, message } = useSelector(
       ({ violations }) => violations
     ),
@@ -140,7 +140,10 @@ export default function Violations() {
                 size="sm"
                 color="primary"
                 className="d-inline  px-2"
-                onClick={() => setShow(true)}
+                onClick={() => {
+                  if (!willCreate) setWillCreate(true);
+                  setShow(true);
+                }}
                 title="Create a Subject"
               >
                 <MDBIcon icon="plus" />
@@ -166,49 +169,53 @@ export default function Violations() {
                   <MDBIcon
                     icon="sort"
                     title="Sort by Name"
-                    className="text-primary"
+                    className={`${!!orderIndex && "text-primary"}`}
                   />
                 </th>
-                <th className="th-lg ">Description</th>
-                <th>Createdby</th>
+                <th className="th-lg">Description</th>
+                <th className="th-lg">Created By</th>
+                <th />
               </tr>
             </thead>
             <tbody>
               {violations?.map((violation) => {
-                const { _id, title, description, createdBy } = violation;
+                const { _id, title, description, createdBy } = violation,
+                  { _id: creatorId, fullName: fullname } = createdBy;
                 return (
                   <tr key={_id}>
                     <td>{title}</td>
                     <td>{description}</td>
-                    <td>{fullName(createdBy.fullName)}</td>
+                    <td>{fullName(fullname)}</td>
 
                     <td className="py-2 text-center">
-                      <MDBBtnGroup>
-                        <MDBBtn
-                          className="m-0"
-                          size="sm"
-                          color="info"
-                          rounded
-                          title="Update"
-                          onClick={() => {
-                            setWillCreate(false);
-                            setSelected(violation);
-                            setShow(true);
-                          }}
-                        >
-                          <MDBIcon icon="pen" />
-                        </MDBBtn>
-                        <MDBBtn
-                          className="m-0"
-                          size="sm"
-                          rounded
-                          color="danger"
-                          title="Delete"
-                          onClick={() => handleDelete(_id)}
-                        >
-                          <MDBIcon icon="trash-alt" />
-                        </MDBBtn>
-                      </MDBBtnGroup>
+                      {auth._id === creatorId && (
+                        <MDBBtnGroup>
+                          <MDBBtn
+                            className="m-0"
+                            size="sm"
+                            color="info"
+                            rounded
+                            title="Update"
+                            onClick={() => {
+                              setWillCreate(false);
+                              setSelected(violation);
+                              setShow(true);
+                            }}
+                          >
+                            <MDBIcon icon="pen" />
+                          </MDBBtn>
+                          <MDBBtn
+                            className="m-0"
+                            size="sm"
+                            rounded
+                            color="danger"
+                            title="Delete"
+                            onClick={() => handleDelete(_id)}
+                          >
+                            <MDBIcon icon="trash-alt" />
+                          </MDBBtn>
+                        </MDBBtnGroup>
+                      )}
                     </td>
                   </tr>
                 );

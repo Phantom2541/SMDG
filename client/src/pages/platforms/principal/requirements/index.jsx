@@ -191,7 +191,7 @@ export default function Requirements() {
                     className={`${!!orderIndex && "text-primary"}`}
                   />
                 </th>
-                <th className="th-lg" />
+                <th />
               </tr>
             </thead>
             <tbody>

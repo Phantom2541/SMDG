@@ -65,6 +65,10 @@ const modelSchema = new mongoose.Schema(
         },
       },
     },
+    isPublished: {
+      type: Boolean,
+      default: false,
+    },
     status: {
       type: String,
       enum: {

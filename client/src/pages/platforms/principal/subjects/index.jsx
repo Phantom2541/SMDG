@@ -40,10 +40,6 @@ export default function Subjects() {
     setSubjects(collections);
   }, [collections]);
 
-  useEffect(() => {
-    setSubjects(collections);
-  }, []);
-
   const handleDelete = (_id) =>
     Swal.fire({
       focusDeny: true,

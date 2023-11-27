@@ -28,26 +28,45 @@ const access = [
     path: "/orgCharts",
     component: OrgCharts,
   },
-
+  {
+    name: "Subjects",
+    icon: "book-open",
+    path: "/subjects",
+    component: Subjects,
+  },
+  {
+    name: "Accounts",
+    icon: "id-card-alt",
+    path: "/accounts",
+    children: [
+      {
+        name: "Employees",
+        path: "/employees",
+      },
+      {
+        name: "Students",
+        path: "/students",
+      },
+    ],
+  },
   {
     name: "Lists",
     icon: "list",
     path: "/lists",
     children: [
       {
-        name: "Violations",
-        path: "/violations",
-        component: Violations,
+        name: "Requirements",
+        path: "/requirements",
+        component: Requirements,
       },
       {
-        name: "Subject  ",
-        path: "/subjects",
-        component: Subjects,
+        name: "Enrollments",
+        path: "/enrollmentLists",
+        component: Enrollments,
       },
       {
-        name: "Section",
-        path: "/sections",
-        component: Sections,
+        name: "Employments",
+        path: "/employments",
       },
       {
         name: "Rooms",
@@ -55,14 +74,14 @@ const access = [
         component: Rooms,
       },
       {
-        name: "Requirements",
-        path: "/requirements",
-        component: Requirements,
+        name: "Sections",
+        path: "/sections",
+        component: Sections,
       },
       {
-        name: "Enrollment",
-        path: "/enrollmentLists",
-        component: Enrollments,
+        name: "Violations",
+        path: "/violations",
+        component: Violations,
       },
     ],
   },

@@ -1,5 +1,4 @@
 const Roles = [
-  "PRINCIPAL",
   "VICE PRINCIPAL",
   "HEAD",
   "MASTER",
