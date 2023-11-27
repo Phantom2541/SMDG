@@ -1,5 +1,6 @@
 import Dashboard from "./dashboard";
-import Violations from "../administrator/violations";
+import Employment from "./employment";
+import Enrollment from "./enrollment";
 
 const access = [
   {
@@ -9,10 +10,21 @@ const access = [
     component: Dashboard,
   },
   {
-    name: "Test",
-    icon: "tachometer-alt",
-    path: "/test",
-    component: Violations,
+    name: "Employee",
+    icon: "user-secret",
+    path: "/employee",
+    component: Employment,
+  },
+  {
+    name: "Student",
+    icon: "user-graduate",
+    path: "/student",
+    component: Enrollment,
+  },
+  {
+    name: "Guardian",
+    icon: "user-shield",
+    path: "/guardian",
   },
 ];
 

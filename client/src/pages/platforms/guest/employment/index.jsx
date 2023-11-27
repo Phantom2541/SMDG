@@ -9,15 +9,9 @@ import {
   MDBDatePicker,
   MDBInput,
   MDBRow,
-  MDBSelect,
   MDBTypography,
 } from "mdbreact";
-import {
-  formatGradeLvl,
-  fullAddress,
-  fullName,
-  getAge,
-} from "../../../../services/utilities";
+import { fullAddress } from "../../../../services/utilities";
 import generateSY from "../../../../services/utilities/generateSY";
 import { School } from "../../../../services/fakeDb";
 import AddressSelect from "../../../../components/addressSelect";
@@ -32,13 +26,6 @@ const address = {
   zip: "",
   street: "",
 };
-
-const status = [
-  { text: "Single", value: "single" },
-  { text: "inRelationship", value: "inrelationship" },
-  { text: "Married", value: "married" },
-  { text: "Divorced", value: "divorced" },
-];
 
 const _form = {
   isSame: true,
@@ -100,42 +87,37 @@ export default function EmploymentForm() {
         </MDBCardBody>
 
         <MDBCardBody className="mx-5">
-          <h5>Personal Information</h5>
+          <h5 className="mb-0">Personal Information</h5>
           <form>
-            <div className="row">
-              <div className="col-5">
+            <MDBRow>
+              <MDBCol md="6">
                 <MDBInput label="Applying Position" />
-              </div>
-              <div className="col-7">
+              </MDBCol>
+              <MDBCol md="6">
                 <MDBInput
-                  label="Mobile No. +63 (Home)"
+                  label="Mobile No. +63"
                   //   maxLength={10}
                   //   value={mobile}
                   //   onChange={(e) =>
                   //     handleChange("mobile", e.target.value.replace(/\D/g, ""))
                   //   }
                 />
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-5 border-right border-top border-left">
+              </MDBCol>
+            </MDBRow>
+            <MDBRow>
+              <MDBCol md="6" className="border-right border-top border-left">
                 <MDBInput label="Last Name" />
-              </div>
-              <div className="col-7">
-                <CustomSelect
-                  label="Status"
-                  choices={status}
-                  texts={"text"}
-                  values={"value"}
-                />
-              </div>
-            </div>
+              </MDBCol>
+              <MDBCol md="6">
+                <MDBInput label="Mother Tongue (ex: Tagalog, English)" />
+              </MDBCol>
+            </MDBRow>
 
-            <div className="row">
-              <div className="col-5 border-left border-right">
+            <MDBRow>
+              <MDBCol md="6" className="border-left border-right">
                 <MDBInput label="First Name" />
-              </div>
-              <div className="col-2">
+              </MDBCol>
+              <MDBCol md="3">
                 <label className="mb-0">Birthdate</label>
                 <MDBDatePicker
                   className="mt-1"
@@ -143,26 +125,37 @@ export default function EmploymentForm() {
                   //   value={dob}
                   //   getValue={(e) => handleChange("dob", e)}
                 />
-              </div>
-              <div className="col-1">
+              </MDBCol>
+              <MDBCol md="1">
                 <MDBInput
                   label="Age"
                   readOnly
                   //   value={getAge(dob.toDateString())}
                 />
-              </div>
-              <div className="col-4">
-                <MDBInput label="Mother Tongue (ex: Tagalog, English)" />
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-3 border-left border-bottom">
+              </MDBCol>
+              <MDBCol md="2">
+                <CustomSelect
+                  label="Civil Status"
+                  choices={[
+                    { text: "Single", value: "single" },
+                    { text: "Married", value: "married" },
+                    { text: "Live in", value: "live-in" },
+                    { text: "Divorced", value: "divorced" },
+                  ]}
+                  texts="text"
+                  values="value"
+                />
+              </MDBCol>
+            </MDBRow>
+
+            <MDBRow className="mb-3">
+              <MDBCol md="4" className="border-left border-bottom">
                 <MDBInput label="Middle Name" />
-              </div>
-              <div className="col-2 border-right border-bottom">
+              </MDBCol>
+              <MDBCol md="2" className="border-right border-bottom">
                 <MDBInput label="Extension Name" />
-              </div>
-              <div className="col-2">
+              </MDBCol>
+              <MDBCol md="2">
                 <div className="form-check">
                   <input
                     className="form-check-input"
@@ -187,67 +180,66 @@ export default function EmploymentForm() {
                     Female
                   </label>
                 </div>
-              </div>
-              <div className="col-5">
+              </MDBCol>
+              <MDBCol md="4">
                 <MDBInput label="Place of Birth (Municipality/City)" />
+              </MDBCol>
+            </MDBRow>
+
+            <AddressSelect
+              label="Permanent Address"
+              address={address}
+              // handleChange={(_, value) => handleChange("current", value)}
+              // uniqueId="current"
+            />
+            <div className="d-flex mt-3">
+              <div className="">
+                <label>
+                  Is your permanent address is same with your current address?
+                </label>
               </div>
-            </div>
-            <div className="mt-2 border px-5 pt-3">
-              <AddressSelect
-                label="Permanent Address"
-                address={address}
-                // handleChange={(_, value) => handleChange("current", value)}
-                // uniqueId="current"
-              />
-              <div className="d-flex mt-3">
-                <div className="">
-                  <label>
-                    Is your permanent address is same with your current address?
+              <div className="">
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    checked={isSame}
+                    onChange={() => handleChange("isSame", true)}
+                    id="yes"
+                  />
+                  <label className="form-check-label" htmlFor="yes">
+                    Yes
                   </label>
                 </div>
-                <div className="">
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      checked={isSame}
-                      onChange={() => handleChange("isSame", true)}
-                      id="yes"
-                    />
-                    <label className="form-check-label" htmlFor="yes">
-                      Yes
-                    </label>
-                  </div>
-                </div>
-                <div className="">
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      checked={!isSame}
-                      onChange={() => handleChange("isSame", false)}
-                      id="no"
-                    />
-                    <label className="form-check-label" htmlFor="no">
-                      No
-                    </label>
-                  </div>
+              </div>
+              <div className="">
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    checked={!isSame}
+                    onChange={() => handleChange("isSame", false)}
+                    id="no"
+                  />
+                  <label className="form-check-label" htmlFor="no">
+                    No
+                  </label>
                 </div>
               </div>
-
-              {!isSame && (
-                <div className="mt-3">
-                  <AddressSelect
-                    label="Current Address"
-                    address={address}
-                    // handleChange={(_, value) => handleChange("current", value)}
-                    // uniqueId="current"
-                  />
-                </div>
-              )}
             </div>
+
+            {!isSame && (
+              <div className="mt-3">
+                <AddressSelect
+                  label="Current Address"
+                  address={address}
+                  // handleChange={(_, value) => handleChange("current", value)}
+                  // uniqueId="current"
+                />
+              </div>
+            )}
             <hr color="primray" />
-            <h6>In case of Emergency, Notify:</h6>
+            <h6 className="mb-0">In case of Emergency, Notify:</h6>
             <div className="border px-4">
               <MDBRow>
                 <MDBCol md="4">
@@ -274,7 +266,7 @@ export default function EmploymentForm() {
             </div>
             <hr color="primray" />
             <MDBContainer>
-              <p>Upload Requirements (Required*)</p>
+              <p>Upload PDFS (Required*)</p>
               <UploadPDF />
             </MDBContainer>
 

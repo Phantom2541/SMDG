@@ -1,6 +1,6 @@
 import Announcements from "./announcements";
 import Dashboard from "./dashboard";
-import EnrollmentList from "./enrollmentList";
+import Enrollments from "./enrollments";
 import OrgCharts from "./orgCharts/orgchart";
 import Requirements from "./requirements";
 import Rooms from "./rooms";
@@ -25,7 +25,7 @@ const access = [
     name: "Enrollment List",
     icon: "tachometer-alt",
     path: "/enrollmentLists",
-    component: EnrollmentList,
+    component: Enrollments,
   },
   {
     name: "Org Chart",

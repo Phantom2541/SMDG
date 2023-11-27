@@ -1,13 +1,11 @@
 import Dashboard from "./dashboard";
 import Announcements from "../principal/announcements";
 import Violations from "../principal/violations";
-import Enrollment from "./enrollment";
 import Tree from "../principal/orgCharts";
 import Subjects from "../principal/subjects";
 import EnrollmentList from "../principal/enrollments";
 import Requirements from "../principal/requirements";
 import Rooms from "../principal/rooms";
-import EmploymentForm from "./employments";
 import Sections from "../principal/sections";
 
 const access = [
@@ -43,18 +41,6 @@ const access = [
     icon: "skull-crossbones",
     path: "/violations",
     component: Violations,
-  },
-  {
-    name: "Enrollment",
-    icon: "skull-crossbones",
-    path: "/enrollment",
-    component: Enrollment,
-  },
-  {
-    name: "Employment",
-    icon: "skull-crossbones",
-    path: "/employment",
-    component: EmploymentForm,
   },
   {
     name: "Org Chart",
