@@ -10,6 +10,9 @@ import {
   MDBCol,
 } from "mdbreact";
 import Swal from "sweetalert2";
+import { useDispatch, useSelector } from "react-redux";
+import { SAVE } from "../../../../services/redux/slices/resources/subjects";
+import { abbreviate } from "../../../../services/utilities";
 
 export const SubjectForm = ({
   handleFinalSubmit,
@@ -18,7 +21,8 @@ export const SubjectForm = ({
   submitSize = "",
   handleCancel = null,
 }) => {
-  const { title, units, description, isMajor, lec, lab, code } = form;
+  const { title, units, description, isMajor, lec, lab, code, abbreviation } =
+    form;
 
   const handleChange = (key, value) => setForm({ ...form, [key]: value });
 
@@ -48,26 +52,39 @@ export const SubjectForm = ({
   return (
     <form onSubmit={handleSubmit}>
       <div className="row">
-        <div className="col-8">
+        <div className="col-7">
           <MDBInput
             type="text"
             label="Title"
             required
             value={title}
-            onChange={(e) =>
-              handleChange("title", e.target.value.toUpperCase())
-            }
+            onChange={(e) => {
+              const title = e.target.value.toUpperCase();
+
+              setForm({
+                ...form,
+                title,
+                abbreviation: abbreviate(title),
+              });
+            }}
           />
         </div>
-        <div className="col-4">
+        <div className="col-5">
           <MDBInput
-            label="Code"
-            type="number"
-            value={String(code)}
-            onChange={(e) => handleChange("code", Number(e.target.value))}
+            label="Abbreviation"
+            type="text"
+            value={abbreviation}
+            onChange={(e) => handleChange("abbreviation", e.target.value)}
           />
         </div>
       </div>
+      <MDBInput
+        label="Code"
+        required
+        type="text"
+        value={code}
+        onChange={(e) => handleChange("code", e.target.value.toUpperCase())}
+      />
       <MDBInput
         required
         type="textarea"
@@ -172,19 +189,28 @@ export const SubjectForm = ({
 
 const _form = {
   title: "",
+  abbreviation: "",
   units: 1,
   description: "",
   gradeLvl: 1,
   isMajor: false,
   lab: 1,
   lec: 1,
-  code: null,
+  code: "",
 };
 
 export default function Modal({ show, toggle }) {
-  const [form, setForm] = useState(_form);
+  const [form, setForm] = useState(_form),
+    { token } = useSelector(({ auth }) => auth),
+    dispatch = useDispatch();
 
   const handleSubmit = () => {
+    dispatch(
+      SAVE({
+        data: form,
+        token,
+      })
+    );
     console.log("final submit", form);
 
     setForm(_form);

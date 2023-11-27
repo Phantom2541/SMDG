@@ -60,7 +60,7 @@ require("./config/db")()
       })
     );
 
-    const port = process.env.PORT || 5000; // Dynamic port for deployment
+    const port = process.env.PORT || 5001; // Dynamic port for deployment
     server.listen(port, () => {
       console.log(green(`[Server] running on port: ${port}`));
     });

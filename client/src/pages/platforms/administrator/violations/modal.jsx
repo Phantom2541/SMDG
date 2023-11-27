@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import {
   MDBBtn,
   MDBModal,
@@ -7,85 +6,73 @@ import {
   MDBIcon,
   MDBModalHeader,
   MDBInput,
-  MDBModalFooter,
 } from "mdbreact";
-import { isEqual } from "lodash";
-import {
-  SAVE,
-  TOGGLEMODAL,
-  UPDATE,
-} from "../../../../services/redux/slices/violations";
+import { useDispatch, useSelector } from "react-redux";
+import { SAVE, UPDATE } from "../../../../services/redux/slices/violations";
 import { useToasts } from "react-toast-notifications";
+import { isEqual } from "lodash";
 
-// declare your expected items
 const _form = {
   title: "",
+  description: "",
 };
 
-export default function Modal({ selected, willCreate }) {
-  const { token, auth } = useSelector(({ auth }) => auth),
-    { showModal } = useSelector(({ violations }) => violations),
-    [form, setForm] = useState(_form),
-    { addToast } = useToasts(),
-    dispatch = useDispatch();
+export default function Modal({ show, toggle, willCreate, selected }) {
+  const [form, setForm] = useState(_form),
+    { token, auth } = useSelector(({ auth }) => auth),
+    { isLoading } = useSelector(({ violations }) => violations),
+    dispatch = useDispatch(),
+    { addToast } = useToasts();
 
   useEffect(() => {
-    if (showModal && selected._id && !willCreate) setForm(selected);
-
-    return () => setForm(_form);
-  }, [selected, willCreate, showModal]);
-
-  const handleCreate = (form) =>
-    dispatch(
-      SAVE({
-        data: { ...form, createdBy: auth._id },
-        token,
-      })
-    );
+    if (!willCreate) {
+      setForm(selected);
+    }
+  }, [willCreate, selected]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (willCreate) return handleCreate(form);
-
-    if (isEqual(form, selected)) {
-      dispatch(TOGGLEMODAL());
-
-      return addToast("No changes found, skipping update.", {
-        appearance: "info",
-      });
+    if (!willCreate) {
+      if (isEqual(form, selected)) {
+        addToast("No changes found, skipping update.", {
+          appearance: "info",
+        });
+      } else {
+        dispatch(
+          UPDATE({
+            data: form,
+            token,
+          })
+        );
+      }
+    } else {
+      dispatch(SAVE({ data: { ...form, createdBy: auth._id }, token }));
     }
 
-    dispatch(
-      UPDATE({
-        data: form,
-        token,
-      })
-    );
-
     setForm(_form);
+    toggle();
+  };
+
+  const handleClose = () => {
+    setForm(_form);
+    toggle();
   };
 
   const handleChange = (key, value) => setForm({ ...form, [key]: value });
 
-  const { title } = form;
+  const { title, description } = form;
 
   return (
-    <MDBModal
-      isOpen={showModal}
-      toggle={() => {}}
-      backdrop
-      disableFocusTrap={false}
-    >
+    <MDBModal isOpen={show} toggle={toggle} backdrop disableFocusTrap={false}>
       <MDBModalHeader
-        toggle={() => dispatch(TOGGLEMODAL())}
+        toggle={handleClose}
         className="light-blue darken-3 white-text"
       >
-        <MDBIcon icon="skull-crossbones" className="mr-2" />
-        {willCreate ? "Add a Criteria" : `Update ${selected?.title}`}
+        <MDBIcon icon="user" className="mr-2" />
+        {!willCreate ? "Update" : "Create"} a Violation
       </MDBModalHeader>
-      <form onSubmit={handleSubmit}>
-        <MDBModalBody className="mb-0">
+      <MDBModalBody className="mb-0">
+        <form onSubmit={handleSubmit}>
           <MDBInput
             type="text"
             label="Title"
@@ -94,15 +81,27 @@ export default function Modal({ selected, willCreate }) {
               handleChange("title", e.target.value.toUpperCase())
             }
             required
-            outline
           />
-        </MDBModalBody>
-        <MDBModalFooter className="py-0">
-          <MDBBtn type="submit" color="primary">
-            {willCreate ? "submit" : "update"}
-          </MDBBtn>
-        </MDBModalFooter>
-      </form>
+
+          <MDBInput
+            type="textarea"
+            label="Description"
+            value={description}
+            onChange={(e) => handleChange("description", e.target.value)}
+          />
+
+          <div className="text-center mb-1-half">
+            <MDBBtn
+              type="submit"
+              disabled={isLoading}
+              color="primary"
+              className="mb-2 float-right"
+            >
+              {!willCreate ? "Update" : "Submit"}
+            </MDBBtn>
+          </div>
+        </form>
+      </MDBModalBody>
     </MDBModal>
   );
 }

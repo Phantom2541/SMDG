@@ -8,9 +8,9 @@ const router = require("express").Router(),
   { validate } = require("../../middleware/jwt");
 
 router
-  .get("/browse", validate, browse)
-  .post("/save", validate, save)
-  .put("/update", validate, update)
-  .delete("/destroy", validate, destroy);
+  .get("/browse", browse)
+  .post("/save", save)
+  .put("/update", update)
+  .delete("/destroy", destroy);
 
 module.exports = router;

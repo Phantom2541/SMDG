@@ -12,8 +12,9 @@ import fullAddress from "./fullAddress";
 import formatGradeLvl from "./formatGradeLvl";
 import getAge from "./getAge";
 import formatMobile from "./formatMobile";
+import abbreviate from "./abbreviate";
 
-const ENDPOINT = "http://localhost:5000";
+const ENDPOINT = "http://localhost:5001";
 // const ENDPOINT = window.location.origin;
 const socket = io.connect(ENDPOINT);
 
@@ -24,6 +25,7 @@ const PresetImage = (gender) => {
 };
 
 export {
+  abbreviate,
   formatMobile,
   getAge,
   formatGradeLvl,

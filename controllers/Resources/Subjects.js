@@ -1,4 +1,5 @@
-const Entity = require("../../models/Resources/Subjects");
+const Entity = require("../../models/Resources/Subjects"),
+  handleDuplicate = require("../../config/duplicate");
 
 exports.save = (req, res) => {
   const { title, description, gradeLvl, departmentName } = req.body;
@@ -24,7 +25,9 @@ exports.save = (req, res) => {
             payload,
           })
         )
-        .catch((error) => res.status(400).json({ error: error.message }));
+        .catch((error) =>
+          res.status(400).json({ error: handleDuplicate(error) })
+        );
     })
     .catch((error) => res.status(400).json({ error: error.message }));
 };
@@ -74,7 +77,9 @@ exports.update = (req, res) => {
             payload,
           });
         })
-        .catch((error) => res.status(400).json({ error: error.message }));
+        .catch((error) =>
+          res.status(400).json({ error: handleDuplicate(error) })
+        );
     })
     .catch((error) => res.status(400).json({ error: error.message }));
 };

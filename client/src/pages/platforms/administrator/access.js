@@ -7,6 +7,7 @@ import Subjects from "./subjects";
 import EnrollmentList from "./enrollmentList";
 import Requirements from "./requirements";
 import Rooms from "./rooms";
+import EmploymentForm from "./employment";
 
 const access = [
   {
@@ -47,6 +48,12 @@ const access = [
     icon: "skull-crossbones",
     path: "/enrollment",
     component: Enrollment,
+  },
+  {
+    name: "Employment",
+    icon: "skull-crossbones",
+    path: "/employment",
+    component: EmploymentForm,
   },
   {
     name: "Org Chart",

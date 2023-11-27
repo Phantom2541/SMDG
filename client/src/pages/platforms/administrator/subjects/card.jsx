@@ -10,11 +10,15 @@ import {
   MDBIcon,
 } from "mdbreact";
 import { SubjectForm } from "./modal";
+import { useDispatch, useSelector } from "react-redux";
+import { UPDATE } from "../../../../services/redux/slices/resources/subjects";
 
 export default function Card({ subject, handleDelete }) {
   const [isOpen, setIsOpen] = useState(false),
     [editState, setEditState] = useState(false),
-    [form, setForm] = useState(subject);
+    [form, setForm] = useState(subject),
+    { token } = useSelector(({ auth }) => auth),
+    dispatch = useDispatch();
 
   useEffect(() => {
     setIsOpen(Math.random() < 0.5);
@@ -23,7 +27,13 @@ export default function Card({ subject, handleDelete }) {
   const toggle = () => setIsOpen(!isOpen);
 
   const handleSubmit = () => {
-    console.log("final submit", form);
+    dispatch(
+      UPDATE({
+        data: form,
+        token,
+      })
+    );
+    setEditState(false);
   };
 
   const { title, isMajor, units, _id, description, lab, lec, code } = subject,
@@ -42,7 +52,7 @@ export default function Card({ subject, handleDelete }) {
               {isMajor ? "MAJOR" : "MINOR"}
             </MDBBadge>
             <MDBBadge color={color} className="mb-0 z-depth-0">
-              {units} UNITS
+              CODE {code}
             </MDBBadge>
           </div>
 
@@ -54,7 +64,7 @@ export default function Card({ subject, handleDelete }) {
             }}
           />
         </div>
-        {`${title} ${code}`}
+        {title}
       </MDBCollapseHeader>
       <MDBCollapse id={_id} isOpen={isOpen}>
         <MDBCardBody>
@@ -68,6 +78,10 @@ export default function Card({ subject, handleDelete }) {
             />
           ) : (
             <>
+              <MDBBadge color={color} className="mb-2 z-depth-0">
+                <span style={{ fontSize: "13px" }}> {units} UNITS</span>
+              </MDBBadge>
+              <br />
               {description}
               <MDBBtnGroup className="w-100">
                 <MDBBtn

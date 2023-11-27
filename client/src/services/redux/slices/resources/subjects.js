@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { axioKit, bulkPayload } from "../../utilities";
+import { axioKit, bulkPayload } from "../../../utilities";
 
-const name = "socials/violations";
+const name = "resources/subjects";
 
 const initialState = {
   collections: [],
@@ -11,18 +11,23 @@ const initialState = {
   message: "",
 };
 
-export const BROWSE = createAsyncThunk(`${name}/browse`, (token, thunkAPI) => {
-  try {
-    return axioKit.universal(`${name}/browse`, token);
-  } catch (error) {
-    const message =
-      (error.response && error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
+export const BROWSE = createAsyncThunk(
+  `${name}/browse`,
+  ({ token, key }, thunkAPI) => {
+    try {
+      return axioKit.universal(`${name}/browse`, token, key);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
 
-    return thunkAPI.rejectWithValue(message);
+      return thunkAPI.rejectWithValue(message);
+    }
   }
-});
+);
 
 export const SAVE = createAsyncThunk(
   `${name}/save`,
@@ -86,9 +91,6 @@ export const reduxSlice = createSlice({
       state.isSuccess = false;
       state.message = "";
     },
-    TOGGLEMODAL: (state) => {
-      state.showModal = !state.showModal;
-    },
   },
   extraReducers: (builder) =>
     builder
@@ -98,7 +100,6 @@ export const reduxSlice = createSlice({
         state.message = "";
       })
       .addCase(SAVE.fulfilled, (state, action) => {
-        console.log("here");
         const { success, payload } = action.payload;
         state.message = success;
         state.collections.unshift(payload);
@@ -175,6 +176,6 @@ export const reduxSlice = createSlice({
       }),
 });
 
-export const { RESET, TOGGLEMODAL } = reduxSlice.actions;
+export const { RESET } = reduxSlice.actions;
 
 export default reduxSlice.reducer;

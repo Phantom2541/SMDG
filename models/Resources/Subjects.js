@@ -7,6 +7,10 @@ const modelSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    abbreviation: {
+      type: String,
+      trim: true,
+    },
     units: {
       type: Number,
       min: 1,
@@ -14,7 +18,9 @@ const modelSchema = new mongoose.Schema(
       required: true,
     },
     code: {
-      type: Number,
+      type: String,
+      required: true,
+      unique: true,
     },
     gradeLvl: {
       type: Number,

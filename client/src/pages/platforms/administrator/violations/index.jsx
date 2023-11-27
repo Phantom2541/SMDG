@@ -1,36 +1,33 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import {
-  BROWSE,
-  DESTROY,
-  RESET,
-  TOGGLEMODAL,
-} from "../../../../services/redux/slices/violations";
-import DataTable from "../../../../components/dataTable";
-import { fullName, globalSearch } from "../../../../services/utilities";
+  MDBBtn,
+  MDBBtnGroup,
+  MDBCard,
+  MDBCardBody,
+  MDBIcon,
+  MDBTable,
+  MDBView,
+} from "mdbreact";
 import Modal from "./modal";
+import { useDispatch, useSelector } from "react-redux";
 import { useToasts } from "react-toast-notifications";
+import { BROWSE, DESTROY } from "../../../../services/redux/slices/violations";
+import { fullName } from "../../../../services/utilities";
+import Swal from "sweetalert2";
 
 export default function Violations() {
-  const [violations, setViolations] = useState([]),
+  const [show, setShow] = useState(false),
+    [violations, setViolations] = useState([]),
+    [willCreate, setWillCreate] = useState(false),
+    [orderIndex, setOrderIndex] = useState(0),
     [selected, setSelected] = useState({}),
-    [willCreate, setWillCreate] = useState(true),
+    [didSearch, setDidSearch] = useState(false),
     { token } = useSelector(({ auth }) => auth),
-    { collections, isLoading, isSuccess, message } = useSelector(
+    { collections, isSuccess, message } = useSelector(
       ({ violations }) => violations
     ),
-    { addToast } = useToasts(),
-    dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(BROWSE(token));
-
-    return () => dispatch(RESET());
-  }, [dispatch, token]);
-
-  useEffect(() => {
-    setViolations(collections);
-  }, [collections]);
+    dispatch = useDispatch(),
+    { addToast } = useToasts();
 
   useEffect(() => {
     if (message) {
@@ -40,85 +37,197 @@ export default function Violations() {
     }
   }, [isSuccess, message, addToast]);
 
-  const handleSearch = async (willSearch, key) => {
-    if (willSearch) return setViolations(globalSearch(collections, key));
+  useEffect(() => {
+    if (token) {
+      dispatch(BROWSE({ token }));
+    }
+  }, [dispatch, token]);
 
-    setViolations(collections);
+  useEffect(() => {
+    setViolations(() => {
+      if (!orderIndex) return collections;
+
+      return [...collections].sort((a, b) => {
+        if (orderIndex === 1) return a.title.localeCompare(b.title);
+
+        return b.title.localeCompare(a.title);
+      });
+    });
+  }, [orderIndex, collections]);
+
+  const handleDelete = (_id) => {
+    Swal.fire({
+      focusDeny: true,
+      icon: "question",
+      title: "Are you sure?",
+      text: "This action is irreversible.",
+      confirmButtonText: `<span class="text-dark">Cancel</span>`,
+      confirmButtonColor: "#fff",
+
+      showDenyButton: true,
+      denyButtonText: `Proceed`,
+      denyButtonColor: "#3B71CA",
+    }).then((res) => {
+      if (res.isDenied) {
+        dispatch(
+          DESTROY({
+            data: { _id },
+          })
+        );
+      } else {
+        Swal.fire({
+          title: "Changes are not Saved!",
+          icon: "warning",
+          showConfirmButton: false,
+          timer: 2500,
+          timerProgressBar: true,
+        });
+      }
+    });
   };
 
-  const handleCreate = () => {
-    if (!willCreate) setWillCreate(true);
+  const handleSearch = (e) => {
+    e.preventDefault();
 
-    dispatch(TOGGLEMODAL());
-  };
+    const key = e.target.searchKey.value.toUpperCase();
 
-  const handleUpdate = (selected) => {
-    if (willCreate) setWillCreate(false);
-
-    setSelected(selected);
-    dispatch(TOGGLEMODAL());
-  };
-
-  const handleDelete = (selected) => {
-    dispatch(
-      DESTROY({
-        token,
-        data: selected,
-      })
+    setViolations(
+      collections.filter(({ title }) => title.toUpperCase().includes(key))
     );
+
+    setDidSearch(true);
   };
 
   return (
     <>
-      <DataTable
-        title="Criteria of Violations"
-        isLoading={isLoading}
-        array={violations}
-        actions={[
-          {
-            _icon: "plus",
-            _title: "Add Criteria",
-            _function: handleCreate,
-          },
-          {
-            _icon: "pen",
-            _title: "Update Criteria",
-            _function: handleUpdate,
-            _shouldReset: true,
-            _haveSelect: true,
-            _allowMultiple: false,
-          },
-          {
-            _icon: "trash",
-            _title: "Delete Criteria",
-            _function: handleDelete,
-            _shouldReset: true,
-            _haveSelect: true,
-            _allowMultiple: true,
-          },
-        ]}
-        tableHeads={[
-          {
-            _text: "Title",
-          },
-          {
-            _text: "Created By",
-          },
-        ]}
-        tableBodies={[
-          {
-            _key: "title",
-          },
-          {
-            _key: "createdBy",
-            _format: (data) => fullName(data.fullName),
-          },
-        ]}
-        handleSearch={handleSearch}
-      />
+      <MDBCard narrow className="pb-3">
+        <MDBView
+          cascade
+          className="gradient-card-header blue-gradient py-2 mx-4 d-flex justify-content-between align-items-center"
+        >
+          <span className="ml-3">Violation List</span>
+
+          <form
+            id="requirements-inline-search"
+            onSubmit={handleSearch}
+            className="form-inline ml-2"
+          >
+            <div className="form-group md-form py-0 mt-0">
+              <input
+                className="form-control w-80 placeholder-white text-white"
+                type="text"
+                placeholder="Title Search..."
+                name="searchKey"
+                required
+              />
+              <MDBBtn
+                onClick={() => {
+                  if (!didSearch) return;
+
+                  setDidSearch(false);
+                  document.getElementById("requirements-inline-search").reset();
+                  setViolations(collections);
+                }}
+                type="submit"
+                size="sm"
+                color="info"
+                className="d-inline ml-2 px-2"
+              >
+                <MDBIcon icon={didSearch ? "times" : "search"} />
+              </MDBBtn>
+              <MDBBtn
+                type="button"
+                size="sm"
+                color="primary"
+                className="d-inline  px-2"
+                onClick={() => setShow(true)}
+                title="Create a Subject"
+              >
+                <MDBIcon icon="plus" />
+              </MDBBtn>
+            </div>
+          </form>
+        </MDBView>
+        <MDBCardBody>
+          <MDBTable responsive hover>
+            <thead>
+              <tr>
+                <th
+                  className="th-lg cursor-pointer"
+                  onClick={() =>
+                    setOrderIndex((prev) => {
+                      if (prev > 1) return 0;
+
+                      return prev + 1;
+                    })
+                  }
+                >
+                  Title&nbsp;
+                  <MDBIcon
+                    icon="sort"
+                    title="Sort by Name"
+                    className="text-primary"
+                  />
+                </th>
+                <th className="th-lg ">Description</th>
+                <th>Createdby</th>
+              </tr>
+            </thead>
+            <tbody>
+              {violations?.map((violation) => {
+                const { _id, title, description, createdBy } = violation;
+                return (
+                  <tr key={_id}>
+                    <td>{title}</td>
+                    <td>{description}</td>
+                    <td>{fullName(createdBy.fullName)}</td>
+
+                    <td className="py-2 text-center">
+                      <MDBBtnGroup>
+                        <MDBBtn
+                          className="m-0"
+                          size="sm"
+                          color="info"
+                          rounded
+                          title="Update"
+                          onClick={() => {
+                            setWillCreate(false);
+                            setSelected(violation);
+                            setShow(true);
+                          }}
+                        >
+                          <MDBIcon icon="pen" />
+                        </MDBBtn>
+                        <MDBBtn
+                          className="m-0"
+                          size="sm"
+                          rounded
+                          color="danger"
+                          title="Delete"
+                          onClick={() => handleDelete(_id)}
+                        >
+                          <MDBIcon icon="trash-alt" />
+                        </MDBBtn>
+                      </MDBBtnGroup>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </MDBTable>
+        </MDBCardBody>
+      </MDBCard>
       <Modal
+        show={show}
+        toggle={() => {
+          if (!willCreate) {
+            setWillCreate(true);
+            setSelected({});
+          }
+          setShow(false);
+        }}
+        selected={selected}
         willCreate={willCreate}
-        selected={{ title: selected.title, _id: selected._id }}
       />
     </>
   );
