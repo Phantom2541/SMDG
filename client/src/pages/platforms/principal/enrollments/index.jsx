@@ -188,7 +188,7 @@ const students = [
   },
 ];
 
-export default function EnrollmentList() {
+export default function Enrollments() {
   const [show, setShow] = useState(false);
 
   return (

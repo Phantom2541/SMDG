@@ -5,7 +5,7 @@ import OrgCharts from "./orgCharts/orgchart";
 import Requirements from "./requirements";
 import Rooms from "./rooms";
 import Sections from "./sections";
-import Subjects from "./sections";
+import Subjects from "./subjects";
 import Violations from "./violations";
 
 const access = [
@@ -21,42 +21,14 @@ const access = [
     path: "/announcements",
     component: Announcements,
   },
-  {
-    name: "Enrollment List",
-    icon: "tachometer-alt",
-    path: "/enrollmentLists",
-    component: Enrollments,
-  },
+
   {
     name: "Org Chart",
     icon: "tachometer-alt",
     path: "/orgCharts",
     component: OrgCharts,
   },
-  {
-    name: "Requirements",
-    icon: "tachometer-alt",
-    path: "/requirements",
-    component: Requirements,
-  },
-  {
-    name: "Rooms",
-    icon: "tachometer-alt",
-    path: "/rooms",
-    component: Rooms,
-  },
-  {
-    name: "Section List",
-    icon: "tachometer-alt",
-    path: "/sections",
-    component: Sections,
-  },
-  {
-    name: "Subject List",
-    icon: "tachometer-alt",
-    path: "/subjects",
-    component: Subjects,
-  },
+
   {
     name: "Lists",
     icon: "list",
@@ -64,9 +36,33 @@ const access = [
     children: [
       {
         name: "Violations",
-        icon: "tachometer-alt",
         path: "/violations",
         component: Violations,
+      },
+      {
+        name: "Subject  ",
+        path: "/subjects",
+        component: Subjects,
+      },
+      {
+        name: "Section",
+        path: "/sections",
+        component: Sections,
+      },
+      {
+        name: "Rooms",
+        path: "/rooms",
+        component: Rooms,
+      },
+      {
+        name: "Requirements",
+        path: "/requirements",
+        component: Requirements,
+      },
+      {
+        name: "Enrollment",
+        path: "/enrollmentLists",
+        component: Enrollments,
       },
     ],
   },

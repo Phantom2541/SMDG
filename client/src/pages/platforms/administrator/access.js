@@ -3,7 +3,7 @@ import Announcements from "../principal/announcements";
 import Violations from "../principal/violations";
 import Tree from "../principal/orgCharts";
 import Subjects from "../principal/subjects";
-import EnrollmentList from "../principal/enrollments";
+import Enrollments from "../principal/enrollments";
 import Requirements from "../principal/requirements";
 import Rooms from "../principal/rooms";
 import Sections from "../principal/sections";
@@ -58,7 +58,7 @@ const access = [
     name: "Enrollment List",
     icon: "list",
     path: "/enrollmentList",
-    component: EnrollmentList,
+    component: Enrollments,
   },
   {
     name: "Requirements",
