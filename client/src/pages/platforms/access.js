@@ -1,11 +1,27 @@
 import ADMINISTRATOR from "./administrator/access";
-import MEMBER from "./member/access";
-import MODERATOR from "./moderator/access";
+import PRINCIPAL from "./principal/access";
+import VICE from "./vice/access";
+import HEAD from "./head/access";
+import MASTER from "./master/access";
+import TEACHER from "./teacher/access";
+import REGISTRAR from "./registrar/access";
+import CASHIER from "./cashier/access";
+import GUIDANCE from "./guidance/access";
+import OTHERS from "./others/access";
+import GUEST from "./guest/access";
 
 const ACCESS = {
   ADMINISTRATOR,
-  MEMBER,
-  MODERATOR,
+  PRINCIPAL,
+  "VICE PRINCIPAL": VICE,
+  MASTER,
+  TEACHER,
+  REGISTRAR,
+  CASHIER,
+  GUIDANCE,
+  OTHERS,
+  HEAD,
+  GUEST,
 };
 
 export default ACCESS;

@@ -1,6 +1,28 @@
 const Entity = require("../models/Users"),
+  Enrollments = require("../models/Admissions/Enrollments"),
+  Employments = require("../models/Admissions/Employments"),
   generateToken = require("../config/generateToken"),
   fs = require("fs");
+
+const fetchAccess = async (user) => {
+  let access = "GUEST",
+    credentials = undefined;
+
+  const [employment, enrollment] = await Promise.all([
+    Employments.findOne({ user }).select("-updatedAt -__v"),
+    Enrollments.findOne({ user }).select("-updatedAt -__v"),
+  ]);
+
+  if (employment) {
+    if (employment.status === "approved") access = employment.access;
+    credentials = employment;
+  } else if (enrollment) {
+    if (enrollment.status === "approved") access = "STUDENT";
+    credentials = enrollment;
+  }
+
+  return { access, credentials };
+};
 
 exports.login = (req, res) => {
   const { email, password } = req.query;
@@ -30,6 +52,7 @@ exports.login = (req, res) => {
         success: "Login Success",
         payload: {
           user: {
+            ...(await fetchAccess(item._id)),
             ...item._doc,
             password: undefined,
           },
@@ -40,11 +63,17 @@ exports.login = (req, res) => {
     .catch((error) => res.status(400).json({ error: error.message }));
 };
 
-exports.provideAuth = async (_, res) =>
+exports.provideAuth = async (_, res) => {
+  const { caller } = res.locals;
+
   res.json({
     success: "Validatation Success",
-    payload: res.locals.caller,
+    payload: {
+      ...(await fetchAccess(caller._id)),
+      ...caller,
+    },
   });
+};
 
 exports.upload = (req, res) => {
   const { path, base64, name } = req.body;

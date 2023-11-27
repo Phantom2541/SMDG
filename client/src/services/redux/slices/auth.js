@@ -11,7 +11,7 @@ const name = "auth",
 
 const initialState = {
   auth: {},
-  role: "ADMINISTRATOR",
+  role: "",
   token,
   email,
   image,
@@ -109,6 +109,9 @@ export const reduxSlice = createSlice({
       state.isSuccess = false;
       state.message = "";
     },
+    INJECTROLE: (state, data) => {
+      state.role = data.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -123,7 +126,7 @@ export const reduxSlice = createSlice({
         state.token = token;
         state.email = user.email;
         state.auth = user;
-        // state.role = user.role.access.toUpperCase();
+        state.role = user.access;
 
         state.message = success;
         state.didLogin = true;
@@ -162,7 +165,7 @@ export const reduxSlice = createSlice({
         const { payload } = action.payload;
         state.auth = payload;
         state.email = payload.email;
-        // state.role = payload.role.access.toUpperCase();
+        state.role = payload.access;
         state.isLoading = false;
       })
       .addCase(VALIDATEREFRESH.rejected, (state, action) => {
@@ -187,7 +190,7 @@ export const reduxSlice = createSlice({
   },
 });
 
-export const { RESET, MAXPAGE, PROGRESS, UPLOADBAR, IMAGE } =
+export const { RESET, MAXPAGE, PROGRESS, UPLOADBAR, IMAGE, INJECTROLE } =
   reduxSlice.actions;
 
 export default reduxSlice.reducer;

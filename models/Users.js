@@ -88,9 +88,110 @@ const userSchema = new mongoose.Schema(
         },
       },
     },
+    civilStatus: {
+      type: String,
+      enum: {
+        values: ["single", "married", "live-in", "widowed"],
+        message: "Please choose a valid type from the predefined options.",
+      },
+      default: "single",
+    },
+    guardians: {
+      father: {
+        fname: {
+          type: String,
+          trim: true,
+        },
+        lname: {
+          type: String,
+          trim: true,
+        },
+        mname: {
+          type: String,
+          trim: true,
+        },
+        suffix: {
+          type: String,
+          trim: true,
+        },
+        mobile: {
+          type: String,
+          trim: true,
+        },
+      },
+      mother: {
+        fname: {
+          type: String,
+          trim: true,
+        },
+        lname: {
+          type: String,
+          trim: true,
+        },
+        mname: {
+          type: String,
+          trim: true,
+        },
+        suffix: {
+          type: String,
+          trim: true,
+        },
+        mobile: {
+          type: String,
+          trim: true,
+        },
+      },
+      legal: {
+        fname: {
+          type: String,
+          trim: true,
+        },
+        lname: {
+          type: String,
+          trim: true,
+        },
+        mname: {
+          type: String,
+          trim: true,
+        },
+        suffix: {
+          type: String,
+          trim: true,
+        },
+        mobile: {
+          type: String,
+          trim: true,
+        },
+      },
+    },
+    childId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Users",
+    },
+    lrn: {
+      type: String,
+    },
+    psa: {
+      type: String,
+    },
+    motherTongue: {
+      type: String,
+    },
+    indigenousPeople: {
+      type: String,
+    },
+    "4ps": {
+      type: String,
+    },
+    disability: {
+      type: String,
+    },
     dob: {
       type: String,
       required: true,
+    },
+    pob: {
+      type: String,
     },
     mobile: {
       type: String,
@@ -111,7 +212,6 @@ const userSchema = new mongoose.Schema(
       },
       at: {
         type: String,
-        trim: true,
       },
       for: {
         type: mongoose.Schema.Types.ObjectId,

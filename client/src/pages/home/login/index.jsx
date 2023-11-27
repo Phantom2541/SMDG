@@ -108,7 +108,7 @@ export default function Login({ show, toggle = null }) {
                 disabled={isLoading}
                 onClick={() => {
                   localStorage.clear();
-                  window.location.reload();
+                  window.location.href = "/";
                 }}
                 size="sm"
                 rounded

@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
 
+// file
+// assets/enrollments/email/:batch/
+
 const modelSchema = new mongoose.Schema(
   {
     user: {
@@ -7,11 +10,33 @@ const modelSchema = new mongoose.Schema(
       ref: "Users",
       required: true,
     },
+    type: {
+      type: String,
+      enum: {
+        values: ["new", "transferee", "repeater", "shifter", "old"],
+        message: "Please choose a valid type from the predefined options.",
+      },
+      default: "new",
+    },
     gradeLvl: {
       type: Number,
       min: 1,
-      max: 16,
+      max: 17,
       required: true,
+    },
+    batch: {
+      start: {
+        type: Number,
+        required: true,
+      },
+      end: {
+        type: Number,
+        required: true,
+      },
+    },
+    isPublished: {
+      type: Boolean,
+      default: false,
     },
     status: {
       type: String,
