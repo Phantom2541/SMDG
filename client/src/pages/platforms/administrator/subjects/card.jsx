@@ -36,23 +36,23 @@ export default function Card({ subject, handleDelete }) {
     setEditState(false);
   };
 
-  const { title, isMajor, units, _id, description, lab, lec, code } = subject,
-    color = isMajor ? "indigo" : "blue-grey",
-    badgeTitle = isMajor ? `Laboratory: ${lab} UNITS, Lecture: ${lec}` : units;
+  const { title, isMajor, units, _id, description, code } = subject,
+    color = isMajor ? "indigo" : "blue-grey";
 
   return (
     <MDBCard className="mb-3 shadow-box-example hoverable">
       <MDBCollapseHeader onClick={toggle}>
         <div className="d-flex justify-content-between align-items-center">
-          {/* <MDBBadge color="indigo" className="mb-0 z-depth-0">
-            MAJOR
-          </MDBBadge> */}
-          <div title={`${badgeTitle} UNITS`}>
-            <MDBBadge color={color} className="mb-0 z-depth-0 mr-1">
+          <div>
+            <MDBBadge
+              title="Specification"
+              color={color}
+              className="mb-0 z-depth-0 mr-1"
+            >
               {isMajor ? "MAJOR" : "MINOR"}
             </MDBBadge>
-            <MDBBadge color={color} className="mb-0 z-depth-0">
-              CODE {code}
+            <MDBBadge title="Code" color={color} className="mb-0 z-depth-0">
+              {code}
             </MDBBadge>
           </div>
 

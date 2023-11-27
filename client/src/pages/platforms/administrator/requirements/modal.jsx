@@ -32,7 +32,7 @@ export default function Modal({ show, toggle, selected = null, willCreate }) {
     dispatch = useDispatch();
 
   useEffect(() => {
-    if (!willCreate && selected) {
+    if (!willCreate && selected._id) {
       setForm(selected);
     }
   }, [willCreate, selected]);

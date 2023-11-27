@@ -6,6 +6,7 @@ import announcements from "./slices/announcements";
 import requirements from "./slices/admissions/requirements";
 import rooms from "./slices/resources/rooms";
 import subjects from "./slices/resources/subjects";
+import sections from "./slices/resources/sections";
 
 const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
     requirements,
     rooms,
     subjects,
+    sections,
   },
 });
 

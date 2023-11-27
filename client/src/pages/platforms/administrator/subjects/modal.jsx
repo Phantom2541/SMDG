@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   MDBBtn,
   MDBModal,
@@ -14,6 +14,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { SAVE } from "../../../../services/redux/slices/resources/subjects";
 import { abbreviate } from "../../../../services/utilities";
 
+import CustomSelect from "../../../../components/customSelect";
+import { Departments } from "../../../../services/fakeDb";
+import { formatGradeLvl } from "../../../../services/utilities";
+
+const { collections, getGradeLevels } = Departments;
+
 export const SubjectForm = ({
   handleFinalSubmit,
   form,
@@ -21,8 +27,27 @@ export const SubjectForm = ({
   submitSize = "",
   handleCancel = null,
 }) => {
-  const { title, units, description, isMajor, lec, lab, code, abbreviation } =
-    form;
+  const {
+    title,
+    units,
+    description,
+    department,
+    gradeLvl,
+    isMajor,
+    lec,
+    lab,
+    code,
+    abbreviation,
+  } = form;
+
+  const [showGrade, setShowGrade] = useState(true);
+
+  // used for rerendering MDBSelect
+  useEffect(() => {
+    if (!showGrade) {
+      setTimeout(() => setShowGrade(true), 1);
+    }
+  }, [showGrade]);
 
   const handleChange = (key, value) => setForm({ ...form, [key]: value });
 
@@ -85,6 +110,42 @@ export const SubjectForm = ({
         value={code}
         onChange={(e) => handleChange("code", e.target.value.toUpperCase())}
       />
+
+      <div className="row">
+        <div className="col-6">
+          <CustomSelect
+            choices={collections}
+            label="Department"
+            preValue={department}
+            values="key"
+            texts="name"
+            onChange={(e) => {
+              setForm({
+                ...form,
+                department: e,
+                gradeLvl: getGradeLevels(e)[0],
+              });
+              setShowGrade(false);
+            }}
+          />
+        </div>
+        <div className="col-6">
+          {showGrade && (
+            <CustomSelect
+              choices={getGradeLevels(department).map((id) => ({
+                id,
+                str: formatGradeLvl(department, id),
+              }))}
+              label="Grade Level"
+              preValue={gradeLvl}
+              values="id"
+              texts="str"
+              onChange={(e) => handleChange("gradeLvl", e)}
+            />
+          )}
+        </div>
+      </div>
+
       <MDBInput
         required
         type="textarea"
@@ -193,6 +254,7 @@ const _form = {
   units: 1,
   description: "",
   gradeLvl: 1,
+  department: "grade",
   isMajor: false,
   lab: 1,
   lec: 1,

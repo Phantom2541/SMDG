@@ -64,7 +64,6 @@ export default function Address({ setActiveStep, handleForm }) {
                 className="form-check-input"
                 type="checkbox"
                 checked={isSame}
-                value={isSame}
                 onChange={() => handleChange("isSame", true)}
                 id="yes"
               />
@@ -79,7 +78,6 @@ export default function Address({ setActiveStep, handleForm }) {
                 className="form-check-input"
                 type="checkbox"
                 checked={!isSame}
-                value={isSame}
                 onChange={() => handleChange("isSame", false)}
                 id="no"
               />

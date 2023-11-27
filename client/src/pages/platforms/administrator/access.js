@@ -8,6 +8,7 @@ import EnrollmentList from "./enrollmentList";
 import Requirements from "./requirements";
 import Rooms from "./rooms";
 import EmploymentForm from "./employment";
+import Sections from "./section";
 
 const access = [
   {
@@ -84,6 +85,12 @@ const access = [
     icon: "list",
     path: "/rooms",
     component: Rooms,
+  },
+  {
+    name: "Sections",
+    icon: "list",
+    path: "/section",
+    component: Sections,
   },
 ];
 

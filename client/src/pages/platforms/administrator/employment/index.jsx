@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   MDBBtn,
   MDBCard,
@@ -22,6 +22,7 @@ import generateSY from "../../../../services/utilities/generateSY";
 import { School } from "../../../../services/fakeDb";
 import AddressSelect from "../../../../components/addressSelect";
 import CustomSelect from "../../../../components/customSelect";
+import UploadPDF from "./uploadPDF";
 
 const address = {
   region: "REGION III (CENTRAL LUZON)",
@@ -39,7 +40,16 @@ const status = [
   { text: "Divorced", value: "divorced" },
 ];
 
+const _form = {
+  isSame: true,
+};
+
 export default function EmploymentForm() {
+  const [form, setForm] = useState(_form);
+
+  const handleChange = (key, value) => setForm({ ...form, [key]: value });
+
+  const { isSame } = form;
   const { logo, id, name, address: sAddress } = School;
   return (
     <MDBContainer fluid>
@@ -182,12 +192,59 @@ export default function EmploymentForm() {
                 <MDBInput label="Place of Birth (Municipality/City)" />
               </div>
             </div>
-            <div className="mt-2 border px-5">
+            <div className="mt-2 border px-5 pt-3">
               <AddressSelect
+                label="Permanent Address"
                 address={address}
                 // handleChange={(_, value) => handleChange("current", value)}
                 // uniqueId="current"
               />
+              <div className="d-flex mt-3">
+                <div className="">
+                  <label>
+                    Is your permanent address is same with your current address?
+                  </label>
+                </div>
+                <div className="">
+                  <div className="form-check">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      checked={isSame}
+                      onChange={() => handleChange("isSame", true)}
+                      id="yes"
+                    />
+                    <label className="form-check-label" htmlFor="yes">
+                      Yes
+                    </label>
+                  </div>
+                </div>
+                <div className="">
+                  <div className="form-check">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      checked={!isSame}
+                      onChange={() => handleChange("isSame", false)}
+                      id="no"
+                    />
+                    <label className="form-check-label" htmlFor="no">
+                      No
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              {!isSame && (
+                <div className="mt-3">
+                  <AddressSelect
+                    label="Current Address"
+                    address={address}
+                    // handleChange={(_, value) => handleChange("current", value)}
+                    // uniqueId="current"
+                  />
+                </div>
+              )}
             </div>
             <hr color="primray" />
             <h6>In case of Emergency, Notify:</h6>
@@ -215,6 +272,11 @@ export default function EmploymentForm() {
                 </MDBCol>
               </MDBRow>
             </div>
+            <hr color="primray" />
+            <MDBContainer>
+              <p>Upload Requirements (Required*)</p>
+              <UploadPDF />
+            </MDBContainer>
 
             <MDBBtn style={{ float: "right" }} color="primary" type="submit">
               Submit

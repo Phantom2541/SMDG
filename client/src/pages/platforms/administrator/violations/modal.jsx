@@ -25,7 +25,7 @@ export default function Modal({ show, toggle, willCreate, selected }) {
     { addToast } = useToasts();
 
   useEffect(() => {
-    if (!willCreate) {
+    if (!willCreate && selected._id) {
       setForm(selected);
     }
   }, [willCreate, selected]);
