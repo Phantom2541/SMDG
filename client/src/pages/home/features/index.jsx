@@ -1,13 +1,37 @@
 import React, { useState } from "react";
 import { MDBIcon, MDBMask } from "mdbreact";
 import { School } from "../../../services/fakeDb";
+import "./index.css";
+
+const CardVer2 = ({ feature }) => {
+  return (
+    <div className="feature-cardv2">
+      <div className="feature-wrapper">
+        <div className="feature-box"></div>
+        <MDBIcon className="feature-icon" icon="user" />
+      </div>
+      <div className="feature-title">User's Content</div>
+      <div className="feature-content">
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ea a,
+        voluptas, eveniet aliquid libero labore accusamus, maiores commodi
+        dolores eligendi sunt? Rem dicta nemo reprehenderit expedita recusandae
+        rerum consequuntur aliquid?
+      </div>
+    </div>
+  );
+};
 const Card = ({ feature }) => {
-  const [didHover, setDidhover] = useState(false);
+  const [didHover, setDidhover] = useState(false),
+    [isHovered, setIsHovered] = useState(false);
 
   const { icon, title, description } = feature;
 
   return (
-    <div style={{ height: "250px", width: "250px" }}>
+    <div
+      className={`landpage-card ${isHovered ? "landpage-card-hovered" : ""}`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <div
         onMouseOver={() => setDidhover(true)}
         onMouseOut={() => setDidhover(false)}
@@ -54,9 +78,9 @@ export default function Features() {
       left: 0,
       height: "800px",
       clipPath: "polygon(65% 0, 100% 15%, 100% 100%, 0 100%, 0 10%)",
-      //   backgroundColor: "#0081C9",
+      // backgroundColor: "#0081C9",
       background:
-        "radial-gradient(circle at center, rgba(255, 255, 255, 0.8) 5%, #0081C9)",
+        "radial-gradient(circle at center, rgba(255, 255, 255, 0.9) 15%, #0081C9 50%)",
     },
     palong: {
       minWidth: "650px",
@@ -77,10 +101,10 @@ export default function Features() {
       position: "absolute",
       minWidth: "650px",
       width: "100%",
-      top: "90vh",
+      top: "80vh",
       left: 0,
       height: "800px",
-      filter: "blur(3px)",
+      filter: "blur(3.5px)",
     },
   };
 
@@ -92,15 +116,16 @@ export default function Features() {
         <br />
         <br />
         <br />
+        <CardVer2 />
         <br />
-        <Card
+        {/* <Card
           feature={{
             title: "Hello World",
             icon: "user",
             description:
               "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur hic odio beatae iure perferendis id quibusdam, accusantium, facere, cumque voluptatibus laborum velit animi pariatur eos illum esse voluptatum sunt delectus!",
           }}
-        />
+        /> */}
       </div>
     </section>
   );

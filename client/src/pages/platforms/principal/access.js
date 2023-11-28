@@ -1,5 +1,6 @@
 import Announcements from "./announcements";
 import Dashboard from "./dashboard";
+import EmploymentLists from "./employmentlists";
 import Enrollments from "./enrollments";
 import OrgCharts from "./orgCharts/orgchart";
 import Requirements from "./requirements";
@@ -67,6 +68,7 @@ const access = [
       {
         name: "Employments",
         path: "/employments",
+        component: EmploymentLists,
       },
       {
         name: "Rooms",
