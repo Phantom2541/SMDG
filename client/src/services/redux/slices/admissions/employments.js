@@ -47,23 +47,23 @@ export const SAVE = createAsyncThunk(
   }
 );
 
-// export const UPDATE = createAsyncThunk(
-//   `${name}/update`,
-//   ({ token, data }, thunkAPI) => {
-//     try {
-//       return axioKit.update(name, data, token);
-//     } catch (error) {
-//       const message =
-//         (error.response &&
-//           error.response.data &&
-//           error.response.data.message) ||
-//         error.message ||
-//         error.toString();
+export const UPDATE = createAsyncThunk(
+  `${name}/update`,
+  ({ token, data }, thunkAPI) => {
+    try {
+      return axioKit.update(name, data, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
 
-//       return thunkAPI.rejectWithValue(message);
-//     }
-//   }
-// );
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
 // export const DESTROY = createAsyncThunk(
 //   `${name}/destroy`,
@@ -110,30 +110,25 @@ export const reduxSlice = createSlice({
         const { error } = action;
         state.message = error.message;
         state.isLoading = false;
+      })
+
+      .addCase(UPDATE.pending, (state) => {
+        state.isLoading = true;
+        state.isSuccess = false;
+        state.message = "";
+      })
+      .addCase(UPDATE.fulfilled, (state, action) => {
+        const { success, payload } = action.payload;
+        state.response = payload;
+        state.message = success;
+        state.isSuccess = true;
+        state.isLoading = false;
+      })
+      .addCase(UPDATE.rejected, (state, action) => {
+        const { error } = action;
+        state.message = error.message;
+        state.isLoading = false;
       }),
-
-  //   .addCase(UPDATE.pending, (state) => {
-  //     state.isLoading = true;
-  //     state.isSuccess = false;
-  //     state.message = "";
-  //   })
-  //   .addCase(UPDATE.fulfilled, (state, action) => {
-  //     const { success, payload } = action.payload;
-
-  //     const index = state.collections.findIndex((c) => c._id === payload._id);
-  //     state.collections[index] = payload;
-
-  //     state.showModal = false;
-  //     state.message = success;
-  //     state.isSuccess = true;
-  //     state.isLoading = false;
-  //   })
-  //   .addCase(UPDATE.rejected, (state, action) => {
-  //     const { error } = action;
-  //     state.showModal = false;
-  //     state.message = error.message;
-  //     state.isLoading = false;
-  //   })
 
   //   .addCase(DESTROY.pending, (state) => {
   //     state.isLoading = true;

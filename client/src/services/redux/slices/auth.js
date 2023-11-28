@@ -2,6 +2,9 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { ENDPOINT, axioKit } from "../../utilities";
 
 const name = "auth",
+  auth = JSON.parse(localStorage.getItem("auth")) || {},
+  credentials = JSON.parse(localStorage.getItem("credentials")) || {},
+  role = localStorage.getItem("access"),
   maxPage = Number(localStorage.getItem("maxPage")) || 5,
   token = localStorage.getItem("token") || "",
   email = localStorage.getItem("email") || "",
@@ -10,8 +13,9 @@ const name = "auth",
   }/profile.jpg`;
 
 const initialState = {
-  auth: {},
-  role: "",
+  auth,
+  credentials,
+  role,
   token,
   email,
   image,
@@ -35,24 +39,6 @@ export const LOGIN = createAsyncThunk(`${name}/login`, (form, thunkAPI) => {
     return thunkAPI.rejectWithValue(message);
   }
 });
-
-export const VALIDATEREFRESH = createAsyncThunk(
-  `${name}/validateRefresh`,
-  (token, thunkAPI) => {
-    try {
-      return axioKit.validateRefresh(token);
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
 
 export const UPDATE = createAsyncThunk(
   `${name}/update`,
@@ -113,7 +99,9 @@ export const reduxSlice = createSlice({
       state.role = data.payload;
     },
     INJECTCREDENTIALS: (state, data) => {
-      console.log(data.payload);
+      const { employment, user } = data.payload;
+      state.auth = user;
+      state.credentials = employment;
     },
   },
   extraReducers: (builder) => {
@@ -125,11 +113,12 @@ export const reduxSlice = createSlice({
       })
       .addCase(LOGIN.fulfilled, (state, action) => {
         const { success, payload } = action.payload,
-          { token, user } = payload;
+          { token, user, access, credentials } = payload;
         state.token = token;
         state.email = user.email;
         state.auth = user;
-        state.role = user.access;
+        state.role = access;
+        state.credentials = credentials;
 
         state.message = success;
         state.didLogin = true;
@@ -154,24 +143,6 @@ export const reduxSlice = createSlice({
         state.isSuccess = true;
       })
       .addCase(UPDATE.rejected, (state, action) => {
-        const { error } = action;
-        state.message = error.message;
-        state.isLoading = false;
-      })
-
-      .addCase(VALIDATEREFRESH.pending, (state) => {
-        state.isLoading = true;
-        state.isSuccess = false;
-        state.message = "";
-      })
-      .addCase(VALIDATEREFRESH.fulfilled, (state, action) => {
-        const { payload } = action.payload;
-        state.auth = payload;
-        state.email = payload.email;
-        state.role = payload.access;
-        state.isLoading = false;
-      })
-      .addCase(VALIDATEREFRESH.rejected, (state, action) => {
         const { error } = action;
         state.message = error.message;
         state.isLoading = false;

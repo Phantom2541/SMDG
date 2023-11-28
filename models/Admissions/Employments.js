@@ -8,11 +8,9 @@ const modelSchema = new mongoose.Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users",
-      required: true,
     },
     position: {
       type: String,
-      required: true,
     },
     access: {
       type: String,
@@ -36,17 +34,14 @@ const modelSchema = new mongoose.Schema(
       primary: {
         name: {
           type: String,
-          required: true,
           trim: true,
         },
         relationship: {
           type: String,
-          required: true,
           trim: true,
         },
         mobile: {
           type: String,
-          required: true,
           trim: true,
         },
       },
