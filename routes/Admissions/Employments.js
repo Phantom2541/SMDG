@@ -2,15 +2,15 @@ const router = require("express").Router(),
   {
     // browse,
     save,
-    // update,
+    update,
     // destroy,
   } = require("../../controllers/Admissions/Employments"),
   { validate } = require("../../middleware/jwt");
 
 router
   // .get("/browse", validate, browse)
-  .post("/save", validate, save);
-// .put("/update", validate, update)
+  .post("/save", validate, save)
+  .put("/update", validate, update);
 // .delete("/destroy", validate, destroy);
 
 module.exports = router;

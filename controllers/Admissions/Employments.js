@@ -1,14 +1,56 @@
-const Entity = require("../../models/Admissions/Employments");
+const Entity = require("../../models/Admissions/Employments"),
+  Users = require("../../models/Users");
 
 exports.save = (req, res) => {
-  console.log(req.body);
-  // Entity.create(req.body)
-  // .then((payload) =>
-  //   res.status(201).json({
-  //     success:
-  //       "The form has been submitted; please await validation by the principal.",
-  //     payload,
-  //   })
-  // )
-  // .catch((error) => res.status(400).json({ error: handleDuplicate(error) }));
+  const { user, employment } = req.body;
+
+  Users.findByIdAndUpdate(employment.user, user, { new: true })
+    .select("-password")
+    .then((_user) => {
+      Entity.create(employment)
+        .then((_employment) => {
+          var success =
+            "The form has been submitted; please await validation by the principal.";
+
+          if (!employment.isPublished) success = "Form saved as Draft.";
+
+          res.status(201).json({
+            success,
+            payload: {
+              user: _user,
+              employment: _employment,
+            },
+          });
+        })
+        .catch((error) => res.status(400).json({ error: error.message }));
+    })
+    .catch((error) => res.status(400).json({ error: error.message }));
+};
+
+exports.update = (req, res) => {
+  const { user, employment } = req.body;
+
+  Users.findByIdAndUpdate(employment.user, user, {
+    new: true,
+  })
+    .select("-password")
+    .then((_user) => {
+      Entity.findByIdAndUpdate(employment._id, employment, { new: true })
+        .then((_employment) => {
+          var success =
+            "The form has been submitted; please await validation by the principal.";
+
+          if (!employment.isPublished) success = "Form saved as Draft.";
+
+          res.json({
+            success,
+            payload: {
+              user: _user,
+              employment: _employment,
+            },
+          });
+        })
+        .catch((error) => res.status(400).json({ error: error.message }));
+    })
+    .catch((error) => res.status(400).json({ error: error.message }));
 };

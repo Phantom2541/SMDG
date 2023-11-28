@@ -15,16 +15,25 @@ export default function SideNavigation({
   onLinkClick,
 }) {
   const [links, setLinks] = useState([]),
-    { role } = useSelector(({ auth }) => auth);
+    { role, credentials } = useSelector(({ auth }) => auth);
 
   useEffect(() => {
     if (role) {
-      setLinks(ACCESS[role] || []);
+      let access = ACCESS[role] || [];
+
+      if (role === "GUEST" && credentials?._id) {
+        let showOnly = "Student";
+        if (credentials.access) showOnly = "Employee";
+
+        access = access.filter((a) => a.name === showOnly);
+      }
+
+      setLinks(access);
     }
-  }, [role]);
+  }, [role, credentials]);
 
   const handleLinks = () => {
-    if (links.length === 0)
+    if (!links.length)
       return (
         <MDBSideNavLink to="/" topLevel onClick={onLinkClick}>
           <MDBIcon icon="home mr-2" />

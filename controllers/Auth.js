@@ -52,27 +52,15 @@ exports.login = (req, res) => {
         success: "Login Success",
         payload: {
           user: {
-            ...(await fetchAccess(item._id)),
             ...item._doc,
             password: undefined,
           },
+          ...(await fetchAccess(item._id)),
           token: generateToken({ _id: item._id }),
         },
       });
     })
     .catch((error) => res.status(400).json({ error: error.message }));
-};
-
-exports.provideAuth = async (_, res) => {
-  const { caller } = res.locals;
-
-  res.json({
-    success: "Validatation Success",
-    payload: {
-      ...(await fetchAccess(caller._id)),
-      ...caller,
-    },
-  });
 };
 
 exports.upload = (req, res) => {
