@@ -12,11 +12,13 @@ import { School } from "../../../../services/fakeDb";
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  RESET,
   SAVE,
   UPDATE,
 } from "../../../../services/redux/slices/admissions/employments";
 import Form from "./form";
 import { INJECTCREDENTIALS } from "../../../../services/redux/slices/auth";
+import { useToasts } from "react-toast-notifications";
 
 const { logo, id, name, address: sAddress } = School;
 
@@ -70,9 +72,12 @@ export default function EmploymentForm() {
       pob: "",
     }),
     { auth, token, credentials } = useSelector(({ auth }) => auth),
-    { response, isSuccess } = useSelector(({ employments }) => employments),
+    { response, isSuccess, message } = useSelector(
+      ({ employments }) => employments
+    ),
     [delayRender, setDelayRender] = useState(false),
-    dispatch = useDispatch();
+    dispatch = useDispatch(),
+    { addToast } = useToasts();
 
   useEffect(() => {
     let isMounted = true;
@@ -98,6 +103,16 @@ export default function EmploymentForm() {
       setDelayRender(true);
     }
   }, [response, isSuccess, dispatch]);
+
+  useEffect(() => {
+    if (message) {
+      addToast(message, {
+        appearance: isSuccess ? "success" : "error",
+      });
+    }
+
+    return () => dispatch(RESET());
+  }, [message, addToast, dispatch, isSuccess]);
 
   useEffect(() => {
     if (credentials?._id) {
@@ -204,16 +219,22 @@ export default function EmploymentForm() {
           </div>
         </MDBCardTitle>
 
-        <MDBCardBody>
-          <MDBTypography
-            className="mb-0"
-            noteColor="info"
-            note
-            noteTitle="DRAFT: "
-          >
-            text
-          </MDBTypography>
-        </MDBCardBody>
+        {credentials?.status && (
+          <MDBCardBody>
+            <MDBTypography
+              className="mb-0"
+              noteColor="info"
+              note
+              noteTitle={
+                credentials.status === "pending" ? "DRAFT: " : "REJECTED: "
+              }
+            >
+              {credentials.status === "pending"
+                ? "Form is saved but not yet submitted."
+                : credentials.remarks}
+            </MDBTypography>
+          </MDBCardBody>
+        )}
 
         {delayRender && (
           <Form

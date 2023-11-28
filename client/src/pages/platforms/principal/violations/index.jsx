@@ -180,7 +180,7 @@ export default function Violations() {
             <tbody>
               {violations?.map((violation) => {
                 const { _id, title, description, createdBy } = violation,
-                  { _id: creatorId, fullName: fullname } = createdBy;
+                  { _id: creatorId = "", fullName: fullname = {} } = createdBy;
                 return (
                   <tr key={_id}>
                     <td>{title}</td>
@@ -188,7 +188,7 @@ export default function Violations() {
                     <td>{fullName(fullname)}</td>
 
                     <td className="py-2 text-center">
-                      {auth._id === creatorId && (
+                      {auth?._id === creatorId && (
                         <MDBBtnGroup>
                           <MDBBtn
                             className="m-0"

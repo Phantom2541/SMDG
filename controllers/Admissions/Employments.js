@@ -12,7 +12,7 @@ exports.save = (req, res) => {
           var success =
             "The form has been submitted; please await validation by the principal.";
 
-          if (!employment.isPublished) success = "Form saved as Draft.";
+          if (!employment.isPublished) success = "Form draft saved.";
 
           res.status(201).json({
             success,
@@ -40,7 +40,7 @@ exports.update = (req, res) => {
           var success =
             "The form has been submitted; please await validation by the principal.";
 
-          if (!employment.isPublished) success = "Form saved as Draft.";
+          if (!employment.isPublished) success = "Form draft updated.";
 
           res.json({
             success,
