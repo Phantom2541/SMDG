@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   MDBBtn,
   MDBCard,
@@ -18,18 +18,22 @@ import AddressSelect from "../../../../components/addressSelect";
 import CustomSelect from "../../../../components/customSelect";
 import UploadPDF from "./uploadPDF";
 import Swal from "sweetalert2";
+import { useDispatch, useSelector } from "react-redux";
+import { SAVE } from "../../../../services/redux/slices/admissions/employments";
 
 const _form = {
   position: "",
-  mobile: 0,
-  fname: "",
-  lname: "",
-  mname: "",
-  suffix: "",
+  mobile: "",
+  fullName: {
+    fname: "",
+    lname: "",
+    mname: "",
+    suffix: "",
+  },
   isMale: false,
   mothertongue: "",
   dob: new Date(),
-  civilStatus: "",
+  civilStatus: "single",
   pob: "",
   address: {
     current: {
@@ -65,7 +69,65 @@ const _form = {
 };
 
 export default function EmploymentForm() {
-  const [form, setForm] = useState(_form);
+  const [form, setForm] = useState(_form),
+    { auth, token } = useSelector(({ auth }) => auth),
+    { response, isSuccess } = useSelector(({ employments }) => employments),
+    dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isSuccess && response) {
+      console.log(response);
+    }
+  }, [response, isSuccess]);
+
+  const {
+      position,
+      mobile,
+      fullName,
+      isMale,
+      mothertongue,
+      dob,
+      civilStatus,
+      pob,
+      address,
+      emergencyContact,
+    } = form,
+    { primary, secondary } = emergencyContact,
+    { fname, lname, mname, suffix } = fullName,
+    { logo, id, name, address: sAddress } = School;
+
+  const handleSave = (isPublished) => {
+    // const { position, emergencyContact, fullName, address } = form;
+
+    const employment = {
+        position,
+        emergencyContact,
+        isPublished,
+      },
+      user = {
+        fullName,
+        address,
+        civilStatus,
+        mobile,
+        isMale,
+        mothertongue,
+        dob,
+        pob,
+      };
+
+    if (user.address.isSame) user.address.current = user.address.permanent;
+
+    dispatch(
+      SAVE({
+        data: {
+          userId: auth._id,
+          user,
+          employment,
+        },
+        token,
+      })
+    );
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -86,7 +148,7 @@ export default function EmploymentForm() {
       cancelButtonColor: "#3B71CA",
     }).then((result) => {
       if (result.isDenied) {
-        // handleSave(false);
+        handleSave(false);
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         // handleValidation();
       } else {
@@ -99,29 +161,11 @@ export default function EmploymentForm() {
         });
       }
     });
-    console.log(form);
     setForm(_form);
   };
 
   const handleChange = (key, value) => setForm({ ...form, [key]: value });
 
-  const {
-      position,
-      mobile,
-      fname,
-      lname,
-      mname,
-      suffix,
-      isMale,
-      mothertongue,
-      dob,
-      civilStatus,
-      pob,
-      address,
-      emergencyContact,
-    } = form,
-    { primary, secondary } = emergencyContact,
-    { logo, id, name, address: sAddress } = School;
   return (
     <MDBContainer fluid>
       <MDBCard>
@@ -198,7 +242,12 @@ export default function EmploymentForm() {
                 <MDBInput
                   label="Last Name"
                   value={lname}
-                  onChange={(e) => handleChange("lname", e.target.value)}
+                  onChange={(e) =>
+                    handleChange("fullName", {
+                      ...fullName,
+                      lname: e.target.value.toUpperCase(),
+                    })
+                  }
                 />
               </MDBCol>
               <MDBCol md="6">
@@ -215,7 +264,12 @@ export default function EmploymentForm() {
                 <MDBInput
                   label="First Name"
                   value={fname}
-                  onChange={(e) => handleChange("fname", e.target.value)}
+                  onChange={(e) =>
+                    handleChange("fullName", {
+                      ...fullName,
+                      fname: e.target.value.toUpperCase(),
+                    })
+                  }
                 />
               </MDBCol>
               <MDBCol md="3">
@@ -256,14 +310,24 @@ export default function EmploymentForm() {
                 <MDBInput
                   label="Middle Name"
                   value={mname}
-                  onChange={(e) => handleChange("mname", e.target.value)}
+                  onChange={(e) =>
+                    handleChange("fullName", {
+                      ...fullName,
+                      mname: e.target.value.toUpperCase(),
+                    })
+                  }
                 />
               </MDBCol>
               <MDBCol md="2" className="border-right border-bottom">
                 <MDBInput
                   label="Extension Name"
                   value={suffix}
-                  onChange={(e) => handleChange("suffix", e.target.value)}
+                  onChange={(e) =>
+                    handleChange("fullName", {
+                      ...fullName,
+                      suffix: e.target.value.toUpperCase(),
+                    })
+                  }
                 />
               </MDBCol>
               <MDBCol md="2">

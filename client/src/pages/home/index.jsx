@@ -9,10 +9,11 @@ import {
   MDBNavItem,
   MDBNavLink,
 } from "mdbreact";
+import Login from "./login";
 import { School } from "../../services/fakeDb";
 import Banner from "./banner";
-import "./index.css";
 import Features from "./features";
+import "./index.css";
 
 export default function Home() {
   const [collapseID, setCollapseID] = useState(false),
@@ -25,37 +26,43 @@ export default function Home() {
   const toggleLogin = () => setLogin(!login);
 
   return (
-    <div id="landing" style={{ minWidth: "650px", overflowX: "hidden" }}>
-      <MDBNavbar dark expand="md" fixed="top" scrolling transparent>
-        <MDBContainer>
-          <MDBNavbarBrand href="#" onClick={() => handleLink("landing")}>
-            <strong className="white-text">{School.name}</strong>
-          </MDBNavbarBrand>
-          <MDBNavbarToggler onClick={() => setCollapseID(!collapseID)} />
-          <MDBCollapse id="navbarCollapse" isOpen={collapseID} navbar>
-            <MDBNavbarNav right>
-              <MDBNavItem>
-                <MDBNavLink onClick={() => handleLink("featureOffset")} to="#">
-                  Features
-                </MDBNavLink>
-              </MDBNavItem>
-              <MDBNavItem>
-                <MDBNavLink onClick={toggleLogin} to="#">
-                  Register
-                </MDBNavLink>
-              </MDBNavItem>
-              <MDBNavItem>
-                <MDBNavLink onClick={toggleLogin} to="#">
-                  Login
-                </MDBNavLink>
-              </MDBNavItem>
-            </MDBNavbarNav>
-          </MDBCollapse>
-        </MDBContainer>
-      </MDBNavbar>
+    <>
+      <Login show={login} toggle={toggleLogin} />
+      <div id="landing" style={{ minWidth: "650px", overflowX: "hidden" }}>
+        <MDBNavbar dark expand="md" fixed="top" scrolling transparent>
+          <MDBContainer>
+            <MDBNavbarBrand href="#" onClick={() => handleLink("landing")}>
+              <strong className="white-text">{School.name}</strong>
+            </MDBNavbarBrand>
+            <MDBNavbarToggler onClick={() => setCollapseID(!collapseID)} />
+            <MDBCollapse id="navbarCollapse" isOpen={collapseID} navbar>
+              <MDBNavbarNav right>
+                <MDBNavItem>
+                  <MDBNavLink
+                    onClick={() => handleLink("featureOffset")}
+                    to="#"
+                  >
+                    Features
+                  </MDBNavLink>
+                </MDBNavItem>
+                <MDBNavItem>
+                  <MDBNavLink onClick={toggleLogin} to="#">
+                    Register
+                  </MDBNavLink>
+                </MDBNavItem>
+                <MDBNavItem>
+                  <MDBNavLink onClick={toggleLogin} to="#">
+                    Login
+                  </MDBNavLink>
+                </MDBNavItem>
+              </MDBNavbarNav>
+            </MDBCollapse>
+          </MDBContainer>
+        </MDBNavbar>
 
-      <Banner />
-      <Features />
-    </div>
+        <Banner />
+        <Features />
+      </div>
+    </>
   );
 }

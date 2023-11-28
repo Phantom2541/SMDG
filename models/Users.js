@@ -16,7 +16,6 @@ const userSchema = new mongoose.Schema(
     fullName: {
       fname: {
         type: String,
-        required: true,
       },
       mname: {
         type: String,
@@ -24,7 +23,6 @@ const userSchema = new mongoose.Schema(
       },
       lname: {
         type: String,
-        required: true,
       },
       suffix: {
         type: String,
@@ -46,15 +44,12 @@ const userSchema = new mongoose.Schema(
         },
         city: {
           type: String,
-          required: true,
         },
         province: {
           type: String,
-          required: true,
         },
         region: {
           type: String,
-          required: true,
         },
         zip: {
           type: String,
@@ -188,14 +183,12 @@ const userSchema = new mongoose.Schema(
     },
     dob: {
       type: String,
-      required: true,
     },
     pob: {
       type: String,
     },
     mobile: {
       type: String,
-      required: true,
     },
     isMale: {
       type: Boolean,

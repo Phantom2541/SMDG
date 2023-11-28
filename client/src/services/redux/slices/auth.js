@@ -112,6 +112,9 @@ export const reduxSlice = createSlice({
     INJECTROLE: (state, data) => {
       state.role = data.payload;
     },
+    INJECTCREDENTIALS: (state, data) => {
+      console.log(data.payload);
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -190,7 +193,14 @@ export const reduxSlice = createSlice({
   },
 });
 
-export const { RESET, MAXPAGE, PROGRESS, UPLOADBAR, IMAGE, INJECTROLE } =
-  reduxSlice.actions;
+export const {
+  RESET,
+  MAXPAGE,
+  PROGRESS,
+  UPLOADBAR,
+  IMAGE,
+  INJECTROLE,
+  INJECTCREDENTIALS,
+} = reduxSlice.actions;
 
 export default reduxSlice.reducer;
