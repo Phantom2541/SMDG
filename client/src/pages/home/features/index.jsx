@@ -1,105 +1,107 @@
 import React, { useState } from "react";
-import { MDBAnimation, MDBCol, MDBContainer, MDBIcon, MDBRow } from "mdbreact";
-
+import { MDBIcon, MDBMask } from "mdbreact";
+import { School } from "../../../services/fakeDb";
 const Card = ({ feature }) => {
   const [didHover, setDidhover] = useState(false);
 
-  const { icon, title, description, type } = feature;
+  const { icon, title, description } = feature;
 
   return (
-    <MDBCol
-      lg="3"
-      size="6"
-      className="my-md-0 my-3"
-      onMouseOver={() => setDidhover(true)}
-      onMouseOut={() => setDidhover(false)}
-      style={{ height: "250px" }}
-    >
-      <MDBAnimation reveal type={type}>
-        <div>
-          <div
+    <div style={{ height: "250px", width: "250px" }}>
+      <div
+        onMouseOver={() => setDidhover(true)}
+        onMouseOut={() => setDidhover(false)}
+      >
+        <div
+          style={{
+            margin: "auto",
+            width: "100px",
+            height: "100px",
+            border: didHover && "solid 7.5px #4285F4",
+            transform: `rotate(${didHover ? "225deg" : "0deg"})`,
+            display: "grid",
+            placeItems: "center",
+            transition: "all 1s",
+          }}
+        >
+          <MDBIcon
+            icon={icon}
+            size="4x"
             style={{
-              margin: "auto",
-              width: "100px",
-              height: "100px",
-              border: didHover && "solid 5px #4285F4",
-              transform: "rotate(45deg)",
-              display: "grid",
-              placeItems: "center",
-              transition: "all 0.25s",
+              transform: `rotate(${didHover ? "-225deg" : "0deg"})`,
+              //   transform: "rotate(-45deg)",
+              color: didHover ? "#4285F4" : "black",
+              transition: "all 1s",
             }}
-          >
-            <MDBIcon
-              icon={icon}
-              size="4x"
-              style={{
-                transform: "rotate(-45deg)",
-                color: didHover ? "#4285F4" : "black",
-                transition: "all 0.25s",
-              }}
-            />
-          </div>
+          />
         </div>
-        <div className={`mt-${didHover ? "5" : "1"} transition-all`}>
-          <h5 className="font-weight-bold">{title}</h5>
-          <p>{description}</p>
-        </div>
-      </MDBAnimation>
-    </MDBCol>
+        <h5 className="font-weight-bold">{title}</h5>
+      </div>
+      <div>
+        <p>{description}</p>
+      </div>
+    </div>
   );
 };
 
 export default function Features() {
-  const features = [
-    {
-      icon: "shield-alt",
-      title: "Secure",
-      type: "slideInLeft",
-      description:
-        "We prioritize data and system security, implementing robust measures to ensure confidentiality, integrity, and availability.",
+  const styles = {
+    container: {
+      position: "absolute",
+      minWidth: "650px",
+      width: "100%",
+      top: "90vh",
+      left: 0,
+      height: "800px",
+      clipPath: "polygon(65% 0, 100% 15%, 100% 100%, 0 100%, 0 10%)",
+      //   backgroundColor: "#0081C9",
+      background:
+        "radial-gradient(circle at center, rgba(255, 255, 255, 0.8) 5%, #0081C9)",
     },
-    {
-      icon: "bolt",
-      title: "Rapid",
-      type: "slideInDown",
-      description:
-        "Our agile approach and streamlined processes enable us to deliver solutions quickly, ensuring timely results for our clients.",
+    palong: {
+      minWidth: "650px",
+      zIndex: "1",
+      position: "absolute",
+      width: "100%",
+      height: "6%",
+      top: "90vh",
+      left: 0,
+      clipPath: "polygon(65% 0%, 65% 0, 55% 100%, 14% 71%)",
+      backgroundColor: "#FFC436",
     },
-    {
-      icon: "flask",
-      title: "Experimental",
-      type: "slideInUp",
-      description:
-        "We embrace experimentation and innovation to push boundaries and discover cutting-edge solutions for our clients' unique challenges.",
+    imahe: {
+      backgroundImage: `url(${School.logo})`,
+      backgroundRepeat: "no-repeat",
+      backgroundPosition: "bottom center",
+      backgroundSize: "650px 650px",
+      position: "absolute",
+      minWidth: "650px",
+      width: "100%",
+      top: "90vh",
+      left: 0,
+      height: "800px",
+      filter: "blur(3px)",
     },
-    {
-      icon: "heart",
-      title: "Beloved",
-      type: "slideInRight",
-      description:
-        "We strive to earn the trust and loyalty of our clients by delivering exceptional solutions and personalized service.",
-    },
-  ];
+  };
 
   return (
-    <section id="features" className="px-5">
-      <MDBContainer className="mb-5">
-        <h1 className="font-weight-bold section-heading text-center mt-4 mb-3">
-          Features
-        </h1>
-        <p className="section-description mb-5 mb-3 text-center">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia,
-          inventore expedita esse dolor illo similique possimus voluptatibus
-          vitae non at tenetur quas dolores earum harum obcaecati animi.
-          Praesentium, optio tenetur.
-        </p>
-
-        <MDBRow>
-          {features.map((feature, index) => (
-            <Card feature={feature} key={`feature-${index}`} />
-          ))}
-        </MDBRow>
-      </MDBContainer>
+    <section id="features">
+      <div style={styles.imahe} />
+      <div style={styles.palong} />
+      <div style={styles.container}>
+        <br />
+        <br />
+        <br />
+        <br />
+        <Card
+          feature={{
+            title: "Hello World",
+            icon: "user",
+            description:
+              "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur hic odio beatae iure perferendis id quibusdam, accusantium, facere, cumque voluptatibus laborum velit animi pariatur eos illum esse voluptatum sunt delectus!",
+          }}
+        />
+      </div>
     </section>
   );
 }

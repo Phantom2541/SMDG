@@ -29,10 +29,22 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>School Management System</title>
+    <style>
+      .base-loader {
+        height: 100vh;
+        width: 100vw;
+        display: grid;
+        place-items: center;
+      }
+    </style>
   </head>
   <body>
     <noscript> You need to enable JavaScript to run this app. </noscript>
-    <div id="root"></div>
+    <div id="root">
+      <div class="base-loader">
+        <span class="far fa-clock fa-spin fa-5x text-primary" />
+      </div>
+    </div>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
