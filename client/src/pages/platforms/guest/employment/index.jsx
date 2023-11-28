@@ -11,33 +11,117 @@ import {
   MDBRow,
   MDBTypography,
 } from "mdbreact";
-import { fullAddress } from "../../../../services/utilities";
+import { fullAddress, getAge } from "../../../../services/utilities";
 import generateSY from "../../../../services/utilities/generateSY";
 import { School } from "../../../../services/fakeDb";
 import AddressSelect from "../../../../components/addressSelect";
 import CustomSelect from "../../../../components/customSelect";
 import UploadPDF from "./uploadPDF";
-
-const address = {
-  region: "REGION III (CENTRAL LUZON)",
-  province: "NUEVA ECIJA",
-  city: "CABANATUAN CITY",
-  barangay: "",
-  zip: "",
-  street: "",
-};
+import Swal from "sweetalert2";
 
 const _form = {
-  isSame: true,
+  position: "",
+  mobile: 0,
+  fname: "",
+  lname: "",
+  mname: "",
+  suffix: "",
+  isMale: false,
+  mothertongue: "",
+  dob: new Date(),
+  civilStatus: "",
+  pob: "",
+  address: {
+    current: {
+      region: "REGION III (CENTRAL LUZON)",
+      province: "NUEVA ECIJA",
+      city: "CABANATUAN CITY",
+      barangay: "",
+      zip: "",
+      street: "",
+    },
+    permanent: {
+      region: "REGION III (CENTRAL LUZON)",
+      province: "NUEVA ECIJA",
+      city: "CABANATUAN CITY",
+      barangay: "",
+      zip: "",
+      street: "",
+    },
+    isSame: true,
+  },
+  emergencyContact: {
+    primary: {
+      name: "",
+      relationship: "",
+      mobile: 0,
+    },
+    secondary: {
+      name: "",
+      relationship: "",
+      mobile: 0,
+    },
+  },
 };
 
 export default function EmploymentForm() {
   const [form, setForm] = useState(_form);
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    Swal.fire({
+      focusDeny: true,
+      icon: "question",
+      title: "Are you sure you want to submit?",
+      text: "Once submitted you cannot edit your information.",
+      confirmButtonText: `<span class="text-dark">Cancel</span>`,
+      confirmButtonColor: "#fff",
+
+      showDenyButton: true,
+      denyButtonText: `Save`,
+      denyButtonColor: "#54B4D3",
+
+      showCancelButton: true,
+      cancelButtonText: "Submit",
+      cancelButtonColor: "#3B71CA",
+    }).then((result) => {
+      if (result.isDenied) {
+        // handleSave(false);
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        // handleValidation();
+      } else {
+        Swal.fire({
+          title: "Changes are not Saved!",
+          icon: "warning",
+          showConfirmButton: false,
+          timer: 2500,
+          timerProgressBar: true,
+        });
+      }
+    });
+    console.log(form);
+    setForm(_form);
+  };
+
   const handleChange = (key, value) => setForm({ ...form, [key]: value });
 
-  const { isSame } = form;
-  const { logo, id, name, address: sAddress } = School;
+  const {
+      position,
+      mobile,
+      fname,
+      lname,
+      mname,
+      suffix,
+      isMale,
+      mothertongue,
+      dob,
+      civilStatus,
+      pob,
+      address,
+      emergencyContact,
+    } = form,
+    { primary, secondary } = emergencyContact,
+    { logo, id, name, address: sAddress } = School;
   return (
     <MDBContainer fluid>
       <MDBCard>
@@ -88,54 +172,72 @@ export default function EmploymentForm() {
 
         <MDBCardBody className="mx-5">
           <h5 className="mb-0">Personal Information</h5>
-          <form>
+          <form onSubmit={handleSubmit}>
             <MDBRow>
               <MDBCol md="6">
-                <MDBInput label="Applying Position" />
+                <MDBInput
+                  label="Applying Position"
+                  type="text"
+                  value={position}
+                  onChange={(e) => handleChange("position", e.target.value)}
+                />
               </MDBCol>
               <MDBCol md="6">
                 <MDBInput
                   label="Mobile No. +63"
-                  //   maxLength={10}
-                  //   value={mobile}
-                  //   onChange={(e) =>
-                  //     handleChange("mobile", e.target.value.replace(/\D/g, ""))
-                  //   }
+                  maxLength={10}
+                  value={mobile}
+                  onChange={(e) =>
+                    handleChange("mobile", e.target.value.replace(/\D/g, ""))
+                  }
                 />
               </MDBCol>
             </MDBRow>
             <MDBRow>
               <MDBCol md="6" className="border-right border-top border-left">
-                <MDBInput label="Last Name" />
+                <MDBInput
+                  label="Last Name"
+                  value={lname}
+                  onChange={(e) => handleChange("lname", e.target.value)}
+                />
               </MDBCol>
               <MDBCol md="6">
-                <MDBInput label="Mother Tongue (ex: Tagalog, English)" />
+                <MDBInput
+                  label="Mother Tongue (ex: Tagalog, English)"
+                  value={mothertongue}
+                  onChange={(e) => handleChange("mothertongue", e.target.value)}
+                />
               </MDBCol>
             </MDBRow>
 
             <MDBRow>
               <MDBCol md="6" className="border-left border-right">
-                <MDBInput label="First Name" />
+                <MDBInput
+                  label="First Name"
+                  value={fname}
+                  onChange={(e) => handleChange("fname", e.target.value)}
+                />
               </MDBCol>
               <MDBCol md="3">
                 <label className="mb-0">Birthdate</label>
                 <MDBDatePicker
                   className="mt-1"
                   autoOk
-                  //   value={dob}
-                  //   getValue={(e) => handleChange("dob", e)}
+                  value={dob}
+                  getValue={(e) => handleChange("dob", e)}
                 />
               </MDBCol>
               <MDBCol md="1">
                 <MDBInput
                   label="Age"
                   readOnly
-                  //   value={getAge(dob.toDateString())}
+                  value={getAge(dob.toDateString())}
                 />
               </MDBCol>
               <MDBCol md="2">
                 <CustomSelect
                   label="Civil Status"
+                  preValue={civilStatus}
                   choices={[
                     { text: "Single", value: "single" },
                     { text: "Married", value: "married" },
@@ -144,24 +246,33 @@ export default function EmploymentForm() {
                   ]}
                   texts="text"
                   values="value"
+                  onChange={(e) => handleChange("civilStatus", e)}
                 />
               </MDBCol>
             </MDBRow>
 
             <MDBRow className="mb-3">
               <MDBCol md="4" className="border-left border-bottom">
-                <MDBInput label="Middle Name" />
+                <MDBInput
+                  label="Middle Name"
+                  value={mname}
+                  onChange={(e) => handleChange("mname", e.target.value)}
+                />
               </MDBCol>
               <MDBCol md="2" className="border-right border-bottom">
-                <MDBInput label="Extension Name" />
+                <MDBInput
+                  label="Extension Name"
+                  value={suffix}
+                  onChange={(e) => handleChange("suffix", e.target.value)}
+                />
               </MDBCol>
               <MDBCol md="2">
                 <div className="form-check">
                   <input
                     className="form-check-input"
                     type="checkbox"
-                    // checked={isMale}
-                    // onChange={() => handleChange("isMale", true)}
+                    checked={isMale}
+                    onChange={() => handleChange("isMale", true)}
                     id="Male"
                   />
                   <label className="form-check-label" htmlFor="Male">
@@ -172,8 +283,8 @@ export default function EmploymentForm() {
                   <input
                     className="form-check-input"
                     type="checkbox"
-                    // checked={!isMale}
-                    // onChange={() => handleChange("isMale", false)}
+                    checked={!isMale}
+                    onChange={() => handleChange("isMale", false)}
                     id="Female"
                   />
                   <label className="form-check-label" htmlFor="Female">
@@ -182,15 +293,21 @@ export default function EmploymentForm() {
                 </div>
               </MDBCol>
               <MDBCol md="4">
-                <MDBInput label="Place of Birth (Municipality/City)" />
+                <MDBInput
+                  label="Place of Birth (Municipality/City)"
+                  value={pob}
+                  onChange={(e) => handleChange("pob", e.target.value)}
+                />
               </MDBCol>
             </MDBRow>
 
             <AddressSelect
               label="Permanent Address"
-              address={address}
-              // handleChange={(_, value) => handleChange("current", value)}
-              // uniqueId="current"
+              address={address.permanent}
+              handleChange={(_, permanent) =>
+                handleChange("address", { ...address, permanent })
+              }
+              uniqueId="current"
             />
             <div className="d-flex mt-3">
               <div className="">
@@ -203,8 +320,10 @@ export default function EmploymentForm() {
                   <input
                     className="form-check-input"
                     type="checkbox"
-                    checked={isSame}
-                    onChange={() => handleChange("isSame", true)}
+                    checked={address.isSame}
+                    onChange={() =>
+                      handleChange("address", { ...address, isSame: true })
+                    }
                     id="yes"
                   />
                   <label className="form-check-label" htmlFor="yes">
@@ -217,8 +336,10 @@ export default function EmploymentForm() {
                   <input
                     className="form-check-input"
                     type="checkbox"
-                    checked={!isSame}
-                    onChange={() => handleChange("isSame", false)}
+                    checked={!address.isSame}
+                    onChange={() =>
+                      handleChange("address", { ...address, isSame: false })
+                    }
                     id="no"
                   />
                   <label className="form-check-label" htmlFor="no">
@@ -228,13 +349,15 @@ export default function EmploymentForm() {
               </div>
             </div>
 
-            {!isSame && (
+            {!address.isSame && (
               <div className="mt-3">
                 <AddressSelect
                   label="Current Address"
-                  address={address}
-                  // handleChange={(_, value) => handleChange("current", value)}
-                  // uniqueId="current"
+                  address={address.current}
+                  handleChange={(_, current) =>
+                    handleChange("address", { ...address, current })
+                  }
+                  uniqueId="current"
                 />
               </div>
             )}
@@ -243,24 +366,84 @@ export default function EmploymentForm() {
             <div className="border px-4">
               <MDBRow>
                 <MDBCol md="4">
-                  <MDBInput label="Primary Name of Contact" />
+                  <MDBInput
+                    label="Primary Name of Contact"
+                    value={primary.name}
+                    onChange={(e) =>
+                      handleChange("emergencyContact", {
+                        ...emergencyContact,
+                        primary: { ...primary, name: e.target.value },
+                      })
+                    }
+                  />
                 </MDBCol>
                 <MDBCol md="4">
-                  <MDBInput label="Relationship" />
+                  <MDBInput
+                    label="Relationship"
+                    value={primary.relationship}
+                    onChange={(e) =>
+                      handleChange("emergencyContact", {
+                        ...emergencyContact,
+                        primary: { ...primary, relationship: e.target.value },
+                      })
+                    }
+                  />
                 </MDBCol>
                 <MDBCol md="4">
-                  <MDBInput label="Mobile No. (+63)" />
+                  <MDBInput
+                    label="Mobile No. (+63)"
+                    value={primary.mobile}
+                    onChange={(e) =>
+                      handleChange("emergencyContact", {
+                        ...emergencyContact,
+                        primary: { ...primary, mobile: Number(e.target.value) },
+                      })
+                    }
+                  />
                 </MDBCol>
               </MDBRow>
               <MDBRow>
                 <MDBCol md="4">
-                  <MDBInput label="Secondary Name of Contact" />
+                  <MDBInput
+                    label="Secondary Name of Contact"
+                    value={secondary.name}
+                    onChange={(e) =>
+                      handleChange("emergencyContact", {
+                        ...emergencyContact,
+                        secondary: { ...secondary, name: e.target.value },
+                      })
+                    }
+                  />
                 </MDBCol>
                 <MDBCol md="4">
-                  <MDBInput label="Relationship" />
+                  <MDBInput
+                    label="Relationship"
+                    value={secondary.relationship}
+                    onChange={(e) =>
+                      handleChange("emergencyContact", {
+                        ...emergencyContact,
+                        secondary: {
+                          ...secondary,
+                          relationship: e.target.value,
+                        },
+                      })
+                    }
+                  />
                 </MDBCol>
                 <MDBCol md="4">
-                  <MDBInput label="Mobile No. (+63)" />
+                  <MDBInput
+                    label="Mobile No. (+63)"
+                    value={secondary.mobile}
+                    onChange={(e) =>
+                      handleChange("emergencyContact", {
+                        ...emergencyContact,
+                        secondary: {
+                          ...secondary,
+                          mobile: Number(e.target.value),
+                        },
+                      })
+                    }
+                  />
                 </MDBCol>
               </MDBRow>
             </div>
