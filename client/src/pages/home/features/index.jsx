@@ -1,9 +1,38 @@
-import React, { useState } from "react";
-import { MDBIcon, MDBMask } from "mdbreact";
+import React from "react";
+import { MDBIcon } from "mdbreact";
 import { School } from "../../../services/fakeDb";
-import "./featureDesign/featureCard.css";
+import "./styles/card.css";
+import "./styles/container.css";
 
-const Card = () => {
+const features = [
+  {
+    icon: "heart",
+    title: "Wellness Programs",
+    content:
+      "Wellness initiatives promoting physical and mental health among students and staff.",
+  },
+  {
+    icon: "book",
+    title: "Academic Programs",
+    content:
+      "A wide range of academic programs designed to foster intellectual growth and development among students.",
+  },
+  {
+    icon: "graduation-cap",
+    title: "Extracurricular Activities",
+    content:
+      "A variety of extracurricular activities such as sports, clubs, and arts programs to enhance student engagement.",
+  },
+  {
+    icon: "hands-helping",
+    title: "Supportive Environment",
+    content:
+      "A supportive and inclusive environment that fosters student growth and success.",
+  },
+];
+
+const Card = ({ feature }) => {
+  const { icon, title, content } = feature;
   return (
     <div className="feature-card">
       <div className="feature-lineleft"></div>
@@ -12,15 +41,10 @@ const Card = () => {
       <div className="feature-linebottom"></div>
       <div className="feature-wrapper">
         <div className="feature-box"></div>
-        <MDBIcon className="feature-icon" icon="user" />
+        <MDBIcon className="feature-icon" icon={`${icon}`} />
       </div>
-      <div className="feature-title">User's Content</div>
-      <div className="feature-content">
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ea a,
-        voluptas, eveniet aliquid libero labore accusamus, maiores commodi
-        dolores eligendi sunt? Rem dicta nemo reprehenderit expedita recusandae
-        rerum consequuntur aliquid?
-      </div>
+      <div className="feature-title">{title}</div>
+      <div className="feature-content">{content}</div>
     </div>
   );
 };
@@ -31,24 +55,14 @@ export default function Features() {
       position: "absolute",
       minWidth: "650px",
       width: "100%",
-      top: "85vh",
+      top: "80vh",
       left: 0,
-      height: "800px",
+      // height: "700px",
+      minHeight: "700px",
       clipPath: "polygon(65% 0, 100% 15%, 100% 100%, 0 100%, 0 10%)",
       // backgroundColor: "#0081C9",
       background:
         "radial-gradient(circle at center, rgba(255, 255, 255, 0.9) 15%, #0081C9 50%)",
-    },
-    palong: {
-      minWidth: "650px",
-      zIndex: "1",
-      position: "absolute",
-      width: "100%",
-      height: "6%",
-      top: "85vh",
-      left: 0,
-      clipPath: "polygon(65% 0%, 65% 0, 55% 100%, 14% 71%)",
-      backgroundColor: "#FFC436",
     },
     imahe: {
       backgroundImage: `url(${School.logo})`,
@@ -60,7 +74,7 @@ export default function Features() {
       width: "100%",
       top: "80vh",
       left: 0,
-      height: "800px",
+      height: "700px",
       filter: "blur(3.5px)",
     },
   };
@@ -68,13 +82,31 @@ export default function Features() {
   return (
     <section id="features">
       <div style={styles.imahe} />
-      <div style={styles.palong} />
+      <div className="palong" />
       <div style={styles.container}>
         <br />
         <br />
         <br />
-        <Card />
-        <br />
+        <div
+          style={{
+            width: "750px",
+            margin: "60px auto",
+            textAlign: "center",
+          }}
+        >
+          <p className="feature-head">Features</p>
+          <p style={{ fontSize: "20px" }}>
+            Schools may employ various teaching methodologies, such as
+            traditional lecture-style teaching, experiential learning,
+            project-based learning, flipped classrooms, or Montessori methods,
+            among others.
+          </p>
+        </div>
+        <div className="feature-container">
+          {features?.map((feature) => (
+            <Card key={feature.icon} feature={feature} />
+          ))}
+        </div>
       </div>
     </section>
   );
