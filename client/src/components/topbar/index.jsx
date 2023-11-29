@@ -53,7 +53,7 @@ class TopNavigation extends Component {
         expand="md"
         scrolling
         fixed="top"
-        style={{ zIndex: 3 }}
+        style={{ zIndex: 3, minWidth: "768px" }}
       >
         <div
           onClick={this.handleToggleClickA}

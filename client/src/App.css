@@ -3,9 +3,9 @@ body {
 }
 
 @media (max-width: 650px) {
-  body {
-    min-width: initial; /* Reset the min-width for smaller screens */
-  }
+  /* body {
+    min-width: initial; 
+  } */
 
   /* Additional styles for smaller screens, e.g., styles for the modal */
 }

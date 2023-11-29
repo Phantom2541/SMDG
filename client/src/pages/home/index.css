@@ -12,5 +12,6 @@
 
 #landing #banner .view {
   height: 100vh !important;
+  min-width: 768px !important;
   transition: all 1s;
 }

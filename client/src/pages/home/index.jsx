@@ -15,6 +15,7 @@ import Banner from "./banner";
 import Features from "./features";
 import "./index.css";
 import Register from "./register";
+import Mission from "./mission";
 
 export default function Home() {
   const [collapseID, setCollapseID] = useState(false),
@@ -30,7 +31,14 @@ export default function Home() {
     <>
       <Login show={login} toggle={toggleLogin} />
       <div id="landing" style={{ minWidth: "650px", overflowX: "hidden" }}>
-        <MDBNavbar dark expand="md" fixed="top" scrolling transparent>
+        <MDBNavbar
+          dark
+          expand="md"
+          fixed="top"
+          scrolling
+          transparent
+          style={{ minWidth: "768px" }}
+        >
           <MDBContainer>
             <MDBNavbarBrand href="#" onClick={() => handleLink("landing")}>
               <strong className="white-text">{School.name}</strong>
@@ -63,7 +71,8 @@ export default function Home() {
 
         <Banner />
         <Features />
-        {/* <Register /> */}
+        <Register />
+        <Mission />
       </div>
     </>
   );

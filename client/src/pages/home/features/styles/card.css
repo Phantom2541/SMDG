@@ -2,141 +2,59 @@
   margin-top: 10px;
   display: flex;
   justify-content: space-between;
-  height: auto; /* Adjusted height */
+  height: auto;
   width: auto;
-  margin-left: 5%; /* Percentages for better responsiveness */
-  margin-right: 5%; /* Percentages for better responsiveness */
-  position: relative; /* Ensure position is relative for absolute positioning of lines */
+  margin-left: 10%;
+  margin-right: 10%;
+  position: relative;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (max-width: 1400px) {
   .feature-container {
-    flex-direction: column; /* Stack items vertically on smaller screens */
-    align-items: center; /* Center items on smaller screens */
-    height: auto; /* Adjusted height for responsiveness */
-  }
-
-  .feature-lineleft,
-  .feature-linetop,
-  .feature-lineright,
-  .feature-linebottom {
-    display: none; /* Hide the lines on smaller screens */
+    flex-wrap: wrap;
   }
 
   .feature-card {
-    width: 90%; /* Adjust card width for smaller screens */
+    width: 50%; /* Adjust card width for two cards in a row */
+    margin-bottom: 10px;
   }
 }
 
-.feature-lineleft,
-.feature-linetop,
-.feature-lineright,
-.feature-linebottom {
-  position: absolute;
-  height: 2px;
-  background-color: black;
-  opacity: 0; /* Set initial opacity to 0 */
-}
-
-.feature-lineleft {
-  top: 0;
-  left: 0;
-  height: 400px;
-  width: 2px;
-  animation: bottom-top 5s ease infinite;
-}
-
-@keyframes bottom-top {
-  0% {
-    transform: translateY(-400px);
-    opacity: 0; /* Set opacity to 0 at the beginning */
+@media screen and (max-width: 1080px) {
+  .feature-container {
+    flex-wrap: wrap; /* Allow cards to wrap onto the next line */
+    justify-content: space-between; /* Distribute cards evenly on the row */
   }
-  50% {
-    opacity: 1; /* Fade in halfway through the animation */
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 0; /* Set opacity back to 0 at the end */
+
+  .feature-card {
+    width: 50%; /* Adjust card width for two cards in a row */
+    margin-bottom: 10px;
   }
 }
 
-.feature-linetop {
-  top: 0;
-  left: 0;
-  width: 280px;
-  animation: left-right 5s ease infinite;
-}
+@media screen and (max-width: 768px) {
+  .feature-container {
+    flex-direction: column;
+    align-items: center;
+  }
 
-@keyframes left-right {
-  0% {
-    transform: translateX(-280px);
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateX(0);
-    opacity: 0;
-  }
-}
-
-.feature-lineright {
-  top: 0;
-  right: 0;
-  height: 400px;
-  width: 2px;
-  animation: top-bottom 5s ease infinite;
-}
-
-@keyframes top-bottom {
-  0% {
-    transform: translateY(400px);
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 0;
-  }
-}
-
-.feature-linebottom {
-  bottom: 0;
-  right: 0;
-  width: 280px;
-  animation: right-left 5s ease infinite;
-}
-
-@keyframes right-left {
-  0% {
-    transform: translateX(280px);
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateX(0);
-    opacity: 0;
+  .feature-card {
+    width: 50%; /* Adjust card width for two cards in a row */
+    margin-bottom: 10px;
   }
 }
 
 .feature-card {
-  height: 300px;
+  height: 330px;
   width: 280px;
   position: relative;
   overflow: hidden;
   margin-top: 20px;
+  border: 1px solid black;
+  border-radius: 10px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.9);
   background-color: transparent;
   transition: 1s;
-  border-radius: 10px;
-}
-
-.feature-card:hover {
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.9);
 }
 
 .feature-card::before,
@@ -154,8 +72,8 @@
   border-radius: 10px;
   background-image: linear-gradient(
     to bottom right,
-    #cdf5fd,
-    #00a9ff
+    #dfd00a,
+    #7f0404 70%
   ); /* Top-left section color */
   transform: translateY(-100%) translateX(-100%);
 }
@@ -166,8 +84,8 @@
   border-radius: 10px;
   background-image: linear-gradient(
     to bottom right,
-    #fbeeac,
-    #1d5d9b
+    #dfd00a,
+    #7f0404 70%
   ); /* Bottom-right section color */
   transform: translateY(100%) translateX(100%);
 }
@@ -194,13 +112,13 @@
   z-index: 2;
   width: 100px;
   height: 100px;
-  border: 5px solid black;
+  border: 5px solid white;
   transition: transform 1s ease; /* Add transition for smooth rotation */
 }
 
 .feature-card:hover .feature-box {
   transform: rotate(225deg); /* Rotate the box on hover */
-  border-color: white;
+  /* border-color: white; */
 }
 
 .feature-icon {
@@ -211,12 +129,13 @@
   position: absolute;
   top: 50%;
   left: 50%;
+  color: white;
   transform: translate(-50%, -50%);
   transition: 1s;
 }
-.feature-card:hover .feature-icon {
+/* .feature-card:hover .feature-icon {
   color: white;
-}
+} */
 
 .feature-title {
   position: absolute;
@@ -225,35 +144,37 @@
   transform: translateX(-50%); /* Move the text back by half of its width */
   z-index: 2;
   font-family: Serif;
-  font-size: 25px;
+  font-size: 22px;
   font-weight: bold;
+  color: white;
   transition: 1s;
   text-align: center; /* Center-align the text content */
   width: 280px; /* Optional: Set a width if desired */
 }
 
-.feature-card:hover .feature-title {
+/* .feature-card:hover .feature-title {
   color: white;
-}
+} */
 
 .feature-content {
   position: absolute;
   top: 190px;
   left: 0px;
   z-index: 2;
+  color: white;
   font-family: serif;
-  margin-left: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
   transition: 0.5s;
   /* display: none; */
 }
 
-.feature-card:hover .feature-content {
+/* .feature-card:hover .feature-content {
   color: white;
-}
+} */
 
 .feature-head {
   font-size: 40px;
   font-weight: bold;
-  text-decoration: underline;
-  text-decoration-color: white;
+  color: white;
 }
