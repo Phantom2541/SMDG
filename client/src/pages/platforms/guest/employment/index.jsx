@@ -6,7 +6,7 @@ import {
   MDBContainer,
   MDBTypography,
 } from "mdbreact";
-import { fullAddress } from "../../../../services/utilities";
+import { fullAddress, getAge } from "../../../../services/utilities";
 import generateSY from "../../../../services/utilities/generateSY";
 import { School } from "../../../../services/fakeDb";
 import Swal from "sweetalert2";
@@ -67,7 +67,7 @@ export default function EmploymentForm() {
       civilStatus: "single",
       mobile: "",
       isMale: false,
-      mothertongue: "",
+      motherTongue: "",
       dob: new Date(),
       pob: "",
     }),
@@ -148,6 +148,41 @@ export default function EmploymentForm() {
     }
   };
 
+  const handleError = (title) =>
+    Swal.fire({
+      title,
+      text: "This field is required.",
+      icon: "error",
+      showConfirmButton: false,
+    });
+
+  const handleValidation = () => {
+    const { position, emergencyContact } = employment,
+      { mobile, dob, fullName } = user;
+
+    if (!position) return handleError("Applying Position cannot be empty.");
+
+    if (!mobile || !mobile.startsWith("9") || mobile.length < 10)
+      return handleError("Invalid Mobile Number.");
+
+    if (getAge(dob, true) < 18)
+      return handleError("Minimum Age is 18 years old.");
+
+    if (!fullName?.fname || !fullName?.lname)
+      return handleError("Last name and First name are required.");
+
+    if (Object.values(emergencyContact?.primary).filter(Boolean).length !== 3)
+      return handleError("Primary Emergency Contact is required.");
+
+    if (
+      !emergencyContact?.primary?.mobile?.startsWith("9") ||
+      emergencyContact?.primary?.mobile?.length < 10
+    )
+      return handleError("Invalid Primary Mobile Number.");
+
+    handleSave(true);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     Swal.fire({
@@ -169,7 +204,7 @@ export default function EmploymentForm() {
       if (result.isDenied) {
         handleSave(false);
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        // handleValidation();
+        handleValidation();
       } else {
         Swal.fire({
           title: "Changes are not Saved!",
@@ -180,6 +215,33 @@ export default function EmploymentForm() {
         });
       }
     });
+  };
+
+  const handleRemarks = () => {
+    const { isPublished, status, _id, remarks } = credentials;
+
+    if (!_id) return;
+
+    let title = "Rejected: ",
+      color = "danger",
+      text = remarks;
+
+    if (status === "pending" && !isPublished) return "draft";
+
+    if (status === "pending" && isPublished) return "published";
+
+    return (
+      <MDBCardBody>
+        <MDBTypography
+          className="mb-0"
+          noteColor={color}
+          note
+          noteTitle={title}
+        >
+          {text}
+        </MDBTypography>
+      </MDBCardBody>
+    );
   };
 
   return (
@@ -219,22 +281,7 @@ export default function EmploymentForm() {
           </div>
         </MDBCardTitle>
 
-        {credentials?.status && (
-          <MDBCardBody>
-            <MDBTypography
-              className="mb-0"
-              noteColor="info"
-              note
-              noteTitle={
-                credentials.status === "pending" ? "DRAFT: " : "REJECTED: "
-              }
-            >
-              {credentials.status === "pending"
-                ? "Form is saved but not yet submitted."
-                : credentials.remarks}
-            </MDBTypography>
-          </MDBCardBody>
-        )}
+        {handleRemarks()}
 
         {delayRender && (
           <Form

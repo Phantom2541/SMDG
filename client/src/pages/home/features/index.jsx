@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { MDBIcon, MDBMask } from "mdbreact";
+import React from "react";
+import { MDBIcon } from "mdbreact";
 import { School } from "../../../services/fakeDb";
 import "./featureDesign/featureCard.css";
 
