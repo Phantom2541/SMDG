@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import { MDBIcon, MDBMask } from "mdbreact";
 import { School } from "../../../services/fakeDb";
-import "./index.css";
+import "./featureDesign/featureCard.css";
 
-const CardVer2 = ({ feature }) => {
+const Card = () => {
   return (
-    <div className="feature-cardv2">
+    <div className="feature-card">
+      <div className="feature-lineleft"></div>
+      <div className="feature-lineright"></div>
+      <div className="feature-linetop"></div>
+      <div className="feature-linebottom"></div>
       <div className="feature-wrapper">
         <div className="feature-box"></div>
         <MDBIcon className="feature-icon" icon="user" />
@@ -20,53 +24,6 @@ const CardVer2 = ({ feature }) => {
     </div>
   );
 };
-const Card = ({ feature }) => {
-  const [didHover, setDidhover] = useState(false),
-    [isHovered, setIsHovered] = useState(false);
-
-  const { icon, title, description } = feature;
-
-  return (
-    <div
-      className={`landpage-card ${isHovered ? "landpage-card-hovered" : ""}`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <div
-        onMouseOver={() => setDidhover(true)}
-        onMouseOut={() => setDidhover(false)}
-      >
-        <div
-          style={{
-            margin: "auto",
-            width: "100px",
-            height: "100px",
-            border: didHover && "solid 7.5px #4285F4",
-            transform: `rotate(${didHover ? "225deg" : "0deg"})`,
-            display: "grid",
-            placeItems: "center",
-            transition: "all 1s",
-          }}
-        >
-          <MDBIcon
-            icon={icon}
-            size="4x"
-            style={{
-              transform: `rotate(${didHover ? "-225deg" : "0deg"})`,
-              //   transform: "rotate(-45deg)",
-              color: didHover ? "#4285F4" : "black",
-              transition: "all 1s",
-            }}
-          />
-        </div>
-        <h5 className="font-weight-bold">{title}</h5>
-      </div>
-      <div>
-        <p>{description}</p>
-      </div>
-    </div>
-  );
-};
 
 export default function Features() {
   const styles = {
@@ -74,7 +31,7 @@ export default function Features() {
       position: "absolute",
       minWidth: "650px",
       width: "100%",
-      top: "90vh",
+      top: "85vh",
       left: 0,
       height: "800px",
       clipPath: "polygon(65% 0, 100% 15%, 100% 100%, 0 100%, 0 10%)",
@@ -88,7 +45,7 @@ export default function Features() {
       position: "absolute",
       width: "100%",
       height: "6%",
-      top: "90vh",
+      top: "85vh",
       left: 0,
       clipPath: "polygon(65% 0%, 65% 0, 55% 100%, 14% 71%)",
       backgroundColor: "#FFC436",
@@ -116,16 +73,8 @@ export default function Features() {
         <br />
         <br />
         <br />
-        <CardVer2 />
+        <Card />
         <br />
-        {/* <Card
-          feature={{
-            title: "Hello World",
-            icon: "user",
-            description:
-              "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur hic odio beatae iure perferendis id quibusdam, accusantium, facere, cumque voluptatibus laborum velit animi pariatur eos illum esse voluptatum sunt delectus!",
-          }}
-        /> */}
       </div>
     </section>
   );
