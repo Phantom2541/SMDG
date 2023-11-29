@@ -14,6 +14,7 @@ import { School } from "../../services/fakeDb";
 import Banner from "./banner";
 import Features from "./features";
 import "./index.css";
+import Register from "./register";
 
 export default function Home() {
   const [collapseID, setCollapseID] = useState(false),
@@ -62,6 +63,7 @@ export default function Home() {
 
         <Banner />
         <Features />
+        {/* <Register /> */}
       </div>
     </>
   );

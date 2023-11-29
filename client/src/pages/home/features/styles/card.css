@@ -1,3 +1,33 @@
+.feature-container {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  height: auto; /* Adjusted height */
+  width: auto;
+  margin-left: 5%; /* Percentages for better responsiveness */
+  margin-right: 5%; /* Percentages for better responsiveness */
+  position: relative; /* Ensure position is relative for absolute positioning of lines */
+}
+
+@media screen and (min-width: 768px) {
+  .feature-container {
+    flex-direction: column; /* Stack items vertically on smaller screens */
+    align-items: center; /* Center items on smaller screens */
+    height: auto; /* Adjusted height for responsiveness */
+  }
+
+  .feature-lineleft,
+  .feature-linetop,
+  .feature-lineright,
+  .feature-linebottom {
+    display: none; /* Hide the lines on smaller screens */
+  }
+
+  .feature-card {
+    width: 90%; /* Adjust card width for smaller screens */
+  }
+}
+
 .feature-lineleft,
 .feature-linetop,
 .feature-lineright,
@@ -95,14 +125,14 @@
 }
 
 .feature-card {
-  height: 400px;
+  height: 300px;
   width: 280px;
   position: relative;
   overflow: hidden;
-  margin-left: 20px;
   margin-top: 20px;
-  background-color: white;
+  background-color: transparent;
   transition: 1s;
+  border-radius: 10px;
 }
 
 .feature-card:hover {
@@ -121,6 +151,7 @@
 .feature-card::before {
   top: 0;
   left: 0;
+  border-radius: 10px;
   background-image: linear-gradient(
     to bottom right,
     #cdf5fd,
@@ -132,6 +163,7 @@
 .feature-card::after {
   bottom: 0;
   right: 0;
+  border-radius: 10px;
   background-image: linear-gradient(
     to bottom right,
     #fbeeac,
@@ -189,12 +221,15 @@
 .feature-title {
   position: absolute;
   top: 150px;
-  left: 60px;
+  left: 50%; /* Position the left edge at the center */
+  transform: translateX(-50%); /* Move the text back by half of its width */
   z-index: 2;
   font-family: Serif;
   font-size: 25px;
   font-weight: bold;
-  transition: 0.5s;
+  transition: 1s;
+  text-align: center; /* Center-align the text content */
+  width: 280px; /* Optional: Set a width if desired */
 }
 
 .feature-card:hover .feature-title {
@@ -214,4 +249,11 @@
 
 .feature-card:hover .feature-content {
   color: white;
+}
+
+.feature-head {
+  font-size: 40px;
+  font-weight: bold;
+  text-decoration: underline;
+  text-decoration-color: white;
 }
