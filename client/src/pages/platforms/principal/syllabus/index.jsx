@@ -9,7 +9,6 @@ import {
   MDBContainer,
   MDBIcon,
   MDBRow,
-  MDBTable,
 } from "mdbreact";
 import "./style/card.css";
 

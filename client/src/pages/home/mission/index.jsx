@@ -4,9 +4,9 @@ import "./style/mission.css";
 export default function Mission() {
   return (
     <section id="mission">
-      <div class="mission-wrapper">
-        <div class="mission-container"></div>
-        <div class="vision-container"></div>
+      <div className="mission-wrapper">
+        <div className="mission-container"></div>
+        <div className="vision-container"></div>
       </div>
     </section>
   );
