@@ -1,4 +1,5 @@
 import Announcements from "./announcements";
+import Courses from "./courses";
 import Dashboard from "./dashboard";
 import EmploymentLists from "./employmentlists";
 import Enrollments from "./enrollments";
@@ -7,6 +8,7 @@ import Requirements from "./requirements";
 import Rooms from "./rooms";
 import Sections from "./sections";
 import Subjects from "./subjects";
+import Syllabus from "./syllabus";
 import Violations from "./violations";
 
 const access = [
@@ -18,14 +20,14 @@ const access = [
   },
   {
     name: "Announcements",
-    icon: "tachometer-alt",
+    icon: "bullhorn",
     path: "/announcements",
     component: Announcements,
   },
 
   {
     name: "Org Chart",
-    icon: "tachometer-alt",
+    icon: "sitemap",
     path: "/orgCharts",
     component: OrgCharts,
   },
@@ -34,6 +36,12 @@ const access = [
     icon: "book-open",
     path: "/subjects",
     component: Subjects,
+  },
+  {
+    name: "Syllabus",
+    icon: "clipboard",
+    path: "/syllabus",
+    component: Syllabus,
   },
   {
     name: "Accounts",
@@ -51,8 +59,8 @@ const access = [
     ],
   },
   {
-    name: "Lists",
-    icon: "list",
+    name: "Admissions",
+    icon: "user-tie",
     path: "/lists",
     children: [
       {
@@ -70,6 +78,13 @@ const access = [
         path: "/employments",
         component: EmploymentLists,
       },
+    ],
+  },
+  {
+    name: "Lists",
+    icon: "list",
+    path: "/lists",
+    children: [
       {
         name: "Rooms",
         path: "/rooms",
@@ -84,6 +99,11 @@ const access = [
         name: "Violations",
         path: "/violations",
         component: Violations,
+      },
+      {
+        name: "Courses",
+        path: "/courses",
+        component: Courses,
       },
     ],
   },
