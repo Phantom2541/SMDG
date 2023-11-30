@@ -17,7 +17,7 @@ const modelSchema = new mongoose.Schema(
       enum: {
         values: [
           "PRINCIPAL",
-          "VICE PRINCIPAL",
+          "VICE",
           "HEAD",
           "MASTER",
           "TEACHER",
@@ -29,6 +29,9 @@ const modelSchema = new mongoose.Schema(
         message: "Please choose a valid type from the predefined options.",
       },
       default: "OTHERS",
+    },
+    department: {
+      type: String,
     },
     emergencyContact: {
       primary: {

@@ -13,7 +13,7 @@ import GUEST from "./guest/access";
 const ACCESS = {
   ADMINISTRATOR,
   PRINCIPAL,
-  "VICE PRINCIPAL": VICE,
+  VICE,
   MASTER,
   TEACHER,
   REGISTRAR,

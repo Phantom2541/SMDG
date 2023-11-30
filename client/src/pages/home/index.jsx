@@ -71,7 +71,7 @@ export default function Home() {
 
         <Banner />
         <Features />
-        <Register />
+        {/* <Register /> */}
         <Mission />
       </div>
     </>

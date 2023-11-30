@@ -13,3 +13,7 @@ cashier list (search by isPublished: true, status: validated)
 registrar list (search by isPublished: true, status: paid)
 
 create COR template
+
+employment approval
+-validate if vice is existing
+-validate head and master if existing per department

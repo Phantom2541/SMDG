@@ -130,7 +130,11 @@ export default function EmploymentForm() {
         UPDATE({
           data: {
             user: _user,
-            employment: { ...employment, isPublished },
+            employment: {
+              ...employment,
+              isPublished,
+              status: "pending",
+            },
           },
           token,
         })
@@ -218,17 +222,26 @@ export default function EmploymentForm() {
   };
 
   const handleRemarks = () => {
-    const { isPublished, status, _id, remarks } = credentials;
+    if (!credentials?._id) return;
 
-    if (!_id) return;
+    const { isPublished, status, remarks } = credentials;
 
     let title = "Rejected: ",
       color = "danger",
       text = remarks;
 
-    if (status === "pending" && !isPublished) return "draft";
-
-    if (status === "pending" && isPublished) return "published";
+    if (status === "pending") {
+      if (isPublished) {
+        title = "Published: ";
+        color = "success";
+        text =
+          "The form has been submitted; please await validation by the principal.";
+      } else {
+        title = "Draft: ";
+        color = "info";
+        text = "Form saved as draft.";
+      }
+    }
 
     return (
       <MDBCardBody>

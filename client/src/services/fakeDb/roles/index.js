@@ -1,12 +1,8 @@
-const Roles = [
-  "VICE PRINCIPAL",
-  "HEAD",
-  "MASTER",
-  "TEACHER",
-  "REGISTRAR",
-  "CASHIER",
-  "GUIDANCE",
-  "OTHERS",
-];
+import collections from "./collections.json";
+
+const Roles = {
+  collections,
+  getStr: (v) => collections.find(({ value }) => v === value).str,
+};
 
 export default Roles;

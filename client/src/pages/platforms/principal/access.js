@@ -3,7 +3,7 @@ import Courses from "./courses";
 import Dashboard from "./dashboard";
 import EmploymentLists from "./employmentlists";
 import Enrollments from "./enrollments";
-import OrgCharts from "./orgCharts/orgchart";
+// import OrgCharts from "./orgCharts/orgchart";
 import Requirements from "./requirements";
 import Rooms from "./rooms";
 import Sections from "./sections";
@@ -19,42 +19,35 @@ const access = [
     component: Dashboard,
   },
   {
-    name: "Announcements",
-    icon: "bullhorn",
-    path: "/announcements",
-    component: Announcements,
-  },
-
-  {
-    name: "Org Chart",
-    icon: "sitemap",
-    path: "/orgCharts",
-    component: OrgCharts,
-  },
-  {
-    name: "Subjects",
-    icon: "book-open",
-    path: "/subjects",
-    component: Subjects,
-  },
-  {
-    name: "Syllabus",
-    icon: "clipboard",
-    path: "/syllabus",
-    component: Syllabus,
-  },
-  {
-    name: "Accounts",
-    icon: "id-card-alt",
-    path: "/accounts",
+    name: "Resources",
+    icon: "boxes",
+    path: "/resources",
     children: [
       {
-        name: "Employees",
-        path: "/employees",
+        name: "Courses",
+        path: "/courses",
+        component: Courses,
       },
       {
-        name: "Students",
-        path: "/students",
+        name: "Subjects",
+        icon: "book-open",
+        path: "/subjects",
+        component: Subjects,
+      },
+      {
+        name: "Syllabus",
+        path: "/syllabus",
+        component: Syllabus,
+      },
+      {
+        name: "Rooms",
+        path: "/rooms",
+        component: Rooms,
+      },
+      {
+        name: "Sections",
+        path: "/sections",
+        component: Sections,
       },
     ],
   },
@@ -64,7 +57,7 @@ const access = [
     path: "/lists",
     children: [
       {
-        name: "Requirements",
+        name: "Enrollment Requirements",
         path: "/requirements",
         component: Requirements,
       },
@@ -81,29 +74,40 @@ const access = [
     ],
   },
   {
-    name: "Lists",
-    icon: "list",
-    path: "/lists",
+    name: "Socials",
+    icon: "bullhorn",
+    path: "/socials",
     children: [
-      {
-        name: "Rooms",
-        path: "/rooms",
-        component: Rooms,
-      },
-      {
-        name: "Sections",
-        path: "/sections",
-        component: Sections,
-      },
       {
         name: "Violations",
         path: "/violations",
         component: Violations,
       },
       {
-        name: "Courses",
-        path: "/courses",
-        component: Courses,
+        name: "Announcements",
+        path: "/announcements",
+        component: Announcements,
+      },
+    ],
+  },
+  {
+    name: "Org Chart",
+    icon: "sitemap",
+    path: "/orgCharts",
+    // component: OrgCharts,
+  },
+  {
+    name: "Accounts",
+    icon: "id-card-alt",
+    path: "/accounts",
+    children: [
+      {
+        name: "Employees",
+        path: "/employees",
+      },
+      {
+        name: "Students",
+        path: "/students",
       },
     ],
   },

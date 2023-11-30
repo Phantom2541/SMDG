@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   MDBBtn,
   MDBModal,
@@ -12,12 +12,11 @@ import {
 import { abbreviate } from "../../../../services/utilities";
 import CustomSelect from "../../../../components/customSelect";
 import { Departments } from "../../../../services/fakeDb";
-import { formatGradeLvl } from "../../../../services/utilities";
 
 const { collections, getGradeLevels } = Departments;
 
 const _form = {
-  department: "grade",
+  department: "junior",
   title: "",
   abbreviation: "",
 };
@@ -73,25 +72,21 @@ export default function Modal({ show, toggle, selected, willCreate }) {
             </MDBCol>
           </MDBRow>
 
-          <div className="row">
-            <div className="col-6">
-              <CustomSelect
-                choices={collections}
-                label="Department"
-                preValue={department}
-                values="key"
-                texts="name"
-                onChange={(e) => {
-                  setForm({
-                    ...form,
-                    department: e,
-                    gradeLvl: getGradeLevels(e)[0],
-                  });
-                  setShowGrade(false);
-                }}
-              />
-            </div>
-          </div>
+          <CustomSelect
+            choices={collections.filter(({ key }) => key !== "grade")}
+            label="Department"
+            preValue={department}
+            values="key"
+            texts="name"
+            onChange={(e) => {
+              setForm({
+                ...form,
+                department: e,
+                gradeLvl: getGradeLevels(e)[0],
+              });
+              setShowGrade(false);
+            }}
+          />
 
           <MDBBtn color="primary" type="submit" className="float-right">
             Submit

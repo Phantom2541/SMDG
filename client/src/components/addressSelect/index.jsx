@@ -4,8 +4,16 @@ import { Philippines } from "../../services/fakeDb";
 import CustomSelect from "../customSelect";
 
 export default function AddressSelect({
+  disabledAllExceptSelected = false,
   handleChange = () => {},
-  address = { region: "", province: "", city: "", barangay: "" },
+  address = {
+    region: "REGION III (CENTRAL LUZON)",
+    province: "NUEVA ECIJA",
+    city: "CABANATUAN CITY",
+    barangay: "",
+    zip: "",
+    street: "",
+  },
   size = "3",
   label = "Address Information",
   uniqueId = "",
@@ -40,6 +48,7 @@ export default function AddressSelect({
       <MDBRow>
         <MDBCol md={size}>
           <CustomSelect
+            disabledAllExceptSelected={disabledAllExceptSelected}
             choices={Philippines.Regions}
             preValue={address.region}
             onChange={(e) => handleAddress("region", e)}
@@ -51,6 +60,7 @@ export default function AddressSelect({
         </MDBCol>
         <MDBCol md={size}>
           <CustomSelect
+            disabledAllExceptSelected={disabledAllExceptSelected}
             choices={Philippines.Provinces(address.region)}
             preValue={address.province}
             onChange={(e) => handleAddress("province", e)}
@@ -62,6 +72,7 @@ export default function AddressSelect({
         </MDBCol>
         <MDBCol md={size}>
           <CustomSelect
+            disabledAllExceptSelected={disabledAllExceptSelected}
             choices={Philippines.Cities(address.province)}
             preValue={address.city}
             onChange={(e) => handleAddress("city", e)}
@@ -73,6 +84,7 @@ export default function AddressSelect({
         </MDBCol>
         <MDBCol md={size}>
           <CustomSelect
+            disabledAllExceptSelected={disabledAllExceptSelected}
             choices={Philippines.Barangays(address.city)}
             preValue={address.barangay}
             onChange={(e) => handleAddress("barangay", e === "none" ? "" : e)}

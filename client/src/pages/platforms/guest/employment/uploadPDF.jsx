@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 import { MDBCol, MDBIcon, MDBRow } from "mdbreact";
 import "./styles/uploadPDF.css";
 
-export default function UploadPDF() {
+export default function UploadPDF({ title = "Preset", readOnly = false }) {
   const [preview, setPreview] = useState(null);
 
   const handleUpload = (e) => {
@@ -41,18 +41,20 @@ export default function UploadPDF() {
                   Application Letter
                 </div>
               )}
-              {preview && <iframe src={preview} width="317px" />}
+              {preview && <iframe title={title} src={preview} width="317px" />}
             </div>
-            <label
-              htmlFor="uploadpdf"
-              className="cursor-pointer text-center btn-primary p-1"
-              style={{
-                margin: "auto",
-                width: "300px",
-              }}
-            >
-              Upload PDF <MDBIcon className="ml-2" icon="upload" />
-            </label>
+            {!readOnly && (
+              <label
+                htmlFor="uploadpdf"
+                className="cursor-pointer text-center btn-primary p-1"
+                style={{
+                  margin: "auto",
+                  width: "300px",
+                }}
+              >
+                Upload PDF <MDBIcon className="ml-2" icon="upload" />
+              </label>
+            )}
           </div>
         </div>
       </MDBCol>

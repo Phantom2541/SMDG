@@ -6,39 +6,55 @@ import {
   MDBDatePicker,
   MDBInput,
   MDBRow,
+  MDBTypography,
 } from "mdbreact";
 import UploadPDF from "./uploadPDF";
 import AddressSelect from "../../../../components/addressSelect";
 import CustomSelect from "../../../../components/customSelect";
 import { getAge } from "../../../../services/utilities";
+import { Departments, Roles } from "../../../../services/fakeDb";
+
+const TEACHERS = ["HEAD", "MASTER", "TEACHER"];
 
 export default function Form({
-  user,
-  setUser,
-  employment,
-  setEmployment,
-  handleSubmit,
+  user = {},
+  setUser = () => {},
+  employment = {},
+  setEmployment = () => {},
+  handleSubmit = null,
+  isGuest = true,
+  submitTxt = "Submit",
+  handleReject,
 }) {
   const {
       mobile,
-      fullName,
+      fullName = {},
       motherTongue,
       dob,
       pob,
       civilStatus,
-      isMale,
-      address,
+      isMale = false,
+      address = { isSame: true },
     } = user,
-    { position, emergencyContact } = employment,
-    { primary, secondary } = emergencyContact,
-    { fname, lname, mname, suffix } = fullName;
+    {
+      position,
+      emergencyContact = {},
+      isPublished,
+      _id,
+      access,
+      department,
+      remarks,
+    } = employment,
+    { primary = {}, secondary = {} } = emergencyContact,
+    { fname, lname, mname, suffix } = fullName,
+    rowSize = TEACHERS.includes(access) ? "3" : "4";
 
   return (
     <MDBCardBody className="mx-5">
       <h5 className="mb-0">Personal Information</h5>
       <form onSubmit={handleSubmit}>
         <MDBRow>
-          <MDBCol md="6">
+          <MDBCol md={isGuest ? "6" : rowSize}>
             <MDBInput
               label="Applying Position"
               type="text"
@@ -51,10 +67,37 @@ export default function Form({
               }
             />
           </MDBCol>
-          <MDBCol md="6">
+          {!isGuest && (
+            <MDBCol md={rowSize}>
+              <CustomSelect
+                label="Allowed Access"
+                preValue={access}
+                choices={Roles.collections}
+                texts="str"
+                values="value"
+                onChange={(access) => setEmployment({ ...employment, access })}
+              />
+            </MDBCol>
+          )}
+          {TEACHERS.includes(access) && (
+            <MDBCol md="3">
+              <CustomSelect
+                label="Department"
+                preValue={department}
+                choices={Departments.collections}
+                texts="name"
+                values="key"
+                onChange={(department) =>
+                  setEmployment({ ...employment, department })
+                }
+              />
+            </MDBCol>
+          )}
+          <MDBCol md={isGuest ? "6" : rowSize}>
             <MDBInput
               label="Mobile No. +63"
               maxLength={10}
+              readOnly={!isGuest}
               value={mobile}
               onChange={(e) =>
                 setUser({
@@ -69,6 +112,7 @@ export default function Form({
           <MDBCol md="6" className="border-right border-top border-left">
             <MDBInput
               label="Last Name"
+              readOnly={!isGuest}
               value={lname}
               onChange={(e) =>
                 setUser({
@@ -85,6 +129,7 @@ export default function Form({
             <MDBInput
               label="Mother Tongue (ex: Tagalog, English)"
               value={motherTongue}
+              readOnly={!isGuest}
               onChange={(e) =>
                 setUser({
                   ...user,
@@ -100,6 +145,7 @@ export default function Form({
             <MDBInput
               label="First Name"
               value={fname}
+              readOnly={!isGuest}
               onChange={(e) =>
                 setUser({
                   ...user,
@@ -111,25 +157,30 @@ export default function Form({
               }
             />
           </MDBCol>
-          <MDBCol md="3">
+          <MDBCol md={isGuest ? "3" : "2"}>
             <label className="mb-0">Birthdate</label>
-            <MDBDatePicker
-              className="mt-1"
-              autoOk
-              value={dob}
-              getValue={(dob) =>
-                setUser({
-                  ...user,
-                  dob,
-                })
-              }
-            />
+            {isGuest ? (
+              <MDBDatePicker
+                className="mt-1"
+                autoOk
+                value={dob}
+                getValue={(dob) =>
+                  setUser({
+                    ...user,
+                    dob,
+                  })
+                }
+              />
+            ) : (
+              <div className="mt-2">{dob.toDateString()}</div>
+            )}
           </MDBCol>
           <MDBCol md="1">
             <MDBInput label="Age" readOnly value={getAge(dob.toDateString())} />
           </MDBCol>
-          <MDBCol md="2">
+          <MDBCol md={isGuest ? "2" : "3"}>
             <CustomSelect
+              disabledAllExceptSelected={!isGuest}
               label="Civil Status"
               preValue={civilStatus}
               choices={[
@@ -155,6 +206,7 @@ export default function Form({
             <MDBInput
               label="Middle Name"
               value={mname}
+              readOnly={!isGuest}
               onChange={(e) =>
                 setUser({
                   ...user,
@@ -170,6 +222,7 @@ export default function Form({
             <MDBInput
               label="Extension Name"
               value={suffix}
+              readOnly={!isGuest}
               onChange={(e) =>
                 setUser({
                   ...user,
@@ -186,6 +239,7 @@ export default function Form({
               <input
                 className="form-check-input"
                 type="checkbox"
+                readOnly={!isGuest}
                 checked={isMale}
                 onChange={() => setUser({ ...user, isMale: true })}
                 id="Male"
@@ -198,6 +252,7 @@ export default function Form({
               <input
                 className="form-check-input"
                 type="checkbox"
+                readOnly={!isGuest}
                 checked={!isMale}
                 onChange={() => setUser({ ...user, isMale: false })}
                 id="Female"
@@ -211,12 +266,14 @@ export default function Form({
             <MDBInput
               label="Place of Birth (Municipality/City)"
               value={pob}
+              readOnly={!isGuest}
               onChange={(e) => setUser({ ...user, pob: e.target.value })}
             />
           </MDBCol>
         </MDBRow>
 
         <AddressSelect
+          disabledAllExceptSelected={!isGuest}
           label="Permanent Address"
           address={address.permanent}
           handleChange={(_, permanent) =>
@@ -236,7 +293,8 @@ export default function Form({
             <MDBInput
               type="text"
               label="Street/Purok"
-              value={address.permanent?.street}
+              readOnly={!isGuest}
+              value={address?.permanent?.street}
               onChange={(e) =>
                 setUser({
                   ...user,
@@ -255,14 +313,15 @@ export default function Form({
             <MDBInput
               type="text"
               label="Zip Code"
-              value={address.permanent?.zip}
+              readOnly={!isGuest}
+              value={address?.permanent?.zip}
               onChange={(e) =>
                 setUser({
                   ...user,
                   address: {
                     ...address,
                     permanent: {
-                      ...address.permanent,
+                      ...address?.permanent,
                       zip: e.target.value.replace(/\D/g, ""),
                     },
                   },
@@ -282,7 +341,8 @@ export default function Form({
               <input
                 className="form-check-input"
                 type="checkbox"
-                checked={address.isSame}
+                readOnly={!isGuest}
+                checked={address?.isSame}
                 onChange={() =>
                   setUser({
                     ...user,
@@ -304,7 +364,8 @@ export default function Form({
               <input
                 className="form-check-input"
                 type="checkbox"
-                checked={!address.isSame}
+                readOnly={!isGuest}
+                checked={!address?.isSame}
                 onChange={() =>
                   setUser({
                     ...user,
@@ -327,8 +388,9 @@ export default function Form({
           <>
             <div className="mt-3">
               <AddressSelect
+                disabledAllExceptSelected={!isGuest}
                 label="Current Address"
-                address={address.current}
+                address={address?.current}
                 handleChange={(_, current) =>
                   setUser({
                     ...user,
@@ -346,14 +408,15 @@ export default function Form({
                 <MDBInput
                   type="text"
                   label="Street/Purok"
-                  value={address.current?.street}
+                  readOnly={!isGuest}
+                  value={address?.current?.street}
                   onChange={(e) =>
                     setUser({
                       ...user,
                       address: {
                         ...address,
                         current: {
-                          ...address.current,
+                          ...address?.current,
                           street: e.target.value,
                         },
                       },
@@ -365,6 +428,7 @@ export default function Form({
                 <MDBInput
                   type="text"
                   label="Zip Code"
+                  readOnly={!isGuest}
                   value={address.current?.zip}
                   onChange={(e) =>
                     setUser({
@@ -390,6 +454,7 @@ export default function Form({
             <MDBCol md="4">
               <MDBInput
                 label="Primary Name of Contact"
+                readOnly={!isGuest}
                 value={primary.name}
                 onChange={(e) =>
                   setEmployment({
@@ -408,6 +473,7 @@ export default function Form({
             <MDBCol md="4">
               <MDBInput
                 label="Relationship"
+                readOnly={!isGuest}
                 value={primary.relationship}
                 onChange={(e) =>
                   setEmployment({
@@ -426,6 +492,7 @@ export default function Form({
             <MDBCol md="4">
               <MDBInput
                 label="Mobile No. (+63)"
+                readOnly={!isGuest}
                 value={primary.mobile}
                 maxLength={10}
                 onChange={(e) =>
@@ -447,6 +514,7 @@ export default function Form({
             <MDBCol md="4">
               <MDBInput
                 label="Secondary Name of Contact"
+                readOnly={!isGuest}
                 value={secondary.name}
                 onChange={(e) =>
                   setEmployment({
@@ -465,6 +533,7 @@ export default function Form({
             <MDBCol md="4">
               <MDBInput
                 label="Relationship"
+                readOnly={!isGuest}
                 value={secondary.relationship}
                 onChange={(e) =>
                   setEmployment({
@@ -483,6 +552,7 @@ export default function Form({
             <MDBCol md="4">
               <MDBInput
                 label="Mobile No. (+63)"
+                readOnly={!isGuest}
                 value={secondary.mobile}
                 maxLength={10}
                 onChange={(e) =>
@@ -504,11 +574,38 @@ export default function Form({
         <hr color="primray" />
 
         <p>Upload PDFS (Required*)</p>
-        <UploadPDF />
+        <UploadPDF readOnly={!isGuest} />
 
-        <MDBBtn style={{ float: "right" }} color="primary" type="submit">
-          Submit
-        </MDBBtn>
+        {!isGuest && remarks && (
+          <MDBTypography
+            className="mb-0"
+            noteColor="danger"
+            note
+            noteTitle="Previous Remarks: "
+          >
+            {remarks}
+          </MDBTypography>
+        )}
+
+        {isGuest && !isPublished && (
+          <MDBBtn style={{ float: "right" }} color="primary" type="submit">
+            {submitTxt}
+          </MDBBtn>
+        )}
+        {!isGuest && (
+          <div className="float-right">
+            <MDBBtn type="submit" color="success">
+              Approve
+            </MDBBtn>
+            <MDBBtn
+              onClick={() => handleReject(_id)}
+              type="button"
+              color="danger"
+            >
+              Reject
+            </MDBBtn>
+          </div>
+        )}
       </form>
     </MDBCardBody>
   );

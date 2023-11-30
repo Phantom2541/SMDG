@@ -1,6 +1,6 @@
 const router = require("express").Router(),
   {
-    // browse,
+    browse,
     save,
     update,
     // destroy,
@@ -8,7 +8,7 @@ const router = require("express").Router(),
   { validate } = require("../../middleware/jwt");
 
 router
-  // .get("/browse", validate, browse)
+  .get("/browse", validate, browse)
   .post("/save", validate, save)
   .put("/update", validate, update);
 // .delete("/destroy", validate, destroy);

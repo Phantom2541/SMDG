@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { axioKit } from "../../../utilities";
+import { axioKit, socket } from "../../../utilities";
 
 const name = "admissions/employments";
 
@@ -11,23 +11,23 @@ const initialState = {
   message: "",
 };
 
-// export const BROWSE = createAsyncThunk(
-//   `${name}/browse`,
-//   ({ token, key }, thunkAPI) => {
-//     try {
-//       return axioKit.universal(`${name}/browse`, token, key);
-//     } catch (error) {
-//       const message =
-//         (error.response &&
-//           error.response.data &&
-//           error.response.data.message) ||
-//         error.message ||
-//         error.toString();
+export const BROWSE = createAsyncThunk(
+  `${name}/browse`,
+  ({ token, key }, thunkAPI) => {
+    try {
+      return axioKit.universal(`${name}/browse`, token, key);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
 
-//       return thunkAPI.rejectWithValue(message);
-//     }
-//   }
-// );
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
 export const SAVE = createAsyncThunk(
   `${name}/save`,
@@ -91,6 +91,9 @@ export const reduxSlice = createSlice({
       state.isSuccess = false;
       state.message = "";
     },
+    ADDEMPLOYMENT: (state, data) => {
+      state.collections.unshift(data.payload);
+    },
   },
   extraReducers: (builder) =>
     builder
@@ -100,7 +103,13 @@ export const reduxSlice = createSlice({
         state.message = "";
       })
       .addCase(SAVE.fulfilled, (state, action) => {
-        const { success, payload } = action.payload;
+        const { success, payload } = action.payload,
+          { employment, user } = payload;
+
+        if (employment?.isPublished) {
+          socket.emit("send_employment", { ...employment, user });
+        }
+
         state.message = success;
         state.response = payload;
         state.isSuccess = true;
@@ -118,9 +127,24 @@ export const reduxSlice = createSlice({
         state.message = "";
       })
       .addCase(UPDATE.fulfilled, (state, action) => {
-        const { success, payload } = action.payload;
-        state.response = payload;
-        state.message = success;
+        const { success, payload } = action.payload,
+          { user, employment } = payload;
+        if (user) {
+          state.response = payload;
+          state.message = success;
+
+          if (employment?.isPublished) {
+            socket.emit("send_employment", { ...employment, user });
+          }
+        } else {
+          const index = state.collections.findIndex(
+            (c) => c._id === employment._id
+          );
+
+          state.collections.splice(index, 1);
+          state.message = "Employment Approved Successfully";
+        }
+
         state.isSuccess = true;
         state.isLoading = false;
       })
@@ -128,47 +152,47 @@ export const reduxSlice = createSlice({
         const { error } = action;
         state.message = error.message;
         state.isLoading = false;
+      })
+
+      //   .addCase(DESTROY.pending, (state) => {
+      //     state.isLoading = true;
+      //     state.isSuccess = false;
+      //     state.message = "";
+      //   })
+      //   .addCase(DESTROY.fulfilled, (state, action) => {
+      //     const { success, payload } = action.payload;
+
+      //     bulkPayload(state, payload, false);
+
+      //     state.showModal = false;
+      //     state.message = success;
+      //     state.isSuccess = true;
+      //     state.isLoading = false;
+      //   })
+      //   .addCase(DESTROY.rejected, (state, action) => {
+      //     const { error } = action;
+      //     state.showModal = false;
+      //     state.message = error.message;
+      //     state.isLoading = false;
+      //   })
+
+      .addCase(BROWSE.pending, (state) => {
+        state.isLoading = true;
+        state.isSuccess = false;
+        state.message = "";
+      })
+      .addCase(BROWSE.fulfilled, (state, action) => {
+        const { payload } = action.payload;
+        state.collections = payload;
+        state.isLoading = false;
+      })
+      .addCase(BROWSE.rejected, (state, action) => {
+        const { error } = action;
+        state.message = error.message;
+        state.isLoading = false;
       }),
-
-  //   .addCase(DESTROY.pending, (state) => {
-  //     state.isLoading = true;
-  //     state.isSuccess = false;
-  //     state.message = "";
-  //   })
-  //   .addCase(DESTROY.fulfilled, (state, action) => {
-  //     const { success, payload } = action.payload;
-
-  //     bulkPayload(state, payload, false);
-
-  //     state.showModal = false;
-  //     state.message = success;
-  //     state.isSuccess = true;
-  //     state.isLoading = false;
-  //   })
-  //   .addCase(DESTROY.rejected, (state, action) => {
-  //     const { error } = action;
-  //     state.showModal = false;
-  //     state.message = error.message;
-  //     state.isLoading = false;
-  //   })
-
-  //   .addCase(BROWSE.pending, (state) => {
-  //     state.isLoading = true;
-  //     state.isSuccess = false;
-  //     state.message = "";
-  //   })
-  //   .addCase(BROWSE.fulfilled, (state, action) => {
-  //     const { payload } = action.payload;
-  //     state.collections = payload;
-  //     state.isLoading = false;
-  //   })
-  //   .addCase(BROWSE.rejected, (state, action) => {
-  //     const { error } = action;
-  //     state.message = error.message;
-  //     state.isLoading = false;
-  //   }),
 });
 
-export const { RESET } = reduxSlice.actions;
+export const { RESET, ADDEMPLOYMENT } = reduxSlice.actions;
 
 export default reduxSlice.reducer;
