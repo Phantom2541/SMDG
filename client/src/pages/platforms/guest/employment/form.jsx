@@ -503,10 +503,9 @@ export default function Form({
           </MDBRow>
         </div>
         <hr color="primray" />
-        <MDBContainer>
-          <p>Upload PDFS (Required*)</p>
-          <UploadPDF />
-        </MDBContainer>
+
+        <p>Upload PDFS (Required*)</p>
+        <UploadPDF />
 
         <MDBBtn style={{ float: "right" }} color="primary" type="submit">
           Submit

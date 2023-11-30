@@ -1,41 +1,61 @@
 import React, { useState } from "react";
-import { MDBIcon } from "mdbreact";
+import Swal from "sweetalert2";
+import { MDBCol, MDBIcon, MDBRow } from "mdbreact";
+import "./styles/uploadPDF.css";
 
-export default function UploadPDF({
-  label = "1x1 ID Picture",
-  id = "1x1Picture",
-}) {
-  const [preview, setPreview] = useState(null),
-    [file, setFile] = useState(null);
+export default function UploadPDF() {
+  const [preview, setPreview] = useState(null);
 
-  function handleChange(e) {
-    setPreview(URL.createObjectURL(e.target.files[0]));
-    setFile(file);
-  }
+  const handleUpload = (e) => {
+    const [file] = e.target.files;
+
+    if (file.type !== "application/pdf")
+      return Swal.fire("Invalid File format");
+
+    setPreview(URL.createObjectURL(file));
+    console.log(URL.createObjectURL(file));
+  };
 
   return (
-    <div className="mt-4">
-      <div className="card pt-2 text-center" style={{ width: "145px" }}>
-        {preview ? (
-          <img className="mb-1" src={preview} alt={preview} />
-        ) : (
-          <label style={{ color: "grey" }}>{label}</label>
-        )}
-        <input className="d-none" type="file" id={id} onChange={handleChange} />
-        <label
-          className="cursor-pointer btn-primary mb-0 p-2 w-30"
-          htmlFor={id}
-        >
-          {preview ? (
-            label
-          ) : (
-            <>
-              Upload File
-              <MDBIcon className="ml-2" icon="upload" />
-            </>
-          )}
-        </label>
-      </div>
-    </div>
+    <MDBRow className="mb-4">
+      <MDBCol md="4">
+        <div>
+          <input
+            className="d-none"
+            id="uploadpdf"
+            type="file"
+            onChange={handleUpload}
+            accept="application/pdf"
+          />
+
+          <div
+            className="card"
+            style={{
+              width: "300px",
+              height: "auto",
+            }}
+          >
+            <div className="pdf-container">
+              {!preview && (
+                <div style={{ color: "grey" }} className="text-center p-2">
+                  Application Letter
+                </div>
+              )}
+              {preview && <iframe src={preview} width="317px" />}
+            </div>
+            <label
+              htmlFor="uploadpdf"
+              className="cursor-pointer text-center btn-primary p-1"
+              style={{
+                margin: "auto",
+                width: "300px",
+              }}
+            >
+              Upload PDF <MDBIcon className="ml-2" icon="upload" />
+            </label>
+          </div>
+        </div>
+      </MDBCol>
+    </MDBRow>
   );
 }
