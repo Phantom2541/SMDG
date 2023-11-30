@@ -23,7 +23,7 @@ export default function Form({
   const {
       mobile,
       fullName,
-      mothertongue,
+      motherTongue,
       dob,
       pob,
       civilStatus,
@@ -85,11 +85,11 @@ export default function Form({
           <MDBCol md="6">
             <MDBInput
               label="Mother Tongue (ex: Tagalog, English)"
-              value={mothertongue}
+              value={motherTongue}
               onChange={(e) =>
                 setUser({
                   ...user,
-                  mothertongue: e.target.value,
+                  motherTongue: e.target.value,
                 })
               }
             />

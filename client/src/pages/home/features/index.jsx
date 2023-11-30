@@ -35,10 +35,6 @@ const Card = ({ feature }) => {
   const { icon, title, content } = feature;
   return (
     <div className="feature-card">
-      <div className="feature-lineleft"></div>
-      <div className="feature-lineright"></div>
-      <div className="feature-linetop"></div>
-      <div className="feature-linebottom"></div>
       <div className="feature-wrapper">
         <div className="feature-box"></div>
         <MDBIcon className="feature-icon" icon={`${icon}`} />
@@ -51,38 +47,35 @@ const Card = ({ feature }) => {
 
 export default function Features() {
   const styles = {
+    // imahe: {
+    //   backgroundImage: `url(${School.logo})`,
+    //   backgroundRepeat: "no-repeat",
+    //   backgroundPosition: "bottom center",
+    //   backgroundSize: "650px 650px",
+    //   minWidth: "650px",
+    //   width: "100%",
+    //   top: "80vh",
+    //   height: "700px",
+    //   filter: "blur(3.5px)",
+    // },
     container: {
-      position: "absolute",
-      minWidth: "650px",
-      width: "100%",
-      top: "80vh",
-      left: 0,
-      // height: "700px",
-      minHeight: "700px",
-      clipPath: "polygon(65% 0, 100% 15%, 100% 100%, 0 100%, 0 10%)",
-      // backgroundColor: "#0081C9",
-      background:
-        "radial-gradient(circle at center, rgba(255, 255, 255, 0.9) 15%, #0081C9 50%)",
-    },
-    imahe: {
-      backgroundImage: `url(${School.logo})`,
+      background: `
+      radial-gradient(circle at center, rgba(255, 57, 57, 0.9) 0.1%, #7F0404 50%),
+      url(${School.logo})`,
       backgroundRepeat: "no-repeat",
-      backgroundPosition: "bottom center",
-      backgroundSize: "650px 650px",
-      position: "absolute",
+      backgroundPosition: "bottom center, top center",
+      backgroundSize: "auto, contain",
       minWidth: "650px",
       width: "100%",
       top: "80vh",
       left: 0,
-      height: "700px",
-      filter: "blur(3.5px)",
+      minHeight: "700px",
+      // clipPath: "polygon(65% 0, 100% 15%, 100% 100%, 0 100%, 0 10%)",
     },
   };
 
   return (
     <section id="features">
-      <div style={styles.imahe} />
-      <div className="palong" />
       <div style={styles.container}>
         <br />
         <br />
@@ -90,12 +83,12 @@ export default function Features() {
         <div
           style={{
             width: "750px",
-            margin: "60px auto",
+            margin: "10px auto",
             textAlign: "center",
           }}
         >
           <p className="feature-head">Features</p>
-          <p style={{ fontSize: "20px" }}>
+          <p style={{ fontSize: "20px", color: "white" }}>
             Schools may employ various teaching methodologies, such as
             traditional lecture-style teaching, experiential learning,
             project-based learning, flipped classrooms, or Montessori methods,
