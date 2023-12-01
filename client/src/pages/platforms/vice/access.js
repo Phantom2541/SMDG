@@ -1,12 +1,16 @@
 import Announcements from "../principal/socials/announcements";
 import Enrollments from "../principal/admissions/enrollments";
-import OrgCharts from "../principal/orgCharts/orgchart";
+// import OrgCharts from "../principal/orgCharts/orgchart";
 import Requirements from "../principal/admissions/requirements";
 import Rooms from "../principal/resources/rooms";
 import Sections from "../principal/resources/sections";
 import Subjects from "../principal/resources/subjects";
 import Violations from "../principal/socials/violations";
 import Dashboard from "./dashboard";
+import DND from "../administrator/dnd";
+import Courses from "../principal/resources/courses";
+import Syllabus from "../principal/resources/syllabus";
+import EmploymentLists from "../principal/admissions/employments";
 
 const access = [
   {
@@ -16,42 +20,30 @@ const access = [
     component: Dashboard,
   },
   {
-    name: "Announcements",
-    icon: "tachometer-alt",
-    path: "/announcements",
-    component: Announcements,
-  },
-
-  {
-    name: "Org Chart",
-    icon: "tachometer-alt",
-    path: "/orgCharts",
-    component: OrgCharts,
+    name: "DND",
+    path: "/dnd",
+    component: DND,
   },
   {
-    name: "Subjects",
-    icon: "book-open",
-    path: "/subjects",
-    component: Subjects,
-  },
-  {
-    name: "Lists",
-    icon: "list",
-    path: "/lists",
+    name: "Resources",
+    icon: "boxes",
+    path: "/resources",
     children: [
       {
-        name: "Requirements",
-        path: "/requirements",
-        component: Requirements,
+        name: "Courses",
+        path: "/courses",
+        component: Courses,
       },
       {
-        name: "Enrollments",
-        path: "/enrollmentLists",
-        component: Enrollments,
+        name: "Subjects",
+        icon: "book-open",
+        path: "/subjects",
+        component: Subjects,
       },
       {
-        name: "Employments",
-        path: "/employments",
+        name: "Syllabus",
+        path: "/syllabus",
+        component: Syllabus,
       },
       {
         name: "Rooms",
@@ -63,10 +55,65 @@ const access = [
         path: "/sections",
         component: Sections,
       },
+    ],
+  },
+  {
+    name: "Admissions",
+    icon: "user-tie",
+    path: "/lists",
+    children: [
+      {
+        name: "Enrollment Requirements",
+        path: "/requirements",
+        component: Requirements,
+      },
+      {
+        name: "Enrollments",
+        path: "/enrollmentLists",
+        component: Enrollments,
+      },
+      {
+        name: "Employments",
+        path: "/employments",
+        component: EmploymentLists,
+      },
+    ],
+  },
+  {
+    name: "Socials",
+    icon: "bullhorn",
+    path: "/socials",
+    children: [
       {
         name: "Violations",
         path: "/violations",
         component: Violations,
+      },
+      {
+        name: "Announcements",
+        path: "/announcements",
+        component: Announcements,
+      },
+    ],
+  },
+  {
+    name: "Org Chart",
+    icon: "sitemap",
+    path: "/orgCharts",
+    // component: OrgCharts,
+  },
+  {
+    name: "Accounts",
+    icon: "id-card-alt",
+    path: "/accounts",
+    children: [
+      {
+        name: "Employees",
+        path: "/employees",
+      },
+      {
+        name: "Students",
+        path: "/students",
       },
     ],
   },
