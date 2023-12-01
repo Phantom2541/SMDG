@@ -20,11 +20,6 @@ const access = [
     component: Dashboard,
   },
   {
-    name: "DND",
-    path: "/dnd",
-    component: DND,
-  },
-  {
     name: "Resources",
     icon: "boxes",
     path: "/resources",
