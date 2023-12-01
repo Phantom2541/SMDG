@@ -8,7 +8,7 @@ import {
   MDBView,
 } from "mdbreact";
 import Modal from "./modal";
-import { formatGradeLvl, fullName } from "../../../../services/utilities";
+import { formatGradeLvl, fullName } from "../../../../../services/utilities";
 
 const students = [
   {

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { MDBModal, MDBModalBody, MDBIcon, MDBModalHeader } from "mdbreact";
-import EmploymentForm from "../../guest/employment/form";
+import EmploymentForm from "../../../guest/employment/form";
 import Swal from "sweetalert2";
-import { Departments, Roles } from "../../../../services/fakeDb";
+import { Departments, Roles } from "../../../../../services/fakeDb";
 import { useDispatch, useSelector } from "react-redux";
-import { UPDATE } from "../../../../services/redux/slices/admissions/employments";
+import { UPDATE } from "../../../../../services/redux/slices/admissions/employments";
 
 const TEACHERS = ["HEAD", "MASTER", "TEACHER"];
 

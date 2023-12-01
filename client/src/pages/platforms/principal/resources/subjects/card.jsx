@@ -11,7 +11,7 @@ import {
 } from "mdbreact";
 import { SubjectForm } from "./modal";
 import { useDispatch, useSelector } from "react-redux";
-import { UPDATE } from "../../../../services/redux/slices/resources/subjects";
+import { UPDATE } from "../../../../../services/redux/slices/resources/subjects";
 
 export default function Card({ subject, handleDelete }) {
   const [isOpen, setIsOpen] = useState(false),

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   MDBBtn,
   MDBBtnGroup,
@@ -9,23 +9,28 @@ import {
   MDBView,
 } from "mdbreact";
 import { useDispatch, useSelector } from "react-redux";
-import { DESTROY } from "../../../../services/redux/slices/resources/sections";
-import { useToasts } from "react-toast-notifications";
-import Swal from "sweetalert2";
+import { Departments } from "../../../../../services/fakeDb";
 import Modal from "./modal";
+import Swal from "sweetalert2";
+import {
+  BROWSE,
+  DESTROY,
+} from "../../../../../services/redux/slices/admissions/requirements";
+import { useToasts } from "react-toast-notifications";
 
-export default function Sections() {
-  const [sections, setSections] = useState([]),
-    { collections, message, isSuccess } = useSelector(
-      ({ sections }) => sections
-    ),
-    // { token } = useSelector(({ auth }) => auth),
-    [show, setShow] = useState(false),
-    [willCreate, setWillCreate] = useState(false),
+export default function Requirements() {
+  const [show, setShow] = useState(false),
+    { token } = useSelector(({ auth }) => auth),
+    [requirements, setRequirements] = useState([]),
+    [orderIndex, setOrderIndex] = useState(0),
     [selected, setSelected] = useState({}),
+    [willCreate, setWillCreate] = useState(true),
+    [didSearch, setDidSearch] = useState(false),
+    { collections, message, isSuccess } = useSelector(
+      ({ requirements }) => requirements
+    ),
     dispatch = useDispatch(),
     { addToast } = useToasts();
-  //   [didSearch, setDidSearch] = useState(false);
 
   useEffect(() => {
     if (message) {
@@ -35,17 +40,44 @@ export default function Sections() {
     }
   }, [isSuccess, message, addToast]);
 
-  // useEffect(() => {
-  //   if (token) {
-  //     dispatch(BROWSE({ token }));
-  //   }
-  // }, [dispatch, token]);
+  useEffect(() => {
+    dispatch(BROWSE({ token }));
+  }, [dispatch, token]);
 
   useEffect(() => {
-    setSections(collections);
-  }, [collections]);
+    setRequirements(() => {
+      if (!orderIndex) return collections;
 
-  const handleDelete = (index) => {
+      const rotateArray = (arr, steps) => {
+        const normalizedSteps = steps % arr.length;
+
+        if (normalizedSteps === 0) return arr;
+
+        return [
+          ...arr.slice(normalizedSteps),
+          ...arr.slice(0, normalizedSteps),
+        ];
+      };
+
+      const rotatedOrder = rotateArray(
+        ["grade", "junior", "senior", "college"],
+        orderIndex - 1
+      );
+
+      const customSort = (a, b) => {
+        const prefA = rotatedOrder.indexOf(a.department),
+          prefB = rotatedOrder.indexOf(b.department);
+
+        if (prefA === prefB) return a.title.localeCompare(b.title);
+
+        return prefA - prefB;
+      };
+
+      return [...collections].sort(customSort);
+    });
+  }, [orderIndex, collections]);
+
+  const handleDelete = (_id) =>
     Swal.fire({
       focusDeny: true,
       icon: "question",
@@ -61,7 +93,7 @@ export default function Sections() {
       if (res.isDenied) {
         dispatch(
           DESTROY({
-            data: { index },
+            data: { _id },
           })
         );
       } else {
@@ -74,19 +106,18 @@ export default function Sections() {
         });
       }
     });
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+
+    const key = e.target.searchKey.value.toUpperCase();
+
+    setRequirements(
+      collections.filter(({ title }) => title.toUpperCase().includes(key))
+    );
+
+    setDidSearch(true);
   };
-
-  // const handleSearch = (e) => {
-  //   e.preventDefault();
-
-  //   const key = e.target.searchKey.value.toUpperCase();
-
-  //   setSections(
-  //     collections.filter(({ name }) => name.toUpperCase().includes(key))
-  //   );
-
-  //   setDidSearch(true);
-  // };
 
   return (
     <>
@@ -95,11 +126,11 @@ export default function Sections() {
           cascade
           className="gradient-card-header blue-gradient py-2 mx-4 d-flex justify-content-between align-items-center"
         >
-          <span className="ml-3">Section List</span>
+          <span className="ml-3">Requirement List</span>
 
           <form
             id="requirements-inline-search"
-            // onSubmit={handleSearch}
+            onSubmit={handleSearch}
             className="form-inline ml-2"
           >
             <div className="form-group md-form py-0 mt-0">
@@ -111,19 +142,19 @@ export default function Sections() {
                 required
               />
               <MDBBtn
-                // onClick={() => {
-                //   if (!didSearch) return;
+                onClick={() => {
+                  if (!didSearch) return;
 
-                //   setDidSearch(false);
-                //   document.getElementById("requirements-inline-search").reset();
-                //   setSections(collections);
-                // }}
-                // type={didSearch ? "button" : "submit"}
+                  setDidSearch(false);
+                  document.getElementById("requirements-inline-search").reset();
+                  setRequirements(collections);
+                }}
+                type={didSearch ? "button" : "submit"}
                 size="sm"
                 color="info"
                 className="d-inline ml-2 px-2"
               >
-                <MDBIcon icon="search" />
+                <MDBIcon icon={didSearch ? "times" : "search"} />
               </MDBBtn>
               <MDBBtn
                 type="button"
@@ -142,37 +173,34 @@ export default function Sections() {
           <MDBTable responsive hover>
             <thead>
               <tr>
+                <th className="th-lg">Title</th>
                 <th
                   className="th-lg cursor-pointer"
-                  // onClick={() =>
-                  //   setOrderIndex((prev) => {
-                  //     if (prev > 1) return 0;
+                  onClick={() =>
+                    setOrderIndex((prev) => {
+                      if (prev > 3) return 0;
 
-                  //     return prev + 1;
-                  //   })
-                  // }
+                      return prev + 1;
+                    })
+                  }
                 >
-                  Name&nbsp;
+                  Department&nbsp;
                   <MDBIcon
                     icon="sort"
-                    title="Sort by Name"
-                    className="text-primary"
+                    title="Sort by Departments"
+                    className={`${!!orderIndex && "text-primary"}`}
                   />
                 </th>
-                <th className="th-lg">Grade Level</th>
-
-                <th className="th-lg">Advisor</th>
                 <th />
               </tr>
             </thead>
             <tbody>
-              {sections?.map((section, index) => {
-                const { name, gradeLvl, advisor } = section;
+              {requirements?.map((requirement) => {
+                const { _id, title, department } = requirement;
                 return (
-                  <tr key={index}>
-                    <td>{name}</td>
-                    <td>{gradeLvl}</td>
-                    <td>{advisor}</td>
+                  <tr key={_id}>
+                    <td>{title}</td>
+                    <td>{Departments.getName(department)}</td>
 
                     <td className="py-2 text-center">
                       <MDBBtnGroup>
@@ -184,7 +212,7 @@ export default function Sections() {
                           title="Update"
                           onClick={() => {
                             setWillCreate(false);
-                            setSelected(section);
+                            setSelected(requirement);
                             setShow(true);
                           }}
                         >
@@ -196,7 +224,7 @@ export default function Sections() {
                           rounded
                           color="danger"
                           title="Delete"
-                          onClick={() => handleDelete(index)}
+                          onClick={() => handleDelete(_id)}
                         >
                           <MDBIcon icon="trash-alt" />
                         </MDBBtn>

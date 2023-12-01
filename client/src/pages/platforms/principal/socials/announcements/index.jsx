@@ -5,9 +5,9 @@ import {
   DESTROY,
   RESET,
   TOGGLEMODAL,
-} from "../../../../services/redux/slices/announcements";
-import DataTable from "../../../../components/dataTable";
-import { fullName, globalSearch } from "../../../../services/utilities";
+} from "../../../../../services/redux/slices/announcements";
+import DataTable from "../../../../../components/dataTable";
+import { fullName, globalSearch } from "../../../../../services/utilities";
 import Modal from "./modal";
 import { useToasts } from "react-toast-notifications";
 import { MDBBadge } from "mdbreact";

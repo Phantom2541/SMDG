@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   MDBBtn,
   MDBModal,
@@ -6,27 +6,21 @@ import {
   MDBIcon,
   MDBModalHeader,
   MDBInput,
-  MDBRow,
-  MDBCol,
 } from "mdbreact";
-import { useToasts } from "react-toast-notifications";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  SAVE,
-  UPDATE,
-} from "../../../../services/redux/slices/resources/rooms";
+import { SAVE, UPDATE } from "../../../../../services/redux/slices/violations";
+import { useToasts } from "react-toast-notifications";
 import { isEqual } from "lodash";
 
 const _form = {
-  name: "",
+  title: "",
   description: "",
-  capacity: 0,
 };
 
-export default function Modal({ show, toggle, selected, willCreate }) {
+export default function Modal({ show, toggle, willCreate, selected }) {
   const [form, setForm] = useState(_form),
-    { token } = useSelector(({ auth }) => auth),
-    { isLoading } = useSelector(({ rooms }) => rooms),
+    { token, auth } = useSelector(({ auth }) => auth),
+    { isLoading } = useSelector(({ violations }) => violations),
     dispatch = useDispatch(),
     { addToast } = useToasts();
 
@@ -52,7 +46,7 @@ export default function Modal({ show, toggle, selected, willCreate }) {
         );
       }
     } else {
-      dispatch(SAVE({ data: form, token }));
+      dispatch(SAVE({ data: { ...form, createdBy: auth._id }, token }));
     }
 
     setForm(_form);
@@ -66,7 +60,7 @@ export default function Modal({ show, toggle, selected, willCreate }) {
 
   const handleChange = (key, value) => setForm({ ...form, [key]: value });
 
-  const { name, description, capacity } = form;
+  const { title, description } = form;
 
   return (
     <MDBModal isOpen={show} toggle={toggle} backdrop disableFocusTrap={false}>
@@ -75,39 +69,24 @@ export default function Modal({ show, toggle, selected, willCreate }) {
         className="light-blue darken-3 white-text"
       >
         <MDBIcon icon="user" className="mr-2" />
-        {!willCreate ? "Update" : "Create"} a Room
+        {!willCreate ? "Update" : "Create"} a Violation
       </MDBModalHeader>
       <MDBModalBody className="mb-0">
         <form onSubmit={handleSubmit}>
-          <MDBRow>
-            <MDBCol md="8">
-              <MDBInput
-                type="text"
-                label="Name"
-                value={name}
-                onChange={(e) =>
-                  handleChange("name", e.target.value.toUpperCase())
-                }
-                required
-              />
-            </MDBCol>
-            <MDBCol md="4">
-              <MDBInput
-                type="Number"
-                label="Capacity"
-                value={capacity}
-                onChange={(e) =>
-                  handleChange("capacity", Number(e.target.value))
-                }
-              />
-            </MDBCol>
-          </MDBRow>
+          <MDBInput
+            type="text"
+            label="Title"
+            value={title}
+            onChange={(e) =>
+              handleChange("title", e.target.value.toUpperCase())
+            }
+            required
+          />
 
           <MDBInput
             type="textarea"
-            label="Description and Landmark"
+            label="Description"
             value={description}
-            rows={3}
             onChange={(e) => handleChange("description", e.target.value)}
           />
 

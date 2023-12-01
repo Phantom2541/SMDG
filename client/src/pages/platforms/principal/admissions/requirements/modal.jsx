@@ -7,13 +7,13 @@ import {
   MDBModalHeader,
   MDBInput,
 } from "mdbreact";
-import CustomSelect from "../../../../components/customSelect";
-import { Departments } from "../../../../services/fakeDb";
+import CustomSelect from "../../../../../components/customSelect";
+import { Departments } from "../../../../../services/fakeDb";
 import { useDispatch, useSelector } from "react-redux";
 import {
   SAVE,
   UPDATE,
-} from "../../../../services/redux/slices/admissions/requirements";
+} from "../../../../../services/redux/slices/admissions/requirements";
 import { isEqual } from "lodash";
 import { useToasts } from "react-toast-notifications";
 
