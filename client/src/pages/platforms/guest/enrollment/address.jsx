@@ -23,7 +23,6 @@ export default function Address({ setActiveStep, handleForm }) {
           label="Current address"
           address={current}
           handleChange={(_, value) => handleChange("current", value)}
-          uniqueId="current"
         />
         <div className="row">
           <div className="col-5">
@@ -95,7 +94,6 @@ export default function Address({ setActiveStep, handleForm }) {
             label="Permanent address"
             address={permanent}
             handleChange={(_, value) => handleChange("permanent", value)}
-            uniqueId="permanent"
           />
           <div className="row">
             <div className="col-5">

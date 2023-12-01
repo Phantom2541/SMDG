@@ -285,7 +285,6 @@ export default function Form({
               },
             })
           }
-          uniqueId="current"
         />
 
         <MDBRow>
@@ -400,7 +399,6 @@ export default function Form({
                     },
                   })
                 }
-                uniqueId="current"
               />
             </div>
             <MDBRow>
