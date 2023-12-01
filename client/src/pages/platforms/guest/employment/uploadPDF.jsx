@@ -1,10 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { MDBCol, MDBIcon, MDBRow } from "mdbreact";
 import "./styles/uploadPDF.css";
+import { useDispatch, useSelector } from "react-redux";
+import { UPLOAD } from "../../../../services/redux/slices/auth";
+import { ENDPOINT, isValidLink } from "../../../../services/utilities";
 
-export default function UploadPDF({ title = "Preset", readOnly = false }) {
-  const [preview, setPreview] = useState(null);
+export default function UploadPDF({
+  title = "",
+  email = "",
+  readOnly = false,
+}) {
+  const [preview, setPreview] = useState(null),
+    { token } = useSelector(({ auth }) => auth),
+    dispatch = useDispatch();
+
+  useEffect(() => {
+    if (title && email) {
+      const url = `${ENDPOINT}/assets/employments/${email}/${title}.pdf`;
+      console.log(url);
+      isValidLink(url, (valid) => {
+        if (valid) setPreview(url);
+      });
+    }
+  }, [title, email]);
 
   const handleUpload = (e) => {
     const [file] = e.target.files;
@@ -12,8 +31,25 @@ export default function UploadPDF({ title = "Preset", readOnly = false }) {
     if (file.type !== "application/pdf")
       return Swal.fire("Invalid File format");
 
-    setPreview(URL.createObjectURL(file));
-    console.log(URL.createObjectURL(file));
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const { result } = e.target;
+
+      dispatch(
+        UPLOAD({
+          data: {
+            name: `${title}.pdf`,
+            base64: result.split(",")[1],
+            path: `employments/${email}`,
+          },
+
+          token,
+        })
+      );
+    };
+
+    reader.readAsDataURL(file);
   };
 
   return (
@@ -22,7 +58,7 @@ export default function UploadPDF({ title = "Preset", readOnly = false }) {
         <div>
           <input
             className="d-none"
-            id="uploadpdf"
+            id={title}
             type="file"
             onChange={handleUpload}
             accept="application/pdf"
@@ -36,25 +72,35 @@ export default function UploadPDF({ title = "Preset", readOnly = false }) {
             }}
           >
             <div className="pdf-container">
-              {!preview && (
+              {preview ? (
+                <iframe title={title} src={preview} width="317px" />
+              ) : (
                 <div style={{ color: "grey" }} className="text-center p-2">
-                  Application Letter
+                  {title}
                 </div>
               )}
-              {preview && <iframe title={title} src={preview} width="317px" />}
             </div>
-            {!readOnly && (
-              <label
-                htmlFor="uploadpdf"
-                className="cursor-pointer text-center btn-primary p-1"
-                style={{
-                  margin: "auto",
-                  width: "300px",
-                }}
-              >
-                Upload PDF <MDBIcon className="ml-2" icon="upload" />
-              </label>
-            )}
+            <label
+              htmlFor={readOnly ? "" : title}
+              className="cursor-pointer text-center btn-primary p-1"
+              style={{
+                margin: "auto",
+                width: "300px",
+              }}
+              onClick={() => {
+                if (!readOnly || !preview) return;
+
+                window.open(preview);
+              }}
+            >
+              {readOnly ? (
+                title
+              ) : (
+                <>
+                  Upload PDF <MDBIcon className="ml-2" icon="upload" />
+                </>
+              )}
+            </label>
           </div>
         </div>
       </MDBCol>

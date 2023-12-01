@@ -18,7 +18,7 @@ export default function CustomSelect({
   disableAll = false,
   multiple = false,
   disabledAllExceptSelected = false,
-  disableByKey = {},
+  disableByKey = {}, // { key: ['disabled', 'values'] }
 }) {
   const handleDisabling = (value, obj) => {
     if (disableAll) return true;
@@ -26,7 +26,7 @@ export default function CustomSelect({
 
     if (!!Object.keys(disableByKey).length) {
       for (const key in disableByKey) {
-        if (obj[key] === disableByKey[key]) return true;
+        if (disableByKey[key].includes(obj[key])) return true;
       }
     }
 

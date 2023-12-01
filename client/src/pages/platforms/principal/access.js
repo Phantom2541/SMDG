@@ -1,4 +1,4 @@
-import DND from "../administrator/dnd";
+// import DND from "../administrator/dnd";
 import Announcements from "./socials/announcements";
 import Courses from "./resources/courses";
 import Dashboard from "./dashboard";

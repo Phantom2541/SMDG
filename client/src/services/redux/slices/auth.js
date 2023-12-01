@@ -150,11 +150,11 @@ export const reduxSlice = createSlice({
 
       .addCase(UPLOAD.pending, (state) => {
         state.isLoading = true;
-        state.isSuccess = false;
         state.message = "";
       })
       .addCase(UPLOAD.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.message = "Upload Success";
       })
       .addCase(UPLOAD.rejected, (state, action) => {
         const { error } = action;

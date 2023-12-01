@@ -13,8 +13,10 @@ import AddressSelect from "../../../../components/addressSelect";
 import CustomSelect from "../../../../components/customSelect";
 import { getAge } from "../../../../services/utilities";
 import { Departments, Roles } from "../../../../services/fakeDb";
+import { useSelector } from "react-redux";
 
-const TEACHERS = ["HEAD", "MASTER", "TEACHER"];
+const TEACHERS = ["HEAD", "MASTER", "TEACHER"],
+  requirements = ["Application Letter", "Résumé", "Personal Data Sheet"];
 
 export default function Form({
   user = {},
@@ -26,6 +28,8 @@ export default function Form({
   submitTxt = "Submit",
   handleReject,
 }) {
+  const { taken } = useSelector(({ employments }) => employments);
+
   const {
       mobile,
       fullName = {},
@@ -35,6 +39,7 @@ export default function Form({
       civilStatus,
       isMale = false,
       address = { isSame: true },
+      email = "",
     } = user,
     {
       position,
@@ -70,6 +75,7 @@ export default function Form({
           {!isGuest && (
             <MDBCol md={rowSize}>
               <CustomSelect
+                disableByKey={{ value: taken.access }}
                 label="Allowed Access"
                 preValue={access}
                 choices={Roles.collections}
@@ -82,6 +88,7 @@ export default function Form({
           {TEACHERS.includes(access) && (
             <MDBCol md="3">
               <CustomSelect
+                disableByKey={{ key: taken[access] }}
                 label="Department"
                 preValue={department}
                 choices={Departments.collections}
@@ -571,8 +578,18 @@ export default function Form({
         </div>
         <hr color="primray" />
 
-        <p>Upload PDFS (Required*)</p>
-        <UploadPDF readOnly={!isGuest} />
+        <p>Upload{!isGuest && "ed"} PDF'S</p>
+        <MDBRow>
+          {requirements.map((requirement) => (
+            <MDBCol md="4" key={requirement}>
+              <UploadPDF
+                email={email}
+                title={requirement}
+                readOnly={!isGuest || isPublished}
+              />
+            </MDBCol>
+          ))}
+        </MDBRow>
 
         {!isGuest && remarks && (
           <MDBTypography

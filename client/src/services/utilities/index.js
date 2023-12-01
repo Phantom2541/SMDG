@@ -14,6 +14,7 @@ import getAge from "./getAge";
 import formatMobile from "./formatMobile";
 import abbreviate from "./abbreviate";
 import whiteSpace from "./whiteSpace";
+import isValidLink from "./isValidLink";
 
 const ENDPOINT = "http://localhost:5001";
 // const ENDPOINT = window.location.origin;
@@ -26,6 +27,7 @@ const PresetImage = (gender) => {
 };
 
 export {
+  isValidLink,
   whiteSpace,
   abbreviate,
   formatMobile,

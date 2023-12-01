@@ -40,7 +40,7 @@ export default function Modal({ show, toggle, selected }) {
       department && TEACHERS.includes(access)
         ? `${Departments.getName(department)} `
         : ""
-    }${_access}</b> access`;
+    }${_access}</b> access and <b>${position}</b> position`;
 
     Swal.fire({
       focusDeny: true,

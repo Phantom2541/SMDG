@@ -6,6 +6,11 @@ const name = "admissions/employments";
 const initialState = {
   collections: [],
   response: {},
+  taken: {
+    access: [],
+    HEAD: [],
+    MASTER: [],
+  },
   isSuccess: false,
   isLoading: false,
   message: "",
@@ -127,8 +132,11 @@ export const reduxSlice = createSlice({
         state.message = "";
       })
       .addCase(UPDATE.fulfilled, (state, action) => {
-        const { success, payload } = action.payload,
+        const { success, payload, shouldRefresh } = action.payload,
           { user, employment } = payload;
+
+        if (shouldRefresh) window.location.reload();
+
         if (user) {
           state.response = payload;
           state.message = success;
@@ -182,8 +190,9 @@ export const reduxSlice = createSlice({
         state.message = "";
       })
       .addCase(BROWSE.fulfilled, (state, action) => {
-        const { payload } = action.payload;
+        const { payload, taken } = action.payload;
         state.collections = payload;
+        state.taken = taken;
         state.isLoading = false;
       })
       .addCase(BROWSE.rejected, (state, action) => {

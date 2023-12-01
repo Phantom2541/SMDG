@@ -33,10 +33,7 @@ export default function EmploymentLists() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (token)
-      dispatch(
-        BROWSE({ token, key: { isPublished: true, status: "pending" } })
-      );
+    if (token) dispatch(BROWSE({ token }));
 
     return () => dispatch(RESET());
   }, [dispatch, token]);
