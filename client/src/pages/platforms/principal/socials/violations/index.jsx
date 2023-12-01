@@ -10,22 +10,25 @@ import {
 } from "mdbreact";
 import Modal from "./modal";
 import { useDispatch, useSelector } from "react-redux";
+import { useToasts } from "react-toast-notifications";
 import {
   BROWSE,
   DESTROY,
-} from "../../../../services/redux/slices/resources/rooms";
-import { useToasts } from "react-toast-notifications";
+} from "../../../../../services/redux/slices/violations";
+import { fullName } from "../../../../../services/utilities";
 import Swal from "sweetalert2";
 
-export default function Rooms() {
+export default function Violations() {
   const [show, setShow] = useState(false),
-    { token } = useSelector(({ auth }) => auth),
-    [rooms, setRooms] = useState([]),
+    [violations, setViolations] = useState([]),
+    [willCreate, setWillCreate] = useState(false),
     [orderIndex, setOrderIndex] = useState(0),
-    [willCreate, setWillCreate] = useState(true),
     [selected, setSelected] = useState({}),
     [didSearch, setDidSearch] = useState(false),
-    { collections, message, isSuccess } = useSelector(({ rooms }) => rooms),
+    { token, auth } = useSelector(({ auth }) => auth),
+    { collections, isSuccess, message } = useSelector(
+      ({ violations }) => violations
+    ),
     dispatch = useDispatch(),
     { addToast } = useToasts();
 
@@ -44,13 +47,13 @@ export default function Rooms() {
   }, [dispatch, token]);
 
   useEffect(() => {
-    setRooms(() => {
+    setViolations(() => {
       if (!orderIndex) return collections;
 
       return [...collections].sort((a, b) => {
-        if (orderIndex === 1) return a.name.localeCompare(b.name);
+        if (orderIndex === 1) return a.title.localeCompare(b.title);
 
-        return b.name.localeCompare(a.name);
+        return b.title.localeCompare(a.title);
       });
     });
   }, [orderIndex, collections]);
@@ -91,8 +94,8 @@ export default function Rooms() {
 
     const key = e.target.searchKey.value.toUpperCase();
 
-    setRooms(
-      collections.filter(({ name }) => name.toUpperCase().includes(key))
+    setViolations(
+      collections.filter(({ title }) => title.toUpperCase().includes(key))
     );
 
     setDidSearch(true);
@@ -105,7 +108,7 @@ export default function Rooms() {
           cascade
           className="gradient-card-header blue-gradient py-2 mx-4 d-flex justify-content-between align-items-center"
         >
-          <span className="ml-3">Room List</span>
+          <span className="ml-3">Violation List</span>
 
           <form
             id="requirements-inline-search"
@@ -126,9 +129,9 @@ export default function Rooms() {
 
                   setDidSearch(false);
                   document.getElementById("requirements-inline-search").reset();
-                  setRooms(collections);
+                  setViolations(collections);
                 }}
-                type={didSearch ? "button" : "submit"}
+                type="submit"
                 size="sm"
                 color="info"
                 className="d-inline ml-2 px-2"
@@ -140,7 +143,10 @@ export default function Rooms() {
                 size="sm"
                 color="primary"
                 className="d-inline  px-2"
-                onClick={() => setShow(true)}
+                onClick={() => {
+                  if (!willCreate) setWillCreate(true);
+                  setShow(true);
+                }}
                 title="Create a Subject"
               >
                 <MDBIcon icon="plus" />
@@ -162,7 +168,7 @@ export default function Rooms() {
                     })
                   }
                 >
-                  Name&nbsp;
+                  Title&nbsp;
                   <MDBIcon
                     icon="sort"
                     title="Sort by Name"
@@ -170,47 +176,49 @@ export default function Rooms() {
                   />
                 </th>
                 <th className="th-lg">Description</th>
-
-                <th className="th-lg">Capacity</th>
+                <th className="th-lg">Created By</th>
                 <th />
               </tr>
             </thead>
             <tbody>
-              {rooms?.map((room) => {
-                const { _id, name, description, capacity } = room;
+              {violations?.map((violation) => {
+                const { _id, title, description, createdBy } = violation,
+                  { _id: creatorId = "", fullName: fullname = {} } = createdBy;
                 return (
                   <tr key={_id}>
-                    <td>{name}</td>
+                    <td>{title}</td>
                     <td>{description}</td>
-                    <td>{capacity}</td>
+                    <td>{fullName(fullname)}</td>
 
                     <td className="py-2 text-center">
-                      <MDBBtnGroup>
-                        <MDBBtn
-                          className="m-0"
-                          size="sm"
-                          color="info"
-                          rounded
-                          title="Update"
-                          onClick={() => {
-                            setWillCreate(false);
-                            setSelected(room);
-                            setShow(true);
-                          }}
-                        >
-                          <MDBIcon icon="pen" />
-                        </MDBBtn>
-                        <MDBBtn
-                          className="m-0"
-                          size="sm"
-                          rounded
-                          color="danger"
-                          title="Delete"
-                          onClick={() => handleDelete(_id)}
-                        >
-                          <MDBIcon icon="trash-alt" />
-                        </MDBBtn>
-                      </MDBBtnGroup>
+                      {auth?._id === creatorId && (
+                        <MDBBtnGroup>
+                          <MDBBtn
+                            className="m-0"
+                            size="sm"
+                            color="info"
+                            rounded
+                            title="Update"
+                            onClick={() => {
+                              setWillCreate(false);
+                              setSelected(violation);
+                              setShow(true);
+                            }}
+                          >
+                            <MDBIcon icon="pen" />
+                          </MDBBtn>
+                          <MDBBtn
+                            className="m-0"
+                            size="sm"
+                            rounded
+                            color="danger"
+                            title="Delete"
+                            onClick={() => handleDelete(_id)}
+                          >
+                            <MDBIcon icon="trash-alt" />
+                          </MDBBtn>
+                        </MDBBtnGroup>
+                      )}
                     </td>
                   </tr>
                 );

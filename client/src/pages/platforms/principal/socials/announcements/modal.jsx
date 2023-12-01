@@ -17,13 +17,13 @@ import {
   SAVE,
   TOGGLEMODAL,
   UPDATE,
-} from "../../../../services/redux/slices/announcements";
+} from "../../../../../services/redux/slices/announcements";
 import { useToasts } from "react-toast-notifications";
-import CustomSelect from "../../../../components/customSelect";
-import { capitalize } from "../../../../services/utilities";
+import CustomSelect from "../../../../../components/customSelect";
+import { capitalize } from "../../../../../services/utilities";
 import { EditorState, convertToRaw } from "draft-js";
 import Swal from "sweetalert2";
-import Docx from "../../../../components/docx";
+import Docx from "../../../../../components/docx";
 
 // declare your expected items
 const today = new Date();

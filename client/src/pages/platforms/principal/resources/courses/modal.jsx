@@ -9,9 +9,9 @@ import {
   MDBRow,
   MDBCol,
 } from "mdbreact";
-import { abbreviate } from "../../../../services/utilities";
-import CustomSelect from "../../../../components/customSelect";
-import { Departments } from "../../../../services/fakeDb";
+import { abbreviate } from "../../../../../services/utilities";
+import CustomSelect from "../../../../../components/customSelect";
+import { Departments } from "../../../../../services/fakeDb";
 
 const { collections, getGradeLevels } = Departments;
 

@@ -1,12 +1,12 @@
 import Dashboard from "./dashboard";
-import Announcements from "../principal/announcements";
-import Violations from "../principal/violations";
+import Announcements from "../principal/socials/announcements";
+import Violations from "../principal/socials/violations";
 import Tree from "../principal/orgCharts";
-import Subjects from "../principal/subjects";
-import Enrollments from "../principal/enrollments";
-import Requirements from "../principal/requirements";
-import Rooms from "../principal/rooms";
-import Sections from "../principal/sections";
+import Subjects from "../principal/resources/subjects";
+import Enrollments from "../principal/admissions/enrollments";
+import Requirements from "../principal/admissions/requirements";
+import Rooms from "../principal/resources/rooms";
+import Sections from "../principal/resources/sections";
 
 const access = [
   {

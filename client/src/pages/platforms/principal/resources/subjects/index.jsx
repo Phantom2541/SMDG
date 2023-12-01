@@ -9,7 +9,7 @@ import { useToasts } from "react-toast-notifications";
 import {
   BROWSE,
   DESTROY,
-} from "../../../../services/redux/slices/resources/subjects";
+} from "../../../../../services/redux/slices/resources/subjects";
 
 export default function Subjects() {
   const [show, setShow] = useState(false),

@@ -1,6 +1,6 @@
 import React from "react";
 import { MDBCard, MDBCardBody, MDBCol, MDBInput, MDBRow } from "mdbreact";
-import AddressSelect from "../../../../../components/addressSelect";
+import AddressSelect from "../../../../../../components/addressSelect";
 
 export default function Address() {
   return (

@@ -1,15 +1,16 @@
-import Announcements from "./announcements";
-import Courses from "./courses";
+import DND from "../administrator/dnd";
+import Announcements from "./socials/announcements";
+import Courses from "./resources/courses";
 import Dashboard from "./dashboard";
-import EmploymentLists from "./employmentlists";
-import Enrollments from "./enrollments";
+import EmploymentLists from "./admissions/employments";
+import Enrollments from "./admissions/enrollments";
 // import OrgCharts from "./orgCharts/orgchart";
-import Requirements from "./requirements";
-import Rooms from "./rooms";
-import Sections from "./sections";
-import Subjects from "./subjects";
-import Syllabus from "./syllabus";
-import Violations from "./violations";
+import Requirements from "./admissions/requirements";
+import Rooms from "./resources/rooms";
+import Sections from "./resources/sections";
+import Subjects from "./resources/subjects";
+import Syllabus from "./resources/syllabus";
+import Violations from "./socials/violations";
 
 const access = [
   {

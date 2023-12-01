@@ -11,12 +11,12 @@ import {
 } from "mdbreact";
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
-import { SAVE } from "../../../../services/redux/slices/resources/subjects";
-import { abbreviate } from "../../../../services/utilities";
+import { SAVE } from "../../../../../services/redux/slices/resources/subjects";
+import { abbreviate } from "../../../../../services/utilities";
 
-import CustomSelect from "../../../../components/customSelect";
-import { Departments } from "../../../../services/fakeDb";
-import { formatGradeLvl } from "../../../../services/utilities";
+import CustomSelect from "../../../../../components/customSelect";
+import { Departments } from "../../../../../services/fakeDb";
+import { formatGradeLvl } from "../../../../../services/utilities";
 
 const { collections, getGradeLevels } = Departments;
 

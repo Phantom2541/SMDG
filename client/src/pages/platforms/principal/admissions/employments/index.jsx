@@ -13,8 +13,8 @@ import {
   BROWSE,
   RESET,
   ADDEMPLOYMENT,
-} from "../../../../services/redux/slices/admissions/employments";
-import { fullName, socket } from "../../../../services/utilities";
+} from "../../../../../services/redux/slices/admissions/employments";
+import { fullName, socket } from "../../../../../services/utilities";
 
 export default function EmploymentLists() {
   const [employments, setEmployments] = useState([]),
