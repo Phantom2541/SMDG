@@ -13,6 +13,7 @@ import formatGradeLvl from "./formatGradeLvl";
 import getAge from "./getAge";
 import formatMobile from "./formatMobile";
 import abbreviate from "./abbreviate";
+import whiteSpace from "./whiteSpace";
 
 const ENDPOINT = "http://localhost:5001";
 // const ENDPOINT = window.location.origin;
@@ -25,6 +26,7 @@ const PresetImage = (gender) => {
 };
 
 export {
+  whiteSpace,
   abbreviate,
   formatMobile,
   getAge,

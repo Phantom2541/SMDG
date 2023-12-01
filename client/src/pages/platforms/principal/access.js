@@ -1,3 +1,4 @@
+import DND from "../administrator/dnd";
 import Announcements from "./announcements";
 import Courses from "./courses";
 import Dashboard from "./dashboard";
@@ -17,6 +18,11 @@ const access = [
     icon: "tachometer-alt",
     path: "/dashboard",
     component: Dashboard,
+  },
+  {
+    name: "DND",
+    path: "/dnd",
+    component: DND,
   },
   {
     name: "Resources",
