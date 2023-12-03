@@ -1,6 +1,6 @@
 // import DND from "../administrator/dnd";
 import Announcements from "./socials/announcements";
-import Courses from "./resources/courses";
+// import Courses from "./resources/courses";
 import Dashboard from "./dashboard";
 import EmploymentLists from "./admissions/employments";
 import Enrollments from "./admissions/enrollments";
@@ -27,7 +27,7 @@ const access = [
       {
         name: "Courses",
         path: "/courses",
-        component: Courses,
+        // component: Courses,
       },
       {
         name: "Subjects",

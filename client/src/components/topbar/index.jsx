@@ -10,6 +10,7 @@ import {
   MDBDropdownItem,
 } from "mdbreact";
 import { connect } from "react-redux";
+import { Roles } from "../../services/fakeDb";
 
 class TopNavigation extends Component {
   constructor(props) {
@@ -69,7 +70,7 @@ class TopNavigation extends Component {
         </div>
 
         <MDBNavbarBrand style={navStyle}>
-          <strong>{role}</strong>
+          <strong>{role !== "PRINCIPAL" ? Roles.getStr(role) : role}</strong>
         </MDBNavbarBrand>
         <MDBNavbarNav expand="sm" right style={{ flexDirection: "row" }}>
           <MDBDropdown>

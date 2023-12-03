@@ -580,7 +580,7 @@ export default function Form({
 
         <p>Upload{!isGuest && "ed"} PDF'S</p>
         <MDBRow>
-          {requirements.map((requirement) => (
+          {requirements.map((requirement, index) => (
             <MDBCol md="4" key={requirement}>
               <UploadPDF
                 email={email}

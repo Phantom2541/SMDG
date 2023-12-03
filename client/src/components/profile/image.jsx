@@ -10,17 +10,16 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { PresetImage } from "../../services/utilities";
 import { useToasts } from "react-toast-notifications";
-import { IMAGE, UPLOAD } from "../../services/redux/slices/auth";
 
 export default function ProfileImage() {
   const [file, setFile] = useState(null),
-    { auth, token, progressBar, image } = useSelector(({ auth }) => auth),
+    { auth, progressBar, image } = useSelector(({ auth }) => auth),
     dispatch = useDispatch(),
     { addToast } = useToasts();
 
   useEffect(() => {
     if (file && progressBar === 100) {
-      dispatch(IMAGE(URL.createObjectURL(file)));
+      // dispatch(IMAGE(URL.createObjectURL(file)));
       setFile(null);
       addToast("Image Updated Successfully.", {
         appearance: "success",
@@ -53,16 +52,15 @@ export default function ProfileImage() {
           return handleError("Image too big, maximum size is 100 pixels.");
 
         setFile(file);
-        dispatch(
-          UPLOAD({
-            data: {
-              path: `${auth.email}`,
-              base64: reader.result.split(",")[1],
-              name: "profile.jpg",
-            },
-            token,
-          })
-        );
+        dispatch();
+        // UPLOAD({
+        //   data: {
+        //     path: `${auth.email}`,
+        //     base64: reader.result.split(",")[1],
+        //     name: "profile.jpg",
+        //   },
+        //   token,
+        // })
       };
     };
 

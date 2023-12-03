@@ -58,34 +58,10 @@ export const UPDATE = createAsyncThunk(
   }
 );
 
-export const UPLOAD = createAsyncThunk(`${name}/upload`, (form, thunkAPI) => {
-  try {
-    return axioKit.upload(form.data, form.token, (progress) => {
-      thunkAPI.dispatch(
-        UPLOADBAR(Math.round((progress.loaded * 100) / progress.total))
-      );
-    });
-  } catch (error) {
-    const message =
-      (error.response && error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
-
-    return thunkAPI.rejectWithValue(message);
-  }
-});
-
 export const reduxSlice = createSlice({
   name,
   initialState,
   reducers: {
-    UPLOADBAR: (state, data) => {
-      state.progressBar = data.payload;
-    },
-    IMAGE: (state, data) => {
-      state.image = data.payload;
-      state.progressBar = -1;
-    },
     MAXPAGE: (state, data) => {
       localStorage.setItem("maxPage", data.payload);
       state.maxPage = data.payload;
@@ -143,20 +119,6 @@ export const reduxSlice = createSlice({
         state.isSuccess = true;
       })
       .addCase(UPDATE.rejected, (state, action) => {
-        const { error } = action;
-        state.message = error.message;
-        state.isLoading = false;
-      })
-
-      .addCase(UPLOAD.pending, (state) => {
-        state.isLoading = true;
-        state.message = "";
-      })
-      .addCase(UPLOAD.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.message = "Upload Success";
-      })
-      .addCase(UPLOAD.rejected, (state, action) => {
         const { error } = action;
         state.message = error.message;
         state.isLoading = false;

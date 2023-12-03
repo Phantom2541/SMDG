@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { MDBCol, MDBIcon, MDBRow } from "mdbreact";
 import "./styles/uploadPDF.css";
-import { useDispatch, useSelector } from "react-redux";
-import { UPLOAD } from "../../../../services/redux/slices/auth";
-import { ENDPOINT, isValidLink } from "../../../../services/utilities";
+import { useSelector } from "react-redux";
+import { ENDPOINT, axioKit, isValidLink } from "../../../../services/utilities";
 
 export default function UploadPDF({
   title = "",
@@ -12,13 +11,11 @@ export default function UploadPDF({
   readOnly = false,
 }) {
   const [preview, setPreview] = useState(null),
-    { token } = useSelector(({ auth }) => auth),
-    dispatch = useDispatch();
+    { token } = useSelector(({ auth }) => auth);
 
   useEffect(() => {
     if (title && email) {
       const url = `${ENDPOINT}/assets/employments/${email}/${title}.pdf`;
-      console.log(url);
       isValidLink(url, (valid) => {
         if (valid) setPreview(url);
       });
@@ -31,21 +28,20 @@ export default function UploadPDF({
     if (file.type !== "application/pdf")
       return Swal.fire("Invalid File format");
 
+    setPreview(URL.createObjectURL(file));
+
     const reader = new FileReader();
 
     reader.onload = (e) => {
       const { result } = e.target;
 
-      dispatch(
-        UPLOAD({
-          data: {
-            name: `${title}.pdf`,
-            base64: result.split(",")[1],
-            path: `employments/${email}`,
-          },
-
-          token,
-        })
+      axioKit.upload(
+        {
+          name: `${title}.pdf`,
+          base64: result.split(",")[1],
+          path: `employments/${email}`,
+        },
+        token
       );
     };
 
@@ -90,7 +86,7 @@ export default function UploadPDF({
               onClick={() => {
                 if (!readOnly || !preview) return;
 
-                window.open(preview);
+                window.open(preview, "_blank");
               }}
             >
               {readOnly ? (

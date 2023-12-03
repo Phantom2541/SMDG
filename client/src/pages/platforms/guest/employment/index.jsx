@@ -20,7 +20,11 @@ import Form from "./form";
 import { INJECTCREDENTIALS } from "../../../../services/redux/slices/auth";
 import { useToasts } from "react-toast-notifications";
 
-const { logo, id, name, address: sAddress } = School;
+const { logo, id, name, address: sAddress } = School,
+  subtract18 = () => {
+    const today = new Date();
+    return new Date(today.setFullYear(today.getFullYear() - 18));
+  };
 
 export default function EmploymentForm() {
   const [employment, setEmployment] = useState({
@@ -68,31 +72,15 @@ export default function EmploymentForm() {
       mobile: "",
       isMale: false,
       motherTongue: "",
-      dob: new Date(),
+      dob: subtract18(),
       pob: "",
     }),
     { auth, token, credentials } = useSelector(({ auth }) => auth),
     { response, isSuccess, message } = useSelector(
       ({ employments }) => employments
     ),
-    [delayRender, setDelayRender] = useState(false),
     dispatch = useDispatch(),
     { addToast } = useToasts();
-
-  useEffect(() => {
-    let isMounted = true;
-    if (!delayRender) {
-      setTimeout(() => {
-        if (isMounted) {
-          setDelayRender(true);
-        }
-      }, 1);
-    }
-
-    return () => {
-      isMounted = false;
-    };
-  }, [delayRender]);
 
   useEffect(() => {
     if (isSuccess && response) {
@@ -100,7 +88,6 @@ export default function EmploymentForm() {
       localStorage.setItem("credentials", JSON.stringify(employment));
       localStorage.setItem("auth", JSON.stringify(user));
       dispatch(INJECTCREDENTIALS(response));
-      setDelayRender(true);
     }
   }, [response, isSuccess, dispatch]);
 
@@ -117,7 +104,10 @@ export default function EmploymentForm() {
   useEffect(() => {
     if (credentials?._id) {
       setEmployment(credentials);
-      setUser({ ...auth, dob: new Date(auth.dob) });
+    }
+
+    if (auth?._id) {
+      setUser({ ...auth, dob: auth.dob ? new Date(auth.dob) : subtract18() });
     }
   }, [auth, credentials]);
 
@@ -296,15 +286,13 @@ export default function EmploymentForm() {
 
         {handleRemarks()}
 
-        {delayRender && (
-          <Form
-            employment={employment}
-            setEmployment={setEmployment}
-            user={user}
-            setUser={setUser}
-            handleSubmit={handleSubmit}
-          />
-        )}
+        <Form
+          employment={employment}
+          setEmployment={setEmployment}
+          user={user}
+          setUser={setUser}
+          handleSubmit={handleSubmit}
+        />
       </MDBCard>
     </MDBContainer>
   );

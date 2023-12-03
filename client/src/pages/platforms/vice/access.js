@@ -8,7 +8,7 @@ import Subjects from "../principal/resources/subjects";
 import Violations from "../principal/socials/violations";
 import Dashboard from "./dashboard";
 import DND from "../administrator/dnd";
-import Courses from "../principal/resources/courses";
+// import Courses from "../principal/resources/courses";
 import Syllabus from "../principal/resources/syllabus";
 import EmploymentLists from "../principal/admissions/employments";
 
@@ -32,7 +32,7 @@ const access = [
       {
         name: "Courses",
         path: "/courses",
-        component: Courses,
+        // component: Courses,
       },
       {
         name: "Subjects",
