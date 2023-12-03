@@ -11,6 +11,7 @@ import Sections from "./resources/sections";
 import Subjects from "./resources/subjects";
 import Syllabus from "./resources/syllabus";
 import Violations from "./socials/violations";
+import Basic from "./departments/basic";
 
 const access = [
   {
@@ -18,6 +19,30 @@ const access = [
     icon: "tachometer-alt",
     path: "/dashboard",
     component: Dashboard,
+  },
+  {
+    name: "Departments",
+    icon: "university",
+    path: "/departments",
+    children: [
+      {
+        name: "Elementary",
+        path: "/elementary",
+        component: Basic,
+      },
+      {
+        name: "Junior High",
+        path: "/junior",
+      },
+      {
+        name: "Senior High",
+        path: "/senior",
+      },
+      {
+        name: "College",
+        path: "/college",
+      },
+    ],
   },
   {
     name: "Resources",
