@@ -20,7 +20,7 @@ import { isEqual } from "lodash";
 const _form = {
   name: "",
   description: "",
-  capacity: 0,
+  capacity: 1,
 };
 
 export default function Modal({ show, toggle, selected, willCreate }) {
@@ -93,7 +93,8 @@ export default function Modal({ show, toggle, selected, willCreate }) {
             </MDBCol>
             <MDBCol md="4">
               <MDBInput
-                type="Number"
+                type="number"
+                min={1}
                 label="Capacity"
                 value={capacity}
                 onChange={(e) =>

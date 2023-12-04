@@ -24,6 +24,10 @@ const modelSchema = new mongoose.Schema(
       max: 17,
       required: true,
     },
+    course: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Courses",
+    },
     batch: {
       start: {
         type: Number,
@@ -41,7 +45,7 @@ const modelSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: {
-        values: ["pending", "approved", "rejected"],
+        values: ["pending", "validated", "approved", "rejected"],
         message: "Please choose a valid type from the predefined options.",
       },
       default: "pending",

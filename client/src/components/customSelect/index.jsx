@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   MDBSelect,
   MDBSelectInput,
   MDBSelectOptions,
   MDBSelectOption,
+  MDBSpinner,
 } from "mdbreact";
 
 export default function CustomSelect({
@@ -20,6 +21,16 @@ export default function CustomSelect({
   disabledAllExceptSelected = false,
   disableByKey = {}, // { key: ['disabled', 'values'] }
 }) {
+  const [rerender, setRerender] = useState(true);
+
+  useEffect(() => {
+    setRerender(false);
+  }, [preValue]);
+
+  useEffect(() => {
+    if (!rerender) setTimeout(() => setRerender(true), 1);
+  }, [rerender]);
+
   const handleDisabling = (value, obj) => {
     if (disableAll) return true;
     if (disabledAllExceptSelected && value !== preValue) return true;
@@ -32,6 +43,8 @@ export default function CustomSelect({
 
     return false;
   };
+
+  if (!rerender) return <MDBSpinner />;
 
   return (
     <MDBSelect

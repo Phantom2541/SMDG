@@ -39,6 +39,14 @@ class TopNavigation extends Component {
     this.props.onSideNavToggleClick();
   }
 
+  handleRole(role) {
+    const direct = ["PRINCIPAL", "STUDENT", "GUEST"];
+
+    if (direct.includes(role)) return role;
+
+    return Roles.getStr(role);
+  }
+
   render() {
     const navStyle = {
       paddingLeft: this.props.toggle ? "16px" : "240px",
@@ -70,7 +78,7 @@ class TopNavigation extends Component {
         </div>
 
         <MDBNavbarBrand style={navStyle}>
-          <strong>{role !== "PRINCIPAL" ? Roles.getStr(role) : role}</strong>
+          <strong>{this.handleRole(role)}</strong>
         </MDBNavbarBrand>
         <MDBNavbarNav expand="sm" right style={{ flexDirection: "row" }}>
           <MDBDropdown>

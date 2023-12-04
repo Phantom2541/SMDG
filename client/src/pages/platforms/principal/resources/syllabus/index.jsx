@@ -25,21 +25,21 @@ export default function Syllabus() {
               <MDBCard>
                 <MDBCardTitle className="ml-3 mt-4">Subjects</MDBCardTitle>
                 <MDBCardBody>
-                  <ul class="list-group list-group-light list-group-small">
-                    <li class="list-group-item">
+                  <ul className="list-group list-group-light list-group-small">
+                    <li className="list-group-item">
                       Oral communication on Context
                     </li>
-                    <li class="list-group-item">
+                    <li className="list-group-item">
                       English Language or Literature
                     </li>
-                    <li class="list-group-item">
+                    <li className="list-group-item">
                       Science (Physics, Chemistry, Biology)
                     </li>
-                    <li class="list-group-item">
+                    <li className="list-group-item">
                       Social Studies or Social Sciences (History, Geography,
                       Civics)
                     </li>
-                    <li class="list-group-item">
+                    <li className="list-group-item">
                       Foreign Languages (Spanish, French, German, etc.)
                     </li>
                   </ul>
@@ -75,41 +75,41 @@ export default function Syllabus() {
 
                       <MDBRow>
                         <MDBCol md="6">
-                          <ul class="list-group list-group-light list-group-small">
-                            <li class="list-group-item">
+                          <ul className="list-group list-group-light list-group-small">
+                            <li className="list-group-item">
                               Oral communication on Context
                             </li>
-                            <li class="list-group-item">
+                            <li className="list-group-item">
                               English Language or Literature
                             </li>
-                            <li class="list-group-item">
+                            <li className="list-group-item">
                               Science (Physics, Chemistry, Biology)
                             </li>
-                            <li class="list-group-item">
+                            <li className="list-group-item">
                               Social Studies or Social Sciences (History,
                               Geography, Civics)
                             </li>
-                            <li class="list-group-item">
+                            <li className="list-group-item">
                               Foreign Languages (Spanish, French, German, etc.)
                             </li>
                           </ul>
                         </MDBCol>
                         <MDBCol md="6">
-                          <ul class="list-group list-group-light list-group-small">
-                            <li class="list-group-item">
+                          <ul className="list-group list-group-light list-group-small">
+                            <li className="list-group-item">
                               Oral communication on Context
                             </li>
-                            <li class="list-group-item">
+                            <li className="list-group-item">
                               English Language or Literature
                             </li>
-                            <li class="list-group-item">
+                            <li className="list-group-item">
                               Science (Physics, Chemistry, Biology)
                             </li>
-                            <li class="list-group-item">
+                            <li className="list-group-item">
                               Social Studies or Social Sciences (History,
                               Geography, Civics)
                             </li>
-                            <li class="list-group-item">
+                            <li className="list-group-item">
                               Foreign Languages (Spanish, French, German, etc.)
                             </li>
                           </ul>
@@ -122,21 +122,21 @@ export default function Syllabus() {
                           CONTEXTUALIZED SUBJECT
                         </div>
                         <MDBCol>
-                          <ul class="list-group list-group-light list-group-small">
-                            <li class="list-group-item">
+                          <ul className="list-group list-group-light list-group-small">
+                            <li className="list-group-item">
                               empowerment technologies
                             </li>
-                            <li class="list-group-item"></li>
-                            <li class="list-group-item"></li>
+                            <li className="list-group-item"></li>
+                            <li className="list-group-item"></li>
                           </ul>
                         </MDBCol>
                         <MDBCol>
-                          <ul class="list-group list-group-light list-group-small">
-                            <li class="list-group-item">
+                          <ul className="list-group list-group-light list-group-small">
+                            <li className="list-group-item">
                               Oral communication on Context
                             </li>
-                            <li class="list-group-item"></li>
-                            <li class="list-group-item"></li>
+                            <li className="list-group-item"></li>
+                            <li className="list-group-item"></li>
                           </ul>
                         </MDBCol>
                       </MDBRow>
@@ -147,23 +147,23 @@ export default function Syllabus() {
                           SPECIALIZATION SUBJECT
                         </div>
                         <MDBCol>
-                          <ul class="list-group list-group-light list-group-small">
-                            <li class="list-group-item">
+                          <ul className="list-group list-group-light list-group-small">
+                            <li className="list-group-item">
                               empowerment technologies
                             </li>
-                            <li class="list-group-item"></li>
-                            <li class="list-group-item"></li>
-                            <li class="list-group-item"></li>
+                            <li className="list-group-item"></li>
+                            <li className="list-group-item"></li>
+                            <li className="list-group-item"></li>
                           </ul>
                         </MDBCol>
                         <MDBCol>
-                          <ul class="list-group list-group-light list-group-small">
-                            <li class="list-group-item">
+                          <ul className="list-group list-group-light list-group-small">
+                            <li className="list-group-item">
                               Oral communication on Context
                             </li>
-                            <li class="list-group-item"></li>
-                            <li class="list-group-item"></li>
-                            <li class="list-group-item"></li>
+                            <li className="list-group-item"></li>
+                            <li className="list-group-item"></li>
+                            <li className="list-group-item"></li>
                           </ul>
                         </MDBCol>
                       </MDBRow>
@@ -172,13 +172,13 @@ export default function Syllabus() {
                       <MDBRow>
                         <div className="hours-per-day">HOURS PER DAY</div>
                         <MDBCol>
-                          <ul class="list-group list-group-light list-group-small">
-                            <li class="list-group-item">6.6</li>
+                          <ul className="list-group list-group-light list-group-small">
+                            <li className="list-group-item">6.6</li>
                           </ul>
                         </MDBCol>
                         <MDBCol>
-                          <ul class="list-group list-group-light list-group-small">
-                            <li class="list-group-item">6.6</li>
+                          <ul className="list-group list-group-light list-group-small">
+                            <li className="list-group-item">6.6</li>
                           </ul>
                         </MDBCol>
                       </MDBRow>

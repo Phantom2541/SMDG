@@ -15,12 +15,9 @@ const modelSchema = new mongoose.Schema(
       type: Number,
       min: 1,
       max: 5,
-      required: true,
     },
     code: {
       type: String,
-      required: true,
-      unique: true,
     },
     gradeLvl: {
       type: Number,
@@ -28,11 +25,9 @@ const modelSchema = new mongoose.Schema(
     },
     description: {
       type: String,
-      required: true,
     },
     isMajor: {
       type: Boolean,
-      default: false,
     },
     lab: {
       type: Number,

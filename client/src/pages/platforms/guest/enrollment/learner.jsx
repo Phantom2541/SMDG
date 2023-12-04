@@ -13,26 +13,18 @@ export default function Learner({ setActiveStep, handleForm }) {
   const { form, setForm } = handleForm;
 
   // used for rerendering MDBSelect
-  useEffect(() => {
-    if (!showGrade) {
-      setTimeout(() => setShowGrade(true), 1);
-    }
-  }, [showGrade]);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    console.log(form);
-
-    setActiveStep(1);
-  };
+  // useEffect(() => {
+  //   if (!showGrade) {
+  //     setTimeout(() => setShowGrade(true), 1);
+  //   }
+  // }, [showGrade]);
 
   const handleChange = (key, value) => setForm({ ...form, [key]: value });
 
   const { department, gradeLvl, lrn } = form;
 
   return (
-    <form onSubmit={handleSubmit}>
+    <>
       <div className="row">
         <div className="col-6">
           <MDBInput
@@ -64,24 +56,24 @@ export default function Learner({ setActiveStep, handleForm }) {
                 department: e,
                 gradeLvl: getGradeLevels(e)[0],
               });
-              setShowGrade(false);
+              // setShowGrade(false);
             }}
           />
         </div>
         <div className="col-6">
-          {showGrade && (
-            <CustomSelect
-              choices={getGradeLevels(department).map((id) => ({
-                id,
-                str: formatGradeLvl(department, id),
-              }))}
-              label="Grade Level"
-              preValue={gradeLvl}
-              values="id"
-              texts="str"
-              onChange={(e) => handleChange("gradeLvl", e)}
-            />
-          )}
+          {/* {showGrade && ( */}
+          <CustomSelect
+            choices={getGradeLevels(department).map((id) => ({
+              id,
+              str: formatGradeLvl(department, id),
+            }))}
+            label="Grade Level"
+            preValue={gradeLvl}
+            values="id"
+            texts="str"
+            onChange={(e) => handleChange("gradeLvl", e)}
+          />
+          {/* )} */}
         </div>
       </div>
       <div className="row">
@@ -89,9 +81,13 @@ export default function Learner({ setActiveStep, handleForm }) {
           <RequirementUpload />
         </div>
       </div>
-      <MDBBtn style={{ float: "right" }} color="primary" type="submit">
+      <MDBBtn
+        style={{ float: "right" }}
+        color="primary"
+        onClick={() => setActiveStep(1)}
+      >
         Next
       </MDBBtn>
-    </form>
+    </>
   );
 }
