@@ -4,83 +4,7 @@ import { axioKit, bulkPayload } from "../../../utilities";
 const name = "resources/sections";
 
 const initialState = {
-  collections: [
-    {
-      name: "Matapang",
-      gradeLvl: "junior high school",
-      advisor: "Kevin Magtalas",
-    },
-    {
-      name: "Courageous",
-      gradeLvl: "senior high school",
-      advisor: "Sarah Johnson",
-    },
-    {
-      name: "Bravehearts",
-      gradeLvl: "elementary school",
-      advisor: "Michael Smith",
-    },
-    {
-      name: "Fearless",
-      gradeLvl: "junior high school",
-      advisor: "Emily Watson",
-    },
-    {
-      name: "Resilient",
-      gradeLvl: "senior high school",
-      advisor: "Daniel Garcia",
-    },
-    {
-      name: "Warriors",
-      gradeLvl: "elementary school",
-      advisor: "Jessica Brown",
-    },
-    {
-      name: "Determined",
-      gradeLvl: "junior high school",
-      advisor: "Andrew Thompson",
-    },
-    {
-      name: "Persistent",
-      gradeLvl: "senior high school",
-      advisor: "Olivia Martinez",
-    },
-    {
-      name: "Adventurous",
-      gradeLvl: "elementary school",
-      advisor: "Liam Davis",
-    },
-    {
-      name: "Explorers",
-      gradeLvl: "junior high school",
-      advisor: "Sophia Rodriguez",
-    },
-    {
-      name: "Innovators",
-      gradeLvl: "senior high school",
-      advisor: "Noah Wilson",
-    },
-    {
-      name: "Trailblazers",
-      gradeLvl: "elementary school",
-      advisor: "Ava Taylor",
-    },
-    {
-      name: "Challengers",
-      gradeLvl: "junior high school",
-      advisor: "Ethan Turner",
-    },
-    {
-      name: "Achievers",
-      gradeLvl: "senior high school",
-      advisor: "Isabella Clark",
-    },
-    {
-      name: "Leaders",
-      gradeLvl: "elementary school",
-      advisor: "Mia Lewis",
-    },
-  ],
+  collections: [],
   showModal: false,
   isSuccess: false,
   isLoading: false,
@@ -176,9 +100,18 @@ export const reduxSlice = createSlice({
         state.message = "";
       })
       .addCase(SAVE.fulfilled, (state, action) => {
-        const { success, payload } = action.payload;
+        const { success, payload, affectedSection } = action.payload;
         state.message = success;
         state.collections.unshift(payload);
+
+        if (affectedSection) {
+          const index = state.collections.findIndex(
+            (c) => c._id === affectedSection._id
+          );
+
+          state.collections[index] = affectedSection;
+        }
+
         state.showModal = false;
         state.isSuccess = true;
         state.isLoading = false;

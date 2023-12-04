@@ -88,7 +88,7 @@ export default function Form({
           {TEACHERS.includes(access) && (
             <MDBCol md="3">
               <CustomSelect
-                disableByKey={{ key: taken[access] }}
+                disableByKey={{ key: taken[access] || [] }}
                 label="Department"
                 preValue={department}
                 choices={Departments.collections}

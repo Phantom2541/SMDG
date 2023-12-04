@@ -8,12 +8,15 @@ import {
   MDBTabContent,
   MDBTabPane,
 } from "mdbreact";
+import Sections from "./sections";
+import Subjects from "./subjects";
 
 const navs = ["sections", "subjects"];
 
 export default function Elem() {
   const [gradeLvl, setGradeLvl] = useState(1),
     [activeTab, setActiveTab] = useState("sections");
+
   return (
     <>
       <CustomSelect
@@ -32,7 +35,8 @@ export default function Elem() {
         {navs.map((nav) => (
           <MDBBtn
             style={{ borderBottom: "none" }}
-            className="m-0 rounded-top"
+            className="m-0 rounded-top rotate-btn"
+            data-card="card-1"
             color="primary z-depth-0"
             onClick={() => setActiveTab(nav)}
             outline={nav !== activeTab}
@@ -42,21 +46,16 @@ export default function Elem() {
           </MDBBtn>
         ))}
       </MDBBtnGroup>
-      <MDBTabContent
-        activeItem={activeTab}
-        style={{
-          border: "2px solid",
-          borderBottomRadius: "5px",
-        }}
-        className="p-0 border-primary z-depth-1"
-      >
-        <MDBTabPane tabId="faculty">
-          <MDBModalBody className="pt-1 p-0 bg-primary">
-            {/* <Faculty /> */}test
+      <MDBTabContent activeItem={activeTab} className="p-0 z-depth-1">
+        <MDBTabPane tabId="sections">
+          <MDBModalBody className="pt-1 p-0 bg-white">
+            <Sections gradeLvl={gradeLvl} />
           </MDBModalBody>
         </MDBTabPane>
-        <MDBTabPane tabId="Grade Levels">
-          <MDBModalBody className="mx-0">{/* <Elem /> */}primaray</MDBModalBody>
+        <MDBTabPane tabId="subjects">
+          <MDBModalBody className="mx-0">
+            <Subjects />
+          </MDBModalBody>
         </MDBTabPane>
       </MDBTabContent>
     </>

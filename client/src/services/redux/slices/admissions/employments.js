@@ -16,6 +16,24 @@ const initialState = {
   message: "",
 };
 
+export const TEACHERS = createAsyncThunk(
+  `${name}/teachers`,
+  ({ token, key }, thunkAPI) => {
+    try {
+      return axioKit.universal(`${name}/teachers`, token, key);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const BROWSE = createAsyncThunk(
   `${name}/browse`,
   ({ token, key }, thunkAPI) => {
@@ -183,6 +201,22 @@ export const reduxSlice = createSlice({
       //     state.message = error.message;
       //     state.isLoading = false;
       //   })
+
+      .addCase(TEACHERS.pending, (state) => {
+        state.isLoading = true;
+        state.isSuccess = false;
+        state.message = "";
+      })
+      .addCase(TEACHERS.fulfilled, (state, action) => {
+        const { payload } = action.payload;
+        state.collections = payload;
+        state.isLoading = false;
+      })
+      .addCase(TEACHERS.rejected, (state, action) => {
+        const { error } = action;
+        state.message = error.message;
+        state.isLoading = false;
+      })
 
       .addCase(BROWSE.pending, (state) => {
         state.isLoading = true;

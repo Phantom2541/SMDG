@@ -1,5 +1,6 @@
 const Entity = require("../../models/Admissions/Employments"),
-  Users = require("../../models/Users");
+  Users = require("../../models/Users"),
+  Sections = require("../../models/Resources/Sections");
 
 exports.save = async (req, res) => {
   const { user, employment } = req.body;
@@ -126,5 +127,38 @@ exports.browse = (req, res) => {
         taken,
       });
     })
+    .catch((error) => res.status(400).json({ error: error.message }));
+};
+
+exports.teachers = (req, res) => {
+  const { department } = req.query;
+
+  if (!department)
+    return res.status(400).json({
+      error: "Invalid Parameters",
+      message: "Department is required.",
+    });
+
+  Entity.find({
+    status: "approved",
+    access: "TEACHER",
+    department,
+  })
+    .populate({
+      path: "user",
+      select: "fullName",
+    })
+    .select("user")
+    .sort({ createdAt: -1 })
+    .lean()
+    .then(async (teachers) =>
+      res.json({
+        success: "Teachers Found successfully.",
+        payload: teachers.map((teach) => ({
+          ...teach,
+          user: teach.user.fullName,
+        })),
+      })
+    )
     .catch((error) => res.status(400).json({ error: error.message }));
 };

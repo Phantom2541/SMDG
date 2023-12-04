@@ -3,14 +3,14 @@ const router = require("express").Router(),
     browse,
     save,
     update,
-    teachers,
-  } = require("../../controllers/Admissions/Employments"),
+    destroy,
+  } = require("../../controllers/Resources/Sections"),
   { validate } = require("../../middleware/jwt");
 
 router
   .get("/browse", validate, browse)
-  .get("/teachers", validate, teachers)
   .post("/save", validate, save)
-  .put("/update", validate, update);
+  .put("/update", validate, update)
+  .delete("/destroy", validate, destroy);
 
 module.exports = router;
