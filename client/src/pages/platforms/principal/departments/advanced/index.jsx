@@ -9,6 +9,7 @@ import {
 import Faculty from "./faculty";
 import { Departments } from "../../../../../services/fakeDb";
 import Courses from "./courses";
+import Requirements from "../requirements";
 
 export default function Advanced({ departmentKey }) {
   const [activeTab, setActiveTab] = useState("faculty");
@@ -36,6 +37,14 @@ export default function Advanced({ departmentKey }) {
         >
           {courseTxt}
         </MDBBtn>
+        <MDBBtn
+          className="m-0 rounded-top"
+          color="primary z-depth-0"
+          onClick={() => setActiveTab("requirements")}
+          outline={"requirements" !== activeTab}
+        >
+          Requirements
+        </MDBBtn>
       </MDBBtnGroup>
       <MDBTabContent
         activeItem={activeTab}
@@ -53,6 +62,11 @@ export default function Advanced({ departmentKey }) {
         <MDBTabPane tabId="courses">
           <MDBModalBody className="mx-0">
             <Courses departmentKey={departmentKey} />
+          </MDBModalBody>
+        </MDBTabPane>
+        <MDBTabPane tabId="requirements">
+          <MDBModalBody className="mx-0">
+            <Requirements department={departmentKey} />
           </MDBModalBody>
         </MDBTabPane>
       </MDBTabContent>

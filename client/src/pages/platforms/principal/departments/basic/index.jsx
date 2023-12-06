@@ -8,8 +8,9 @@ import {
 } from "mdbreact";
 import Faculty from "../faculty";
 import Elem from "./elem";
+import Requirements from "../requirements";
 
-const navs = ["faculty", "grade levels"];
+const navs = ["faculty", "grade levels", "requirements"];
 
 export default function Basic() {
   const [activeTab, setActiveTab] = useState("faculty");
@@ -47,6 +48,11 @@ export default function Basic() {
         <MDBTabPane tabId="grade levels">
           <MDBModalBody className="mx-0">
             <Elem />
+          </MDBModalBody>
+        </MDBTabPane>
+        <MDBTabPane tabId="requirements">
+          <MDBModalBody className="mx-0">
+            <Requirements department="grade" />
           </MDBModalBody>
         </MDBTabPane>
       </MDBTabContent>
