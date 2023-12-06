@@ -9,9 +9,9 @@ import Requirements from "./admissions/requirements";
 import Rooms from "./resources/rooms";
 import Sections from "./resources/sections";
 import Subjects from "./resources/subjects";
-import Syllabus from "./resources/syllabus";
 import Violations from "./socials/violations";
 import Basic from "./departments/basic";
+import Advanced from "./departments/advanced";
 
 const access = [
   {
@@ -33,10 +33,14 @@ const access = [
       {
         name: "Junior High",
         path: "/junior",
+        // component: Advanced,
+        // props: { departmentKey: "junior" },
       },
       {
         name: "Senior High",
         path: "/senior",
+        component: Advanced,
+        props: { departmentKey: "senior" },
       },
       {
         name: "College",
@@ -59,11 +63,6 @@ const access = [
         icon: "book-open",
         path: "/subjects",
         component: Subjects,
-      },
-      {
-        name: "Syllabus",
-        path: "/syllabus",
-        component: Syllabus,
       },
       {
         name: "Rooms",

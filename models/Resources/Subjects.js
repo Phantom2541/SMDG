@@ -7,27 +7,53 @@ const modelSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    abbreviation: {
-      type: String,
-      trim: true,
-    },
-    units: {
-      type: Number,
-      min: 1,
-      max: 5,
-    },
-    code: {
-      type: String,
+    course: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Courses",
+      required: true,
     },
     gradeLvl: {
       type: Number,
       required: true,
     },
+    hours: {
+      type: Number,
+    },
+    semester: {
+      type: Number,
+    },
+    position: {
+      type: Number,
+      required: true,
+    },
+
+    // for shs
+    curriculum: {
+      type: String,
+      enum: {
+        values: ["core", "contextualized", "specialization"],
+        message: "Please choose a valid type from the predefined options.",
+      },
+    },
+
+    // for college
+    abbreviation: {
+      type: String,
+      trim: true,
+    },
     description: {
+      type: String,
+    },
+    code: {
       type: String,
     },
     isMajor: {
       type: Boolean,
+    },
+    units: {
+      type: Number,
+      min: 1,
+      max: 5,
     },
     lab: {
       type: Number,

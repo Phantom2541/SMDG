@@ -11,6 +11,9 @@ const Departments = {
   getGradeLevels: function (pk) {
     return this.find(pk).gradeLevels;
   },
+  getInitialGrade: function (pk) {
+    return this.getGradeLevels(pk)[0];
+  },
 };
 
 export default Departments;

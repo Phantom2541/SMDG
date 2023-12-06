@@ -8,6 +8,7 @@ const Courses = {
   college,
   collections: [...junior, ...senior, ...college],
   find: function (pk) {
+    if (!pk) return {};
     return this.collections.find(({ id }) => id === Number(pk));
   },
 };

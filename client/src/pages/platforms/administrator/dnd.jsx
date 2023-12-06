@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { whiteSpace } from "../../../services/utilities";
 
 export default function DND() {
   const [listItems, setListItems] = useState([
@@ -73,7 +72,7 @@ export default function DND() {
         </thead>
         <tbody>
           <tr>
-            <td style={{ whiteSpace: "pre" }}>{whiteSpace("CORE SUBJECTS")}</td>
+            {/* <td style={{ whiteSpace: "pre" }}>{whiteSpace("CORE SUBJECTS")}</td> */}
           </tr>
           {tableItems.map((item) => (
             <tr

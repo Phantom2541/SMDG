@@ -12,7 +12,7 @@ import Elem from "./elem";
 const navs = ["faculty", "grade levels"];
 
 export default function Basic() {
-  const [activeTab, setActiveTab] = useState("grade levels");
+  const [activeTab, setActiveTab] = useState("faculty");
 
   return (
     <>

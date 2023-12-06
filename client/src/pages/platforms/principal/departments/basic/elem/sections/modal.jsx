@@ -29,6 +29,7 @@ export default function Modal({
   department,
   selected,
   willCreate,
+  course,
 }) {
   const [form, setForm] = useState(_form),
     { collections } = useSelector(({ employments }) => employments),
@@ -58,6 +59,11 @@ export default function Modal({
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const data = { ...form, department, gradeLvl };
+
+    if (course) data.course = course;
+
     if (!willCreate) {
       if (
         isEqual(form, {
@@ -71,13 +77,13 @@ export default function Modal({
       } else {
         dispatch(
           UPDATE({
-            data: { ...form, department, gradeLvl, _id: selected._id },
+            data: { ...data, _id: selected._id },
             token,
           })
         );
       }
     } else {
-      dispatch(SAVE({ data: { ...form, department, gradeLvl }, token }));
+      dispatch(SAVE({ data, token }));
     }
 
     toggle();

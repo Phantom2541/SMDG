@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { axioKit, bulkPayload } from "../../../utilities";
 
-const name = "resources/sections";
+const name = "resources/courses";
 
 const initialState = {
   collections: [],
@@ -109,7 +109,7 @@ export const reduxSlice = createSlice({
             (c) => c._id === affectedSection._id
           );
 
-          state.collections[index] = { ...affectedSection, adviser: {} };
+          state.collections[index] = affectedSection;
         }
 
         state.showModal = false;
@@ -123,36 +123,28 @@ export const reduxSlice = createSlice({
         state.isLoading = false;
       })
 
-      .addCase(UPDATE.pending, (state) => {
-        state.isLoading = true;
-        state.isSuccess = false;
-        state.message = "";
-      })
-      .addCase(UPDATE.fulfilled, (state, action) => {
-        const { success, payload, affectedSection } = action.payload;
+      //   .addCase(UPDATE.pending, (state) => {
+      //     state.isLoading = true;
+      //     state.isSuccess = false;
+      //     state.message = "";
+      //   })
+      //   .addCase(UPDATE.fulfilled, (state, action) => {
+      //     const { success, payload } = action.payload;
 
-        if (affectedSection) {
-          const index = state.collections.findIndex(
-            (c) => c._id === affectedSection._id
-          );
+      //     const index = state.collections.findIndex((c) => c._id === payload._id);
+      //     state.collections[index] = payload;
 
-          state.collections[index] = { ...affectedSection, adviser: {} };
-        }
-
-        const index = state.collections.findIndex((c) => c._id === payload._id);
-        state.collections[index] = payload;
-
-        state.showModal = false;
-        state.message = success;
-        state.isSuccess = true;
-        state.isLoading = false;
-      })
-      .addCase(UPDATE.rejected, (state, action) => {
-        const { error } = action;
-        state.showModal = false;
-        state.message = error.message;
-        state.isLoading = false;
-      })
+      //     state.showModal = false;
+      //     state.message = success;
+      //     state.isSuccess = true;
+      //     state.isLoading = false;
+      //   })
+      //   .addCase(UPDATE.rejected, (state, action) => {
+      //     const { error } = action;
+      //     state.showModal = false;
+      //     state.message = error.message;
+      //     state.isLoading = false;
+      //   })
 
       .addCase(DESTROY.pending, (state) => {
         state.isLoading = true;

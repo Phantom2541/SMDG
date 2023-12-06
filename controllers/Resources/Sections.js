@@ -23,14 +23,14 @@ exports.save = (req, res) => {
           affectedSection = undefined;
 
         if (adviser) {
-          const duplicateAdviser = await Entity.findOne({ adviser });
+          const duplicateAdviser = await Entity.findOne({
+            adviser,
+            _id: { $ne: payload._id }, //exclude id
+          });
 
-          if (
-            duplicateAdviser &&
-            String(duplicateAdviser._id) !== String(payload._id)
-          ) {
+          if (duplicateAdviser) {
             affectedSection = await Entity.findByIdAndUpdate(
-              affectedAdviser._id,
+              duplicateAdviser._id,
               { adviser: null },
               { new: true }
             );
@@ -58,7 +58,7 @@ exports.save = (req, res) => {
 };
 
 exports.browse = (req, res) => {
-  const { department, gradeLvl } = req.query;
+  const { department, gradeLvl, course } = req.query;
 
   if (!department || !gradeLvl)
     return res.status(400).json({
@@ -66,7 +66,7 @@ exports.browse = (req, res) => {
       message: "Department and Grade Level are required.",
     });
 
-  Entity.find({ department, gradeLvl })
+  Entity.find({ department, gradeLvl, course })
     .select("-createdAt -updatedAt -__v")
     .populate({
       path: "adviser",
@@ -75,6 +75,10 @@ exports.browse = (req, res) => {
         path: "user",
         select: "fullName",
       },
+    })
+    .populate({
+      path: "course",
+      select: "pk",
     })
     .sort({ createdAt: -1 })
     .lean()
@@ -105,25 +109,41 @@ exports.update = (req, res) =>
         select: "fullName",
       },
     })
-    .then((payload) => {
+    .then(async (payload) => {
       if (!payload)
         return res.status(404).json({
           error: "Invalid ID.",
           message: "ID Not Found.",
         });
 
-      let adviser = undefined;
+      let adviser = undefined,
+        affectedSection = undefined;
 
       if (payload.adviser) {
+        const { adviser: _adviser } = payload;
+        const duplicateAdviser = await Entity.findOne({
+          adviser: _adviser._id,
+          _id: { $ne: payload._id },
+        });
+
+        if (duplicateAdviser) {
+          affectedSection = await Entity.findByIdAndUpdate(
+            duplicateAdviser._id,
+            { adviser: null },
+            { new: true }
+          );
+        }
+
         adviser = {
-          _id: payload.adviser._id,
-          fullName: payload.adviser?.user?.fullName,
+          _id: _adviser._id,
+          fullName: _adviser?.user?.fullName,
         };
       }
 
       res.json({
         success: "Section Updated Successfully.",
         payload: { ...payload._doc, adviser },
+        affectedSection,
       });
     })
     .catch((error) => res.status(400).json({ error: error.message }));

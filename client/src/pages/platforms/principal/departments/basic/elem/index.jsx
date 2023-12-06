@@ -19,37 +19,38 @@ export default function Elem() {
 
   return (
     <>
-      <CustomSelect
-        choices={Departments.getGradeLevels("grade").map((id) => ({
-          value: id,
-          str: `Grade ${id}`,
-        }))}
-        texts="str"
-        values="value"
-        className="w-25"
-        preValue={gradeLvl}
-        onChange={(lvl) => setGradeLvl(lvl)}
-        label="Select Grade Levels"
-      />
-      <MDBBtnGroup>
-        {navs.map((nav) => (
-          <MDBBtn
-            style={{ borderBottom: "none" }}
-            className="m-0 rounded-top rotate-btn"
-            data-card="card-1"
-            color="primary z-depth-0"
-            onClick={() => setActiveTab(nav)}
-            outline={nav !== activeTab}
-            key={nav}
-          >
-            {nav}
-          </MDBBtn>
-        ))}
-      </MDBBtnGroup>
+      <div className="d-flex align-items-bottom justify-content-between mt-2">
+        <CustomSelect
+          choices={Departments.getGradeLevels("grade").map((id) => ({
+            value: id,
+            str: `Grade ${id}`,
+          }))}
+          texts="str"
+          values="value"
+          className="w-25 ml-3 my-0"
+          preValue={gradeLvl}
+          onChange={(lvl) => setGradeLvl(lvl)}
+          label="Select Grade Levels"
+        />
+        <MDBBtnGroup className="z-depth-1">
+          {navs.map((nav) => (
+            <MDBBtn
+              className="m-0 rounded-top z-depth-0"
+              color="primary"
+              onClick={() => setActiveTab(nav)}
+              outline={nav !== activeTab}
+              key={nav}
+            >
+              {nav}
+            </MDBBtn>
+          ))}
+        </MDBBtnGroup>
+      </div>
+
       <MDBTabContent activeItem={activeTab} className="p-0 z-depth-1">
         <MDBTabPane tabId="sections">
           <MDBModalBody className="pt-1 p-0 bg-white">
-            <Sections gradeLvl={gradeLvl} />
+            <Sections gradeLvl={gradeLvl} department="grade" />
           </MDBModalBody>
         </MDBTabPane>
         <MDBTabPane tabId="subjects">

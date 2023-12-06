@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { MDBBtn, MDBInput } from "mdbreact";
 import RequirementUpload from "./requirementUpload";
 import CustomSelect from "../../../../components/customSelect";
@@ -8,7 +8,7 @@ import { formatGradeLvl } from "../../../../services/utilities";
 const { collections, getGradeLevels } = Departments;
 
 export default function Learner({ setActiveStep, handleForm }) {
-  const [showGrade, setShowGrade] = useState(true);
+  // const [showGrade, setShowGrade] = useState(true);
 
   const { form, setForm } = handleForm;
 

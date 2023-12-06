@@ -1,45 +1,40 @@
-const Entity = require("../../models/Resources/Subjects");
+const Entity = require("../../models/Resources/Courses");
 
 exports.save = (req, res) =>
   Entity.create(req.body)
     .then((payload) =>
       res.status(201).json({
-        success: "Subject Added Successfully.",
+        success: `${
+          payload.department === "college" ? "Course" : "Strand"
+        } Added Successfully.`,
         payload,
       })
     )
     .catch((error) => res.status(400).json({ error: error.message }));
 
-exports.browse = (req, res) =>
+exports.browse = (req, res) => {
+  const { department } = req.query;
+
+  if (!department)
+    return res.status(400).json({
+      error: "Invalid Parameters",
+      message: "Department is required.",
+    });
+
   Entity.find(req.query)
     .select("-createdAt -updatedAt -__v")
     .sort({ createdAt: -1 })
     .lean()
     .then((payload) =>
       res.json({
-        success: "Subjects Fetched Successfully.",
+        success: `${
+          department === "college" ? "Courses" : "Strands"
+        } Fetched Successfully.`,
         payload,
       })
     )
     .catch((error) => res.status(400).json({ error: error.message }));
-
-exports.update = (req, res) =>
-  Entity.findByIdAndUpdate(req.body._id, req.body, {
-    new: true,
-  })
-    .then((payload) => {
-      if (!payload)
-        return res.status(404).json({
-          error: "Invalid ID.",
-          message: "ID Not Found.",
-        });
-
-      res.json({
-        success: "Subject Updated Successfully.",
-        payload,
-      });
-    })
-    .catch((error) => res.status(400).json({ error: handleDuplicate(error) }));
+};
 
 exports.destroy = (req, res) =>
   Entity.findByIdAndDelete(req.body._id)
@@ -51,7 +46,9 @@ exports.destroy = (req, res) =>
         });
 
       res.json({
-        success: "Subject Deleted Successfully.",
+        success: `${
+          payload.department === "college" ? "Course" : "Strand"
+        } Deleted Successfully.`,
         payload,
       });
     })

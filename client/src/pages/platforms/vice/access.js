@@ -9,7 +9,6 @@ import Violations from "../principal/socials/violations";
 import Dashboard from "./dashboard";
 import DND from "../administrator/dnd";
 // import Courses from "../principal/resources/courses";
-import Syllabus from "../principal/resources/syllabus";
 import EmploymentLists from "../principal/admissions/employments";
 
 const access = [
@@ -39,11 +38,6 @@ const access = [
         icon: "book-open",
         path: "/subjects",
         component: Subjects,
-      },
-      {
-        name: "Syllabus",
-        path: "/syllabus",
-        component: Syllabus,
       },
       {
         name: "Rooms",

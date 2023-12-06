@@ -8,6 +8,7 @@ import rooms from "./slices/resources/rooms";
 import subjects from "./slices/resources/subjects";
 import sections from "./slices/resources/sections";
 import employments from "./slices/admissions/employments";
+import courses from "./slices/resources/courses";
 
 const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ const store = configureStore({
     rooms,
     subjects,
     sections,
+    courses,
   },
 });
 

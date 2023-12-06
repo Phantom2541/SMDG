@@ -13,12 +13,8 @@ import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 import { SAVE } from "../../../../../services/redux/slices/resources/subjects";
 import { abbreviate } from "../../../../../services/utilities";
-
 import CustomSelect from "../../../../../components/customSelect";
 import { Departments } from "../../../../../services/fakeDb";
-import { formatGradeLvl } from "../../../../../services/utilities";
-
-const { collections, getGradeLevels } = Departments;
 
 export const SubjectForm = ({
   handleFinalSubmit,
@@ -114,7 +110,7 @@ export const SubjectForm = ({
       <div className="row">
         <div className="col-6">
           <CustomSelect
-            choices={collections}
+            choices={Departments.collections}
             label="Department"
             preValue={department}
             values="key"
@@ -123,7 +119,7 @@ export const SubjectForm = ({
               setForm({
                 ...form,
                 department: e,
-                gradeLvl: getGradeLevels(e)[0],
+                gradeLvl: Departments.getInitialGrade(e),
               });
               setShowGrade(false);
             }}
@@ -132,10 +128,10 @@ export const SubjectForm = ({
         <div className="col-6">
           {showGrade && (
             <CustomSelect
-              choices={getGradeLevels(department).map((id) => ({
-                id,
-                str: formatGradeLvl(department, id),
-              }))}
+              // choices={Departments.getGradeLevels(department).map((id) => ({
+              //   id,
+              //   str: formatGradeLvl(department, id),
+              // }))}
               label="Grade Level"
               preValue={gradeLvl}
               values="id"
