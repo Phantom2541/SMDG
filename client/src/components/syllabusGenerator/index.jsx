@@ -72,9 +72,7 @@ export default function SyllabusGenerator({
           return (
             <td
               onClick={() => handleClick(subject, boardId)}
-              className={`cursor-pointer text-left ${
-                color && `bg-${color} text-white`
-              }`}
+              className={`cursor-pointer ${color && `bg-${color} text-white`}`}
             >
               {subject?.title}
             </td>
@@ -103,6 +101,13 @@ export default function SyllabusGenerator({
           </tr>
         );
       })}
+      <tr>
+        <td className="font-weight-bold p-0" style={{ fontSize: "10px" }}>
+          HOURS PER DAY
+        </td>
+        <td>7</td>
+        <td>7</td>
+      </tr>
     </tbody>
   );
 }

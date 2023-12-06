@@ -43,7 +43,7 @@ export default function Advanced({ departmentKey }) {
           onClick={() => setActiveTab("requirements")}
           outline={"requirements" !== activeTab}
         >
-          Requirements
+          Enrollment Requirements
         </MDBBtn>
       </MDBBtnGroup>
       <MDBTabContent

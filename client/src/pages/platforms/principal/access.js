@@ -2,13 +2,13 @@
 import Announcements from "./socials/announcements";
 // import Courses from "./resources/courses";
 import Dashboard from "./dashboard";
-import EmploymentLists from "./admissions/employments";
-import Enrollments from "./admissions/enrollments";
+import Employments from "./admissions/employments";
+// import Enrollments from "./admissions/enrollments";
 // import OrgCharts from "./orgCharts/orgchart";
-import Requirements from "./admissions/requirements";
+// import Requirements from "./admissions/requirements";
 import Rooms from "./resources/rooms";
-import Sections from "./resources/sections";
-import Subjects from "./resources/subjects";
+// import Sections from "./resources/sections";
+// import Subjects from "./resources/subjects";
 import Violations from "./socials/violations";
 import Basic from "./departments/basic";
 import Advanced from "./departments/advanced";
@@ -54,47 +54,13 @@ const access = [
     path: "/resources",
     children: [
       {
-        name: "Courses",
-        path: "/courses",
-        // component: Courses,
-      },
-      {
-        name: "Subjects",
-        icon: "book-open",
-        path: "/subjects",
-        component: Subjects,
-      },
-      {
         name: "Rooms",
         path: "/rooms",
         component: Rooms,
       },
       {
-        name: "Sections",
-        path: "/sections",
-        component: Sections,
-      },
-    ],
-  },
-  {
-    name: "Admissions",
-    icon: "user-tie",
-    path: "/lists",
-    children: [
-      {
-        name: "Enrollment Requirements",
-        path: "/requirements",
-        component: Requirements,
-      },
-      {
-        name: "Enrollments",
-        path: "/enrollmentLists",
-        component: Enrollments,
-      },
-      {
-        name: "Employments",
-        path: "/employments",
-        component: EmploymentLists,
+        name: "Books",
+        path: "/books",
       },
     ],
   },
@@ -126,6 +92,11 @@ const access = [
     icon: "id-card-alt",
     path: "/accounts",
     children: [
+      {
+        name: "Job Seekers",
+        path: "/seekers",
+        component: Employments,
+      },
       {
         name: "Employees",
         path: "/employees",

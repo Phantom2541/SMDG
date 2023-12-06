@@ -1,4 +1,5 @@
 import axios from "axios";
+import error from "./error";
 
 /**
  * Upload function.
@@ -16,9 +17,6 @@ const upload = async (data, token, onUploadProgress) =>
       onUploadProgress,
     })
     .then(({ data }) => data)
-    .catch(({ response }) => {
-      const { error, message } = response.data;
-      throw new Error(message ? `${error}: ${message}` : error);
-    });
+    .catch(error);
 
 export default upload;

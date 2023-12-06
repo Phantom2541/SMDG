@@ -1,4 +1,5 @@
 import axios from "axios";
+import error from "./error";
 
 /**
  * Login function.
@@ -23,9 +24,6 @@ const login = async (email, password) =>
 
       return data;
     })
-    .catch(({ response }) => {
-      const { error, message } = response.data;
-      throw new Error(message ? `${error}: ${message}` : error);
-    });
+    .catch(error);
 
 export default login;

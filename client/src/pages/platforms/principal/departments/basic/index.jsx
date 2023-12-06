@@ -10,7 +10,7 @@ import Faculty from "../faculty";
 import Elem from "./elem";
 import Requirements from "../requirements";
 
-const navs = ["faculty", "grade levels", "requirements"];
+const navs = ["faculty", "grade levels", "enrollment requirements"];
 
 export default function Basic() {
   const [activeTab, setActiveTab] = useState("faculty");

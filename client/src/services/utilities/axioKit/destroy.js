@@ -1,4 +1,5 @@
 import axios from "axios";
+import error from "./error";
 
 /**
  * Destroy function.
@@ -18,9 +19,6 @@ const destroy = async (entity, data, token) =>
     data,
   })
     .then(({ data }) => data)
-    .catch(({ response }) => {
-      const { error, message } = response.data;
-      throw new Error(message ? `${error}: ${message}` : error);
-    });
+    .catch(error);
 
 export default destroy;

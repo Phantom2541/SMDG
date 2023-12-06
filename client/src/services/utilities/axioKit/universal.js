@@ -1,4 +1,5 @@
 import axios from "axios";
+import error from "./error";
 
 /**
  * A universal GET request.
@@ -11,7 +12,7 @@ import axios from "axios";
 const universal = async (name, token, key = "") => {
   if (typeof key === "object") {
     key = `?${Object.keys(key)
-      .map(i => `${i}=${key[i]}`)
+      .map((i) => `${i}=${key[i]}`)
       .join("&")}`;
   }
 
@@ -22,10 +23,7 @@ const universal = async (name, token, key = "") => {
       },
     })
     .then(({ data }) => data)
-    .catch(({ response }) => {
-      const { error, message } = response.data;
-      throw new Error(message ? `${error}: ${message}` : error);
-    });
+    .catch(error);
 };
 
 export default universal;

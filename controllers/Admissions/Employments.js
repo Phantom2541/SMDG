@@ -215,3 +215,20 @@ exports.faculty = (req, res) => {
     })
     .catch((error) => res.status(400).json({ error: error.message }));
 };
+
+exports.employees = (req, res) =>
+  Entity.find({ status: "approved" })
+    .populate({
+      path: "user",
+      select: "fullName",
+    })
+    .select("user")
+    .sort({ createdAt: -1 })
+    .lean()
+    .then((payload) =>
+      res.json({
+        success: "Employees Fetched Successfully.",
+        payload,
+      })
+    )
+    .catch((error) => res.status(400).json({ error: error.message }));

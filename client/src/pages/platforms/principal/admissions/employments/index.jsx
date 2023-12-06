@@ -16,7 +16,7 @@ import {
 } from "../../../../../services/redux/slices/admissions/employments";
 import { fullName, socket } from "../../../../../services/utilities";
 
-export default function EmploymentLists() {
+export default function Employments() {
   const [employments, setEmployments] = useState([]),
     [selected, setSelected] = useState({}),
     [show, setShow] = useState(false),
@@ -49,7 +49,7 @@ export default function EmploymentLists() {
           cascade
           className="gradient-card-header blue-gradient py-2 mx-4 d-flex justify-content-between align-items-center"
         >
-          <span className="ml-3">Employment List</span>
+          <span className="ml-3">Job Seekers</span>
 
           <form
             id="requirements-inline-search"

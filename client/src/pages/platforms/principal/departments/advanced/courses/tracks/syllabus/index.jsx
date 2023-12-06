@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Form from "./form";
-import { MDBCard, MDBCardBody } from "mdbreact";
+import { MDBCard, MDBCardBody, MDBCollapse } from "mdbreact";
 import SyllabusGenerator from "../../../../../../../../components/syllabusGenerator";
 import "./style.css";
 
@@ -16,14 +16,17 @@ export default function Syllabus({ course, gradeLvl }) {
 
   return (
     <>
-      <Form
-        selectedBoard={selectedBoard}
-        selectedSubject={selectedSubject}
-        course={course}
-        setSelectedBoard={setSelectedBoard}
-        setSelectedSubject={setSelectedSubject}
-        gradeLvl={gradeLvl}
-      />
+      <MDBCollapse isOpen={Boolean(selectedBoard)}>
+        <Form
+          selectedBoard={selectedBoard}
+          selectedSubject={selectedSubject}
+          course={course}
+          setSelectedBoard={setSelectedBoard}
+          setSelectedSubject={setSelectedSubject}
+          gradeLvl={gradeLvl}
+        />
+      </MDBCollapse>
+
       <MDBCard>
         <MDBCardBody className="p-0">
           <table className="syllabus-table">
@@ -43,13 +46,6 @@ export default function Syllabus({ course, gradeLvl }) {
               selectedBoard={selectedBoard}
               selectedSubject={selectedSubject}
             />
-            <tr>
-              <td className="font-weight-bold p-0" style={{ fontSize: "10px" }}>
-                HOURS PER DAY
-              </td>
-              <td>7 hours</td>
-              <td>7 hours</td>
-            </tr>
           </table>
         </MDBCardBody>
       </MDBCard>

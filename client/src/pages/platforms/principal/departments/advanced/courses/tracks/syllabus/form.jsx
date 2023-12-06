@@ -50,7 +50,7 @@ export default function Form({
     if (text) {
       const sup = ["st", "nd", "rd"];
       return (
-        <h5>
+        <h5 className="mb-0 mt-2">
           {curriculum.toUpperCase()} SUBJECT - {x}
           <sup>{sup[x - 1]}</sup> semester
         </h5>
@@ -66,8 +66,6 @@ export default function Form({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (!selectedBoard) return Swal.fire("Please select a board position.");
 
     const data = {
       ...form,
@@ -122,22 +120,20 @@ export default function Form({
 
     return (
       <div>
-        {text === "transfer" && (
-          <MDBBtn
-            onClick={() => {
-              setSelectedSubject({});
-              setForm(_form);
-              setSelectedBoard("");
-              dispatch(RERENDER());
-            }}
-            type="button"
-            color="transparent"
-            size="sm"
-            className="mt-4 z-depth-0"
-          >
-            cancel
-          </MDBBtn>
-        )}
+        <MDBBtn
+          onClick={() => {
+            setSelectedSubject({});
+            setForm(_form);
+            setSelectedBoard("");
+            dispatch(RERENDER());
+          }}
+          type="button"
+          color="transparent"
+          size="sm"
+          className="mt-4 z-depth-0"
+        >
+          cancel
+        </MDBBtn>
         <MDBBtn type="submit" color={color} size="sm" className="mt-4">
           {text}
         </MDBBtn>
@@ -149,7 +145,7 @@ export default function Form({
 
   return (
     <MDBCard>
-      <MDBCardBody className="pb-0 ">
+      <MDBCardBody className="py-0">
         {deconstructBoardId()}
         <form onSubmit={handleSubmit}>
           <MDBRow>
