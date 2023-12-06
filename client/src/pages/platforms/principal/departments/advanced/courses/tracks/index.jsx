@@ -89,6 +89,7 @@ export default function Tracks({
         <MDBTabPane tabId="sections">
           <MDBModalBody className="pt-1 p-0 bg-white">
             <Sections
+              key={gradeLvl}
               department={departmentKey}
               gradeLvl={gradeLvl}
               course={_id}
@@ -97,7 +98,7 @@ export default function Tracks({
         </MDBTabPane>
         <MDBTabPane tabId="syllabus">
           <MDBModalBody className="p-0">
-            <Syllabus course={course} gradeLvl={gradeLvl} />
+            <Syllabus key={gradeLvl} course={course} gradeLvl={gradeLvl} />
           </MDBModalBody>
         </MDBTabPane>
       </MDBTabContent>

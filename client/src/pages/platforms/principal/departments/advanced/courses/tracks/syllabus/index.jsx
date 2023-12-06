@@ -11,6 +11,7 @@ export default function Syllabus({ course, gradeLvl }) {
   const handleClick = (subject, board) => {
     if (board === selectedBoard) return;
     setSelectedBoard(board);
+    console.log(subject);
     setSelectedSubject(subject);
   };
 
