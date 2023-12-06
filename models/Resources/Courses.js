@@ -5,6 +5,7 @@ const modelSchema = new mongoose.Schema(
     pk: {
       type: Number,
       required: true,
+      unique: true,
     },
     department: {
       type: String,

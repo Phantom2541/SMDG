@@ -1,4 +1,5 @@
-const Entity = require("../../models/Resources/Courses");
+const Entity = require("../../models/Resources/Courses"),
+  handleDuplicate = require("../../config/duplicate");
 
 exports.save = (req, res) =>
   Entity.create(req.body)
@@ -10,7 +11,7 @@ exports.save = (req, res) =>
         payload,
       })
     )
-    .catch((error) => res.status(400).json({ error: error.message }));
+    .catch((error) => res.status(400).json({ error: handleDuplicate(error) }));
 
 exports.browse = (req, res) => {
   const { department } = req.query;
