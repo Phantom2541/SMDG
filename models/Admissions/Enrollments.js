@@ -22,7 +22,6 @@ const modelSchema = new mongoose.Schema(
       type: Number,
       min: 1,
       max: 17,
-      required: true,
     },
     course: {
       type: mongoose.Schema.Types.ObjectId,
