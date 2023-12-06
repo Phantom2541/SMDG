@@ -42,7 +42,7 @@ export default function Tracks({
     }
   }, [course, gradeLvl, token, dispatch]);
 
-  const { name, abbreviation, _id } = course;
+  const { name, _id } = course;
 
   return (
     <>
@@ -57,7 +57,7 @@ export default function Tracks({
             <MDBIcon icon="arrow-left" size="lg" className="p-0" />
           </MDBBtn>
           <span className="h6" title={name}>
-            {name.length > 15 ? abbreviation : name}&nbsp; -{" "}
+            {name}&nbsp; -&nbsp;
           </span>
           <CustomSelect
             choices={Departments.getGradeLevels(departmentKey).map((id) => ({
