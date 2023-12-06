@@ -1,8 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-export default function SyllabusGenerator({ handleClick, selectedBoard }) {
-  const { collections } = useSelector(({ subjects }) => subjects);
+export default function SyllabusGenerator({
+  handleClick,
+  selectedBoard,
+  selectedSubject,
+}) {
+  const [oldSubject, setOldSubject] = useState({}),
+    { collections, isLoading } = useSelector(({ subjects }) => subjects);
+
+  useEffect(() => {
+    if (selectedSubject?._id) {
+      setOldSubject(selectedSubject);
+    }
+  }, [selectedSubject]);
+
+  useEffect(() => {
+    setOldSubject({});
+  }, [isLoading]);
 
   const parseSyllabus = () => {
     const tableBody = new Array(13).fill().map((_, index) => {
@@ -48,11 +63,17 @@ export default function SyllabusGenerator({ handleClick, selectedBoard }) {
 
         const subjectCol = (x, y, subject) => {
           const boardId = `${indicator}/${x}-${y}`;
+          let color = undefined;
+
+          if (selectedBoard === boardId) color = "primary";
+          if (oldSubject?._id && oldSubject?._id === subject?._id)
+            color = "warning";
+
           return (
             <td
               onClick={() => handleClick(subject, boardId)}
               className={`cursor-pointer text-left ${
-                selectedBoard === boardId && "bg-primary text-white"
+                color && `bg-${color} text-white`
               }`}
             >
               {subject?.title}

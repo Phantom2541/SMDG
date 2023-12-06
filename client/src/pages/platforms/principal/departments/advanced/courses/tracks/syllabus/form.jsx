@@ -95,6 +95,47 @@ export default function Form({
     setSelectedBoard("");
   };
 
+  const handleSubmitBtn = () => {
+    let text = "submit",
+      color = "primary";
+
+    if (form?._id) {
+      const { semester, position, curriculum } = form;
+      const boardId = `${curriculum}/${semester}-${position}`;
+
+      text = "update";
+      color = "info";
+
+      if (boardId !== selectedBoard) {
+        text = "transfer";
+        color = "warning";
+      }
+    }
+
+    return (
+      <div>
+        {text === "transfer" && (
+          <MDBBtn
+            onClick={() => {
+              setSelectedSubject({});
+              setForm(_form);
+              setSelectedBoard("");
+            }}
+            type="button"
+            color="transparent"
+            size="sm"
+            className="float-left"
+          >
+            cancel
+          </MDBBtn>
+        )}
+        <MDBBtn type="submit" color={color} size="sm" className="float-right">
+          {text}
+        </MDBBtn>
+      </div>
+    );
+  };
+
   const { title, hours } = form;
 
   return (
@@ -121,14 +162,7 @@ export default function Form({
                 setForm({ ...form, hours: Number(e.target.value) })
               }
             />
-            <MDBBtn
-              type="submit"
-              color="primary"
-              size="sm"
-              className="float-right"
-            >
-              {form?._id ? "update" : "submit"}
-            </MDBBtn>
+            {handleSubmitBtn()}
           </form>
         </MDBCardBody>
       </MDBCard>
