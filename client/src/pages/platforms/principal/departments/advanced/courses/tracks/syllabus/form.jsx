@@ -14,7 +14,6 @@ import {
   RERENDER,
 } from "../../../../../../../../services/redux/slices/resources/subjects";
 import { isEqual } from "lodash";
-import Swal from "sweetalert2";
 import { useToasts } from "react-toast-notifications";
 
 const _form = {

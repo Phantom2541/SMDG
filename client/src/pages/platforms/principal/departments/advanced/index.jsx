@@ -6,7 +6,7 @@ import {
   MDBTabContent,
   MDBTabPane,
 } from "mdbreact";
-import Faculty from "./faculty";
+import Faculty from "../faculty";
 import { Departments } from "../../../../../services/fakeDb";
 import Courses from "./courses";
 import Requirements from "../requirements";

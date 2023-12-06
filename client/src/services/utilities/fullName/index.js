@@ -1,6 +1,6 @@
 const fullName = (fullname, isComplete = false) => {
   if (typeof fullname !== "object" || !fullname.fname || !fullname.lname)
-    return "";
+    return "N/A";
 
   const { fname, mname = "", lname, suffix = "" } = fullname;
 
