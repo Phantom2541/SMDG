@@ -11,10 +11,33 @@ const initialState = {
     HEAD: [],
     MASTER: [],
   },
+  faculty: {
+    head: {},
+    master: {},
+    teachers: [],
+  },
   isSuccess: false,
   isLoading: false,
   message: "",
 };
+
+export const FACULTY = createAsyncThunk(
+  `${name}/faculty`,
+  ({ token, key }, thunkAPI) => {
+    try {
+      return axioKit.universal(`${name}/faculty`, token, key);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
 export const TEACHERS = createAsyncThunk(
   `${name}/teachers`,
@@ -180,27 +203,21 @@ export const reduxSlice = createSlice({
         state.isLoading = false;
       })
 
-      //   .addCase(DESTROY.pending, (state) => {
-      //     state.isLoading = true;
-      //     state.isSuccess = false;
-      //     state.message = "";
-      //   })
-      //   .addCase(DESTROY.fulfilled, (state, action) => {
-      //     const { success, payload } = action.payload;
-
-      //     bulkPayload(state, payload, false);
-
-      //     state.showModal = false;
-      //     state.message = success;
-      //     state.isSuccess = true;
-      //     state.isLoading = false;
-      //   })
-      //   .addCase(DESTROY.rejected, (state, action) => {
-      //     const { error } = action;
-      //     state.showModal = false;
-      //     state.message = error.message;
-      //     state.isLoading = false;
-      //   })
+      .addCase(FACULTY.pending, (state) => {
+        state.isLoading = true;
+        state.isSuccess = false;
+        state.message = "";
+      })
+      .addCase(FACULTY.fulfilled, (state, action) => {
+        const { payload } = action.payload;
+        state.faculty = payload;
+        state.isLoading = false;
+      })
+      .addCase(FACULTY.rejected, (state, action) => {
+        const { error } = action;
+        state.message = error.message;
+        state.isLoading = false;
+      })
 
       .addCase(TEACHERS.pending, (state) => {
         state.isLoading = true;

@@ -41,7 +41,7 @@ export default function Basic() {
       >
         <MDBTabPane tabId="faculty">
           <MDBModalBody className="pt-1 p-0 bg-primary">
-            <Faculty />
+            <Faculty department="grade" />
           </MDBModalBody>
         </MDBTabPane>
         <MDBTabPane tabId="grade levels">

@@ -11,7 +11,7 @@ import { Departments } from "../../../../../services/fakeDb";
 import Courses from "./courses";
 
 export default function Advanced({ departmentKey }) {
-  const [activeTab, setActiveTab] = useState("courses");
+  const [activeTab, setActiveTab] = useState("faculty");
 
   const department = Departments.getName(departmentKey),
     courseTxt = departmentKey === "college" ? "Courses" : "Strands";
@@ -47,7 +47,7 @@ export default function Advanced({ departmentKey }) {
       >
         <MDBTabPane tabId="faculty">
           <MDBModalBody className="pt-1 p-0 bg-primary">
-            <Faculty />
+            <Faculty department={departmentKey} />
           </MDBModalBody>
         </MDBTabPane>
         <MDBTabPane tabId="courses">

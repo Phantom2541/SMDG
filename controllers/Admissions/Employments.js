@@ -151,7 +151,7 @@ exports.teachers = (req, res) => {
     .select("user")
     .sort({ createdAt: -1 })
     .lean()
-    .then(async (teachers) =>
+    .then((teachers) =>
       res.json({
         success: "Teachers Found successfully.",
         payload: teachers.map((teach) => ({
@@ -160,5 +160,58 @@ exports.teachers = (req, res) => {
         })),
       })
     )
+    .catch((error) => res.status(400).json({ error: error.message }));
+};
+
+exports.faculty = (req, res) => {
+  const { department } = req.query;
+
+  if (!department)
+    return res.status(400).json({
+      error: "Invalid Parameters",
+      message: "Department is required.",
+    });
+
+  Entity.find({
+    department,
+    status: "approved",
+  })
+    .populate({
+      path: "user",
+      select: "fullName",
+    })
+    .select("user access")
+    .sort({ createdAt: -1 })
+    .lean()
+    .then(async (payload) => {
+      const head = payload.find(({ access }) => access === "HEAD"),
+        master = payload.find(({ access }) => access === "MASTER"),
+        teachers = [];
+
+      for (const teach of payload.filter(
+        ({ access }) => access === "TEACHER"
+      )) {
+        let section = undefined;
+
+        const _section = await Sections.findOne({ adviser: teach._id });
+
+        if (_section) section = _section.name;
+
+        teachers.push({
+          ...teach,
+          user: teach?.user?.fullName,
+          section,
+        });
+      }
+
+      res.json({
+        success: "Faculty Found successfully.",
+        payload: {
+          head: { ...head, user: head?.user?.fullName },
+          master: { ...master, user: master?.user?.fullName },
+          teachers,
+        },
+      });
+    })
     .catch((error) => res.status(400).json({ error: error.message }));
 };
