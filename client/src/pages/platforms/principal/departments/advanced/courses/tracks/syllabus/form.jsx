@@ -17,6 +17,7 @@ const _form = {
 export default function Form({
   selectedSubject,
   selectedBoard,
+  setSelectedSubject,
   setSelectedBoard,
   course,
   gradeLvl,
@@ -89,6 +90,7 @@ export default function Form({
       );
     }
 
+    setSelectedSubject({});
     setForm(_form);
     setSelectedBoard("");
   };
