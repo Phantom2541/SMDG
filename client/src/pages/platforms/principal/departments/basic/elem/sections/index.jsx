@@ -130,6 +130,20 @@ export default function Sections({ gradeLvl, department, course = undefined }) {
                         <MDBBtnGroup>
                           <MDBBtn
                             className="m-0"
+                            title="Schedule"
+                            color="purple"
+                            size="sm"
+                            rounded
+                            // onClick={() => {
+                            //   setSelected(section);
+                            //   setWillCreate(false);
+                            //   setShow(true);
+                            // }}
+                          >
+                            <MDBIcon icon="calendar" />
+                          </MDBBtn>
+                          <MDBBtn
+                            className="m-0"
                             title="Edit"
                             color="info"
                             size="sm"

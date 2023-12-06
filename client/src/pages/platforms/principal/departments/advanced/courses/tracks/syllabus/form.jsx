@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { MDBBtn, MDBCard, MDBCardBody, MDBCol, MDBInput } from "mdbreact";
+import {
+  MDBBtn,
+  MDBCard,
+  MDBCardBody,
+  MDBCol,
+  MDBInput,
+  MDBRow,
+} from "mdbreact";
 import { useSelector, useDispatch } from "react-redux";
 import {
   SAVE,
@@ -126,12 +133,12 @@ export default function Form({
             type="button"
             color="transparent"
             size="sm"
-            className="float-left"
+            className="mt-4 z-depth-0"
           >
             cancel
           </MDBBtn>
         )}
-        <MDBBtn type="submit" color={color} size="sm" className="float-right">
+        <MDBBtn type="submit" color={color} size="sm" className="mt-4">
           {text}
         </MDBBtn>
       </div>
@@ -141,33 +148,37 @@ export default function Form({
   const { title, hours } = form;
 
   return (
-    <MDBCol md="3">
-      <MDBCard>
-        <MDBCardBody>
-          {deconstructBoardId()}
-          <form onSubmit={handleSubmit}>
-            <MDBInput
-              label="Title"
-              type="text"
-              required
-              value={title}
-              onChange={(e) =>
-                setForm({ ...form, title: e.target.value.toUpperCase() })
-              }
-            />
-            <MDBInput
-              label="Hours"
-              type="number"
-              required
-              value={String(hours)}
-              onChange={(e) =>
-                setForm({ ...form, hours: Number(e.target.value) })
-              }
-            />
-            {handleSubmitBtn()}
-          </form>
-        </MDBCardBody>
-      </MDBCard>
-    </MDBCol>
+    <MDBCard>
+      <MDBCardBody className="pb-0 ">
+        {deconstructBoardId()}
+        <form onSubmit={handleSubmit}>
+          <MDBRow>
+            <MDBCol md="8">
+              <MDBInput
+                label="Title"
+                type="text"
+                required
+                value={title}
+                onChange={(e) =>
+                  setForm({ ...form, title: e.target.value.toUpperCase() })
+                }
+              />
+            </MDBCol>
+            <MDBCol md="1">
+              <MDBInput
+                label="Hours"
+                type="number"
+                required
+                value={String(hours)}
+                onChange={(e) =>
+                  setForm({ ...form, hours: Number(e.target.value) })
+                }
+              />
+            </MDBCol>
+            <MDBCol md="3">{handleSubmitBtn()}</MDBCol>
+          </MDBRow>
+        </form>
+      </MDBCardBody>
+    </MDBCard>
   );
 }
