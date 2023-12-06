@@ -91,6 +91,9 @@ export const reduxSlice = createSlice({
       state.isSuccess = false;
       state.message = "";
     },
+    RERENDER: (state) => {
+      state.isLoading = !state.isLoading;
+    },
   },
   extraReducers: (builder) =>
     builder
@@ -176,6 +179,6 @@ export const reduxSlice = createSlice({
       }),
 });
 
-export const { RESET } = reduxSlice.actions;
+export const { RESET, RERENDER } = reduxSlice.actions;
 
 export default reduxSlice.reducer;

@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   SAVE,
   UPDATE,
+  RERENDER,
 } from "../../../../../../../../services/redux/slices/resources/subjects";
 import { isEqual } from "lodash";
 import Swal from "sweetalert2";
@@ -120,6 +121,7 @@ export default function Form({
               setSelectedSubject({});
               setForm(_form);
               setSelectedBoard("");
+              dispatch(RERENDER());
             }}
             type="button"
             color="transparent"

@@ -44,7 +44,7 @@ const modelSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: {
-        values: ["pending", "validated", "approved", "rejected"],
+        values: ["pending", "validated", "paid", "approved", "rejected"],
         message: "Please choose a valid type from the predefined options.",
       },
       default: "pending",
