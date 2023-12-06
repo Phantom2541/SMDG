@@ -222,7 +222,6 @@ exports.employees = (req, res) =>
       path: "user",
       select: "fullName",
     })
-    .select("user")
     .sort({ createdAt: -1 })
     .lean()
     .then((payload) =>

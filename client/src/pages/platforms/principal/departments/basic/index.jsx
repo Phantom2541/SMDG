@@ -50,7 +50,7 @@ export default function Basic() {
             <Elem />
           </MDBModalBody>
         </MDBTabPane>
-        <MDBTabPane tabId="requirements">
+        <MDBTabPane tabId="enrollment requirements">
           <MDBModalBody className="mx-0">
             <Requirements department="grade" />
           </MDBModalBody>

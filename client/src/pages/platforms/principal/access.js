@@ -2,7 +2,7 @@
 import Announcements from "./socials/announcements";
 // import Courses from "./resources/courses";
 import Dashboard from "./dashboard";
-import Employments from "./admissions/employments";
+import Employments from "./accounts/employments";
 // import Enrollments from "./admissions/enrollments";
 // import OrgCharts from "./orgCharts/orgchart";
 // import Requirements from "./admissions/requirements";
@@ -12,6 +12,7 @@ import Rooms from "./resources/rooms";
 import Violations from "./socials/violations";
 import Basic from "./departments/basic";
 import Advanced from "./departments/advanced";
+import Employees from "./accounts/employees";
 
 const access = [
   {
@@ -100,6 +101,7 @@ const access = [
       {
         name: "Employees",
         path: "/employees",
+        component: Employees,
       },
       {
         name: "Students",

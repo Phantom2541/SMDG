@@ -21,6 +21,24 @@ const initialState = {
   message: "",
 };
 
+export const EMPLOYEES = createAsyncThunk(
+  `${name}/employees`,
+  ({ token, key }, thunkAPI) => {
+    try {
+      return axioKit.universal(`${name}/employees`, token, key);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const FACULTY = createAsyncThunk(
   `${name}/faculty`,
   ({ token, key }, thunkAPI) => {
@@ -230,6 +248,22 @@ export const reduxSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(TEACHERS.rejected, (state, action) => {
+        const { error } = action;
+        state.message = error.message;
+        state.isLoading = false;
+      })
+
+      .addCase(EMPLOYEES.pending, (state) => {
+        state.isLoading = true;
+        state.isSuccess = false;
+        state.message = "";
+      })
+      .addCase(EMPLOYEES.fulfilled, (state, action) => {
+        const { payload } = action.payload;
+        state.collections = payload;
+        state.isLoading = false;
+      })
+      .addCase(EMPLOYEES.rejected, (state, action) => {
         const { error } = action;
         state.message = error.message;
         state.isLoading = false;
