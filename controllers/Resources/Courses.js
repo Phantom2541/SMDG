@@ -11,7 +11,18 @@ exports.save = (req, res) =>
         payload,
       })
     )
-    .catch((error) => res.status(400).json({ error: handleDuplicate(error) }));
+    .catch((error) =>
+      res
+        .status(400)
+        .json({
+          error: handleDuplicate(
+            error,
+            `Duplicate ${
+              req.body.department === "college" ? "Course" : "Strand"
+            } Entry`
+          ),
+        })
+    );
 
 exports.browse = (req, res) => {
   const { department } = req.query;
