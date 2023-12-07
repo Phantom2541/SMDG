@@ -9,6 +9,9 @@ import {
 } from "mdbreact";
 import CustomSelect from "../../../../../components/customSelect";
 import { fullName } from "../../../../../services/utilities";
+import { useDispatch, useSelector } from "react-redux";
+import { UPDATE } from "../../../../../services/redux/slices/admissions/employments";
+import { useToasts } from "react-toast-notifications";
 
 // declare your expected items
 const _form = {
@@ -18,11 +21,29 @@ const _form = {
 };
 
 export default function Modal({ show, toggle, selected }) {
-  const [form, setForm] = useState(_form);
+  const [form, setForm] = useState(_form),
+    { token } = useSelector(({ auth }) => auth),
+    dispatch = useDispatch(),
+    { isSuccess, message } = useSelector(({ employments }) => employments),
+    { addToast } = useToasts();
+
+  useEffect(() => {
+    if (message) {
+      addToast(message, {
+        appearance: isSuccess ? "success" : "error",
+      });
+    }
+  }, [isSuccess, message, addToast]);
 
   useEffect(() => {
     setForm(selected);
   }, [selected]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(UPDATE({ data: { employment: form, didUpdate: true }, token }));
+    toggle();
+  };
 
   const handleChange = (key, value) => setForm({ ...form, [key]: value });
 
@@ -38,8 +59,13 @@ export default function Modal({ show, toggle, selected }) {
         {fullName(user?.fullName)}
       </MDBModalHeader>
       <MDBModalBody className="mb-0">
-        <form>
-          <MDBInput label="Position" value={position} />
+        <form onSubmit={handleSubmit}>
+          <MDBInput
+            label="Position"
+            value={position}
+            required
+            onChange={(e) => handleChange("position", e.target.value)}
+          />
           <CustomSelect label="Access" preValue={access} />
           {["TEACHER", "MASTER", "HEAD"].includes(selected.access) && (
             <div className="d-flex">

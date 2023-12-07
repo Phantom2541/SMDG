@@ -12,10 +12,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { EMPLOYEES } from "../../../../../services/redux/slices/admissions/employments";
 import { fullName } from "../../../../../services/utilities";
 import Modal from "./modal";
+import Disable from "./disable";
 
 export default function Employees() {
   const [employees, setEmployees] = useState([]),
     [show, setShow] = useState(false),
+    [showDisable, setShowDisable] = useState(false),
     [selected, setSelected] = useState({}),
     { collections } = useSelector(({ employments }) => employments),
     { token } = useSelector(({ auth }) => auth),
@@ -120,7 +122,7 @@ export default function Employees() {
                           color="danger"
                           size="sm"
                           rounded
-                          // onClick={() => handleDelete(_id)}
+                          onClick={() => setShowDisable(true)}
                         >
                           <MDBIcon icon="user-slash" />
                         </MDBBtn>
@@ -140,6 +142,7 @@ export default function Employees() {
         }}
         selected={selected}
       />
+      <Disable showDisable={showDisable} toggle={() => setShowDisable(false)} />
     </>
   );
 }
