@@ -1,109 +1,159 @@
+import React, { useEffect, useState } from "react";
 import {
   MDBBadge,
-  MDBBtn,
-  MDBCard,
-  MDBCardBody,
   MDBCol,
-  MDBIcon,
+  MDBInput,
+  MDBListGroup,
+  MDBListGroupItem,
   MDBRow,
-  MDBTable,
-  MDBView,
+  MDBTypography,
 } from "mdbreact";
-import React from "react";
-import CustomSelect from "../../../../components/customSelect";
+import Enrollees from "../../../../components/enrollees";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  GETALL,
+  RESET,
+} from "../../../../services/redux/slices/resources/sections";
+import { fullName, generateSY } from "../../../../services/utilities";
+import { isEqual } from "lodash";
+import Swal from "sweetalert2";
+import { UPDATE } from "../../../../services/redux/slices/admissions/enrollments";
 
 export default function Registrar() {
+  const [sections, setSections] = useState([]),
+    [filter, setFilter] = useState({ course: "", gradelvl: "" }),
+    { token } = useSelector(({ auth }) => auth),
+    { collections } = useSelector(({ sections }) => sections),
+    dispatch = useDispatch();
+
+  useEffect(() => {
+    if (token) {
+      dispatch(GETALL({ token, key: { batch: JSON.stringify(generateSY()) } }));
+    }
+
+    return () => {
+      dispatch(RESET);
+    };
+  }, [token]);
+
+  useEffect(() => {
+    setSections(
+      collections.filter(({ course, gradeLvl }) =>
+        isEqual(filter, { course, gradeLvl })
+      )
+    );
+  }, [collections, filter]);
+
+  const handleDrop = (e, sectionId, sectionName) => {
+    e.preventDefault();
+    const { enrollmentId, fullName } = JSON.parse(
+      e.dataTransfer.getData("text/plain")
+    );
+
+    Swal.fire({
+      focusDeny: true,
+      icon: "question",
+      title: "Are you sure?",
+      html: `You are about to assign <b>${fullName}</b> to <b>${sectionName}</b>.`,
+      footer: "This action is irreversible.",
+      confirmButtonText: `<span class="text-dark">Cancel</span>`,
+      confirmButtonColor: "#fff",
+      showDenyButton: true,
+      denyButtonText: `Proceed`,
+      denyButtonColor: "#3B71CA",
+    }).then((res) => {
+      if (res.isDenied) {
+        dispatch(
+          UPDATE({
+            token,
+            data: {
+              enrollment: {
+                _id: enrollmentId,
+                section: sectionId,
+                status: "approved",
+              },
+              isViewing: true,
+            },
+          })
+        );
+      } else {
+        Swal.fire({
+          title: "Changes are not Saved!",
+          icon: "warning",
+          showConfirmButton: false,
+          timer: 2500,
+          timerProgressBar: true,
+        });
+      }
+    });
+  };
+
+  const handleInstructions = () => {
+    if (!sections.length) {
+      const { course } = filter;
+      if (course)
+        return (
+          <MDBTypography
+            className="mb-0"
+            noteColor="warning"
+            note
+            noteTitle="Oops: "
+          >
+            No sections exist for this grade level and section
+          </MDBTypography>
+        );
+
+      return (
+        <MDBTypography
+          className="mb-0"
+          noteColor="info"
+          note
+          noteTitle="Instructions: "
+        >
+          Drag an Enrollee to choose a section
+        </MDBTypography>
+      );
+    }
+
+    return (
+      <div>
+        <MDBInput
+          onDragOver={dragOver}
+          type="search"
+          label="Keyword Search..."
+        />
+      </div>
+    );
+  };
+
+  const dragOver = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <MDBRow>
       <MDBCol md="9">
-        <MDBCard narrow className="m-0 z-depth-0">
-          <MDBView
-            cascade
-            className="gradient-card-header blue-gradient py-2 mx-4 d-flex justify-content-between align-items-center"
-          >
-            <span className="ml-3">Enrollment List</span>
-
-            <form
-              id="requirements-inline-search"
-              // onSubmit={handleSearch}
-              className="form-inline ml-2"
-            >
-              <div className="form-group md-form py-0 mt-0">
-                <input
-                  className="form-control w-80 placeholder-white text-white"
-                  type="text"
-                  placeholder="LRN Search..."
-                  name="searchKey"
-                  required
-                />
-                <MDBBtn
-                  // onClick={() => {
-                  //   if (!didSearch) return;
-
-                  //   setDidSearch(false);
-                  //   document.getElementById("requirements-inline-search").reset();
-                  //   setSections(collections);
-                  // }}
-                  // type={didSearch ? "button" : "submit"}
-                  size="sm"
-                  color="info"
-                  className="d-inline ml-2 px-2"
-                >
-                  <MDBIcon icon="search" />
-                </MDBBtn>
-              </div>
-            </form>
-          </MDBView>
-          <MDBCardBody>
-            <MDBTable responsive hover>
-              <thead>
-                <tr>
-                  <th
-                    className="th-lg cursor-pointer"
-                    // onClick={() =>
-                    //   setOrderIndex((prev) => {
-                    //     if (prev > 1) return 0;
-
-                    //     return prev + 1;
-                    //   })
-                    // }
-                  >
-                    Fullname&nbsp;
-                    <MDBIcon
-                      icon="sort"
-                      title="Sort by Name"
-                      className="text-primary"
-                    />
-                  </th>
-                  <th className="th-lg">LRN</th>
-
-                  <th className="th-lg">Grade Level</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-              </tbody>
-            </MDBTable>
-          </MDBCardBody>
-        </MDBCard>
+        <Enrollees status="paid" setFilter={setFilter} />
       </MDBCol>
-      <MDBCol md="3">
-        <MDBCard className="z-depth-0">
-          <MDBCardBody>
-            <MDBCard className="d-flex">
-              <div className="d-flex align-items-center">
-                <MDBBadge>
-                  <h4 className="pt-2 px-1">34</h4>
-                </MDBBadge>
-                <h4 className="pt-2 ml-2">Manggoes</h4>
+      <MDBCol md="3" className="px-0">
+        {handleInstructions()}
+        {sections?.map(({ _id, name, adviser = {}, count }) => (
+          <MDBListGroup
+            onDragOver={dragOver}
+            onDrop={(e) => handleDrop(e, _id, name)}
+            key={_id}
+          >
+            <MDBListGroupItem className="d-flex justify-content-between align-items-start">
+              <div>
+                <div className="font-weight-bold">{name}</div>
+                {fullName(adviser?.fullName)}
               </div>
-            </MDBCard>
-          </MDBCardBody>
-        </MDBCard>
+              <MDBBadge pill color="primary">
+                {count}
+              </MDBBadge>
+            </MDBListGroupItem>
+          </MDBListGroup>
+        ))}
       </MDBCol>
     </MDBRow>
   );

@@ -11,6 +11,9 @@ const Courses = {
     if (!pk) return {};
     return this.collections.find(({ id }) => id === Number(pk));
   },
+  getAbbreviation: function (pk) {
+    return this.find(pk).abbreviation;
+  },
   getName: function (pk) {
     return this.find(pk).name;
   },

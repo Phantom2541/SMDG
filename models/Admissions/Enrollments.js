@@ -37,6 +37,10 @@ const modelSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Courses",
     },
+    section: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Sections",
+    },
     batch: {
       start: {
         type: Number,

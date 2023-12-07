@@ -29,6 +29,24 @@ export const BROWSE = createAsyncThunk(
   }
 );
 
+export const GETALL = createAsyncThunk(
+  `${name}/getAll`,
+  ({ token, key }, thunkAPI) => {
+    try {
+      return axioKit.universal(`${name}/getAll`, token, key);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const SAVE = createAsyncThunk(
   `${name}/save`,
   ({ token, data }, thunkAPI) => {
@@ -172,6 +190,22 @@ export const reduxSlice = createSlice({
       .addCase(DESTROY.rejected, (state, action) => {
         const { error } = action;
         state.showModal = false;
+        state.message = error.message;
+        state.isLoading = false;
+      })
+
+      .addCase(GETALL.pending, (state) => {
+        state.isLoading = true;
+        state.isSuccess = false;
+        state.message = "";
+      })
+      .addCase(GETALL.fulfilled, (state, action) => {
+        const { payload } = action.payload;
+        state.collections = payload;
+        state.isLoading = false;
+      })
+      .addCase(GETALL.rejected, (state, action) => {
+        const { error } = action;
         state.message = error.message;
         state.isLoading = false;
       })

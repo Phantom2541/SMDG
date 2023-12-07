@@ -350,10 +350,16 @@ export default function EnrollmentForm() {
       case "validated":
         title = "Validated: ";
         color = "success";
-        text = "Form has been validated; please proceed to cashier payment";
+        text = "Form has been validated; please proceed to cashier payment.";
         break;
 
-      default:
+      case "paid":
+        title = "Paid: ";
+        color = "success";
+        text = "Tuition Fee has been paid; please proceed to registrar.";
+        break;
+
+      case "pending":
         if (isPublished) {
           title = "Published: ";
           color = "success";
@@ -364,6 +370,9 @@ export default function EnrollmentForm() {
           color = "info";
           text = "Form saved as draft.";
         }
+        break;
+
+      default:
         break;
     }
 

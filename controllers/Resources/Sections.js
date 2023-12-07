@@ -1,5 +1,6 @@
 const Entity = require("../../models/Resources/Sections"),
-  Employments = require("../../models/Admissions/Employments");
+  Employments = require("../../models/Admissions/Employments"),
+  Enrollments = require("../../models/Admissions/Enrollments");
 
 exports.save = (req, res) => {
   const { adviser, name, gradeLvl, department } = req.body;
@@ -163,3 +164,52 @@ exports.destroy = (req, res) =>
       });
     })
     .catch((error) => res.status(400).json({ error: error.message }));
+
+exports.getAll = (req, res) => {
+  const { batch } = req.query;
+
+  if (!batch)
+    return res.status(400).json({
+      error: "Invalid Parameters",
+      message: "Batch is required.",
+    });
+
+  Entity.find()
+    .select("-createdAt -updatedAt -__v")
+    .populate({
+      path: "adviser",
+      select: "user",
+      populate: {
+        path: "user",
+        select: "fullName",
+      },
+    })
+    .sort({ createdAt: -1 })
+    .lean()
+    .then(async (sections) => {
+      const payload = [];
+
+      for (const section of sections) {
+        const count = await Enrollments.countDocuments({
+          section: section._id,
+          status: "approved",
+          batch: JSON.parse(batch),
+        });
+
+        payload.push({
+          ...section,
+          adviser: {
+            _id: section?.adviser?._id,
+            fullName: section?.adviser?.user?.fullName,
+          },
+          count,
+        });
+      }
+
+      res.json({
+        success: "All Sections Fetched Successfully.",
+        payload,
+      });
+    })
+    .catch((error) => res.status(400).json({ error: error.message }));
+};
