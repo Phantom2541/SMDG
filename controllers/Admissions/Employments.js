@@ -41,6 +41,10 @@ exports.update = async (req, res) => {
   }
 
   Entity.findByIdAndUpdate(employment._id, employment, { new: true })
+    .populate({
+      path: "user",
+      select: "fullName",
+    })
     .then((_employment) => {
       var success =
         "The form has been submitted; please await validation by the principal.";
