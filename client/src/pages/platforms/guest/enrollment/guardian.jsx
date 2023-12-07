@@ -1,5 +1,8 @@
 import { MDBBtn, MDBInput } from "mdbreact";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
+import { UPDATE } from "../../../../services/redux/slices/admissions/enrollments";
 
 const _preset = {
   fname: undefined,
@@ -14,16 +17,60 @@ export default function Guardian({
   handleForm,
   handleFinalSubmit,
   isPublished,
+  viewing,
+  goBack,
 }) {
+  const { token } = useSelector(({ auth }) => auth),
+    dispatch = useDispatch();
+
   const { form, setForm } = handleForm;
 
   const handleChange = (obj, key, value) =>
     setForm({ ...form, [obj]: { ...form[obj], [key]: value.toUpperCase() } });
 
-  const { father = _preset, mother = _preset, legal = _preset } = form;
+  const { father = _preset, mother = _preset, legal = _preset, _id } = form;
+
+  const handleReject = async () => {
+    const { value: remarks } = await Swal.fire({
+      icon: "question",
+      title: "Reject this person?",
+      input: "textarea",
+      inputLabel: "Please specify your reason.",
+      inputPlaceholder: "Write a reason for rejection...",
+      showCancelButton: true,
+      cancelButtonColor: "#fff",
+      cancelButtonText: `<span class="text-dark">Cancel</span>`,
+
+      confirmButtonColor: "#d33",
+      confirmButtonText: "Yes, Reject!",
+      inputValidator: (value) => {
+        if (!value) {
+          return "You need to write something!";
+        }
+      },
+    });
+    if (remarks) {
+      dispatch(
+        UPDATE({
+          data: {
+            enrollment: {
+              status: "rejected",
+              _id,
+              remarks,
+              isPublished: false,
+            },
+            isViewing: true,
+          },
+          token,
+        })
+      );
+      goBack();
+    }
+  };
 
   return (
     <>
+      {viewing && <h5 className="mt-4">Guardians Information</h5>}
       <div className="border p-2">
         <span>Legal Guardian's Name</span>
         <div className="row">
@@ -192,13 +239,23 @@ export default function Guardian({
       >
         Return
       </MDBBtn>
+
       {!isPublished && (
         <MDBBtn
           style={{ float: "right" }}
-          color="primary"
+          color={viewing ? "success" : "primary"}
           onClick={handleFinalSubmit}
         >
-          Submit
+          {viewing ? "Approve" : "Submit"}
+        </MDBBtn>
+      )}
+      {viewing && (
+        <MDBBtn
+          style={{ float: "right" }}
+          color="danger"
+          onClick={handleReject}
+        >
+          Reject
         </MDBBtn>
       )}
     </>

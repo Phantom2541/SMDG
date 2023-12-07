@@ -11,6 +11,13 @@ const Courses = {
     if (!pk) return {};
     return this.collections.find(({ id }) => id === Number(pk));
   },
+  getName: function (pk) {
+    return this.find(pk).name;
+  },
+  displayName: function (pk) {
+    const { abbreviation, name } = this.find(pk);
+    return `(${abbreviation}) ${name}`;
+  },
 };
 
 export default Courses;

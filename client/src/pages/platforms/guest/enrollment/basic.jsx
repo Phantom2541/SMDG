@@ -2,7 +2,12 @@ import React from "react";
 import { MDBBtn, MDBDatePicker, MDBInput } from "mdbreact";
 import { getAge } from "../../../../services/utilities";
 
-export default function Basic({ setActiveStep, handleForm, isPublished }) {
+export default function Basic({
+  setActiveStep,
+  handleForm,
+  isPublished,
+  viewing = false,
+}) {
   const { form, setForm } = handleForm;
 
   const handleChange = (key, value) => setForm({ ...form, [key]: value });
@@ -24,6 +29,7 @@ export default function Basic({ setActiveStep, handleForm, isPublished }) {
 
   return (
     <>
+      {viewing && <h5 className="mt-4">Basic Information</h5>}
       <div className="row">
         <div className="col-6">
           <MDBInput

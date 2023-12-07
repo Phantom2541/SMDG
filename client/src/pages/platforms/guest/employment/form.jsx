@@ -609,15 +609,15 @@ export default function Form({
         )}
         {!isGuest && (
           <div className="float-right">
-            <MDBBtn type="submit" color="success">
-              Approve
-            </MDBBtn>
             <MDBBtn
               onClick={() => handleReject(_id)}
               type="button"
               color="danger"
             >
               Reject
+            </MDBBtn>
+            <MDBBtn type="submit" color="success">
+              Approve
             </MDBBtn>
           </div>
         )}

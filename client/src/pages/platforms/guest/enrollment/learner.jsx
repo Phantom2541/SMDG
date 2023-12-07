@@ -7,9 +7,10 @@ import { formatGradeLvl } from "../../../../services/utilities";
 import { useSelector } from "react-redux";
 
 export default function Learner({
+  viewing = false,
   setActiveStep,
   handleForm,
-  setDepartment,
+  setDepartment = () => {},
   isPublished,
 }) {
   const [showGrade, setShowGrade] = useState(true),
@@ -33,6 +34,7 @@ export default function Learner({
 
   return (
     <>
+      {viewing && <h5 className="mt-4">Learners Information</h5>}
       <div className="row">
         <div className="col-6">
           <MDBInput
@@ -79,60 +81,63 @@ export default function Learner({
           />
         </div>
       </div>
-      <div className="row">
-        <div className="col-4">
-          <CustomSelect
-            disabledAllExceptSelected
-            choices={Departments.collections}
-            label="Department"
-            preValue={department}
-            values="key"
-            texts="name"
-            onChange={(department) => {
-              setDepartment(department);
-              setForm({
-                ...form,
-                department,
-              });
-              setShowGrade(false);
-            }}
-          />
-        </div>
-        <div className="col-4">
-          <CustomSelect
-            disabledAllExceptSelected={isPublished}
-            choices={courses.map((course) => {
-              const { name, abbreviation } = Courses.find(course.pk);
-
-              return {
-                str: `(${abbreviation}) ${name}`,
-                ...course,
-              };
-            })}
-            label={department === "college" ? "Courses" : "Strands"}
-            preValue={course}
-            values="_id"
-            texts="str"
-            onChange={(e) => handleChange("course", e)}
-          />
-        </div>
-        <div className="col-4">
-          {showGrade && (
+      {!viewing && (
+        <div className="row">
+          <div className="col-4">
+            <CustomSelect
+              disabledAllExceptSelected
+              choices={Departments.collections}
+              label="Department"
+              preValue={department}
+              values="key"
+              texts="name"
+              onChange={(department) => {
+                setDepartment(department);
+                setForm({
+                  ...form,
+                  department,
+                });
+                setShowGrade(false);
+              }}
+            />
+          </div>
+          <div className="col-4">
             <CustomSelect
               disabledAllExceptSelected={isPublished}
-              choices={Departments.getGradeLevels(department).map((id) => ({
-                id,
-                str: formatGradeLvl(department, id),
-              }))}
-              label="Grade Level"
-              preValue={gradeLvl}
-              values="id"
+              choices={courses.map((course) => {
+                const { name, abbreviation } = Courses.find(course.pk);
+
+                return {
+                  str: `(${abbreviation}) ${name}`,
+                  ...course,
+                };
+              })}
+              label={department === "college" ? "Courses" : "Strands"}
+              preValue={course}
+              values="_id"
               texts="str"
-              onChange={(e) => handleChange("gradeLvl", e)}
+              onChange={(e) => handleChange("course", e)}
             />
-          )}
+          </div>
+          <div className="col-4">
+            {showGrade && (
+              <CustomSelect
+                disabledAllExceptSelected={isPublished}
+                choices={Departments.getGradeLevels(department).map((id) => ({
+                  id,
+                  str: formatGradeLvl(department, id),
+                }))}
+                label="Grade Level"
+                preValue={gradeLvl}
+                values="id"
+                texts="str"
+                onChange={(e) => handleChange("gradeLvl", e)}
+              />
+            )}
+          </div>
         </div>
-      </div>
+      )}
+
       <hr className="bg-dark" />
       <label>Upload Requirements</label>
       <MDBRow>
@@ -140,7 +145,7 @@ export default function Learner({
           <RequirementUpload
             label="1x1 Photo"
             id="1*1-Photo"
-            isPublished={isPublished}
+            isPublished={isPublished || viewing}
             email={email}
           />
         </MDBCol>
@@ -148,7 +153,7 @@ export default function Learner({
           <RequirementUpload
             label="Signature"
             id="signature"
-            isPublished={isPublished}
+            isPublished={isPublished || viewing}
             email={email}
           />
         </MDBCol>
@@ -157,7 +162,7 @@ export default function Learner({
             <RequirementUpload
               label={title}
               id={_id}
-              isPublished={isPublished}
+              isPublished={isPublished || viewing}
               email={email}
             />
           </MDBCol>

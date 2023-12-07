@@ -187,6 +187,7 @@ export default function EnrollmentForm() {
         isPublished,
         batch: generateSY(),
         user: auth._id,
+        status: "pending",
       };
 
     if (address.isSame) user.address.permanent = address.current;
@@ -225,9 +226,17 @@ export default function EnrollmentForm() {
 
   const handleValidation = () => {
     const fullname = basic.fullName,
+      lrn = learner.lrn,
       mobile = basic.mobile,
       dob = basic.dob,
       _guardian = guardian.legal;
+
+    if (!lrn)
+      return handleError(
+        "Invalid LRN",
+        "This field is required.",
+        "Double check Learners Information"
+      );
 
     if (getAge(dob, true) < 6)
       return handleError(
@@ -337,18 +346,28 @@ export default function EnrollmentForm() {
       color = "danger",
       text = remarks;
 
-    if (status === "pending") {
-      if (isPublished) {
-        title = "Published: ";
+    switch (status) {
+      case "validated":
+        title = "Validated: ";
         color = "success";
-        text =
-          "The form has been submitted; please await validation by the enrollment teacher.";
-      } else {
-        title = "Draft: ";
-        color = "info";
-        text = "Form saved as draft.";
-      }
+        text = "Form has been validated; please proceed to cashier payment";
+        break;
+
+      default:
+        if (isPublished) {
+          title = "Published: ";
+          color = "success";
+          text =
+            "The form has been submitted; please await validation by the enrollment teacher.";
+        } else {
+          title = "Draft: ";
+          color = "info";
+          text = "Form saved as draft.";
+        }
+        break;
     }
+
+    console.log(status);
 
     return (
       <MDBTypography className="mb-0" noteColor={color} note noteTitle={title}>

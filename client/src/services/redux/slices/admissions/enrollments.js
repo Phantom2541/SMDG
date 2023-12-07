@@ -11,6 +11,24 @@ const initialState = {
   message: "",
 };
 
+export const BROWSE = createAsyncThunk(
+  `${name}/browse`,
+  ({ key, token }, thunkAPI) => {
+    try {
+      return axioKit.universal(`${name}/browse`, token, key);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const SAVE = createAsyncThunk(
   `${name}/save`,
   ({ data, token }, thunkAPI) => {
@@ -58,6 +76,22 @@ export const reduxSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(BROWSE.pending, (state) => {
+        state.isLoading = true;
+        state.isSuccess = false;
+        state.message = "";
+      })
+      .addCase(BROWSE.fulfilled, (state, action) => {
+        const { payload } = action.payload;
+        state.collections = payload;
+        state.isLoading = false;
+      })
+      .addCase(BROWSE.rejected, (state, action) => {
+        const { error } = action;
+        state.message = error.message;
+        state.isLoading = false;
+      })
+
       .addCase(SAVE.pending, (state) => {
         state.isLoading = true;
         state.isSuccess = false;
@@ -88,12 +122,40 @@ export const reduxSlice = createSlice({
         state.message = "";
       })
       .addCase(UPDATE.fulfilled, (state, action) => {
-        const { success, payload } = action.payload;
-        //   { user, enrollment } = payload;
+        const { success, payload, isViewing } = action.payload,
+          { user, enrollment } = payload;
+
+        if (isViewing) {
+          switch (enrollment.status) {
+            case "rejected":
+              state.message = "The enrollment application has been declined.";
+              break;
+
+            case "validated":
+              state.message = "Enrollment validation is complete.";
+              break;
+
+            case "paid":
+              state.message =
+                "Payment for the enrollment has been processed and confirmed.";
+              break;
+
+            default:
+              state.message = "The enrollment has been approved.";
+              break;
+          }
+
+          const index = state.collections.findIndex(
+            ({ _id }) => _id === enrollment._id
+          );
+
+          state.collections.splice(index, 1);
+        } else {
+          state.response = payload;
+          state.message = success;
+        }
 
         // if (user) {
-        state.response = payload;
-        state.message = success;
 
         //   if (employment?.isPublished) {
         //     socket.emit("send_employment", { ...employment, user });

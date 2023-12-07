@@ -1,3 +1,4 @@
+import Enrollees from "../../../components/enrollees";
 import Dashboard from "./dashboard";
 
 const access = [
@@ -6,6 +7,13 @@ const access = [
     icon: "tachometer-alt",
     path: "/dashboard",
     component: Dashboard,
+  },
+  {
+    name: "Enrollees",
+    icon: "users",
+    path: "/cashier-enrollees",
+    component: Enrollees,
+    props: { status: "validated" },
   },
 ];
 

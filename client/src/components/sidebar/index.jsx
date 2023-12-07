@@ -54,9 +54,7 @@ export default function SideNavigation({
               <MDBSideNavLink
                 key={`sidebar-${index}-${cIndex}`}
                 to={`${path}${child.path}`}
-                onClick={() => {
-                  onLinkClick();
-                }}
+                onClick={onLinkClick}
               >
                 {child.name}
               </MDBSideNavLink>
@@ -69,11 +67,9 @@ export default function SideNavigation({
           key={`sidebar-${index}`}
           to={path}
           topLevel
-          onClick={() => {
-            onLinkClick();
-          }}
+          onClick={onLinkClick}
         >
-          <MDBIcon icon={`${icon} mr-2`} fixed />
+          <MDBIcon icon={icon} className="mr-2" fixed />
           {name}
         </MDBSideNavLink>
       );
@@ -92,7 +88,17 @@ export default function SideNavigation({
         triggerOpening={triggerOpening}
         style={{ transition: "padding-left .3s" }}
       >
-        <MDBSideNavNav>{handleLinks()}</MDBSideNavNav>
+        <MDBSideNavNav>
+          {handleLinks()}
+          {credentials?.isEnrollmentTeacher ? (
+            <MDBSideNavLink to="/enrollees" topLevel onClick={onLinkClick}>
+              <MDBIcon icon="users" className="mr-2" fixed />
+              Enrollees
+            </MDBSideNavLink>
+          ) : (
+            <></>
+          )}
+        </MDBSideNavNav>
       </MDBSideNav>
     </div>
   );

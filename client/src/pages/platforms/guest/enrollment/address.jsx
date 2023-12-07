@@ -2,7 +2,12 @@ import React from "react";
 import { MDBBtn, MDBInput } from "mdbreact";
 import AddressSelect from "../../../../components/addressSelect";
 
-export default function Address({ setActiveStep, handleForm, isPublished }) {
+export default function Address({
+  setActiveStep,
+  handleForm,
+  isPublished,
+  viewing,
+}) {
   const { form, setForm } = handleForm;
 
   const handleChange = (key, value) => setForm({ ...form, [key]: value });
@@ -11,6 +16,7 @@ export default function Address({ setActiveStep, handleForm, isPublished }) {
 
   return (
     <>
+      {viewing && <h5 className="mt-4">Address Information</h5>}
       <div>
         <AddressSelect
           disabledAllExceptSelected={isPublished}

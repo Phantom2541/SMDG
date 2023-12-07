@@ -1,6 +1,6 @@
 const router = require("express").Router(),
   {
-    // browse,
+    browse,
     save,
     update,
     // teachers,
@@ -10,7 +10,7 @@ const router = require("express").Router(),
   { validate } = require("../../middleware/jwt");
 
 router
-  //   .get("/browse", validate, browse)
+  .get("/browse", validate, browse)
   //   .get("/employees", validate, employees)
   //   .get("/faculty", validate, faculty)
   //   .get("/teachers", validate, teachers)

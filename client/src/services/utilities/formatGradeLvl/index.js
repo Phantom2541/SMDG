@@ -1,9 +1,9 @@
 import { Departments } from "../../fakeDb";
 
-const formatGradeLvl = (department, id) => {
-  const name = Departments.getName(department);
+const formatGradeLvl = (department, id, isShort = false) => {
+  const { name, abbreviation } = Departments.find(department);
 
-  if (department !== "college") return `${name} ${id}`;
+  if (department !== "college") return `${isShort ? abbreviation : name} ${id}`;
 
   const level = id - 13;
 

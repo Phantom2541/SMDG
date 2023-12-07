@@ -84,10 +84,11 @@ export default function Modal({ show, toggle, selected }) {
       title: "Reject this person?",
       input: "textarea",
       inputLabel: "Please specify your reason.",
-      inputPlaceholder: "Write a reason for reject...",
+      inputPlaceholder: "Write a reason for rejection...",
       showCancelButton: true,
+      cancelButtonColor: "#fff",
+      cancelButtonText: `<span class="text-dark">Cancel</span>`,
 
-      color: "black",
       confirmButtonColor: "#d33",
       confirmButtonText: "Yes, Reject!",
       inputValidator: (value) => {
