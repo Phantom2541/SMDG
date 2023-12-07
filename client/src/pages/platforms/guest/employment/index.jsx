@@ -7,7 +7,7 @@ import {
   MDBTypography,
 } from "mdbreact";
 import { fullAddress, getAge } from "../../../../services/utilities";
-import generateSY from "../../../../services/utilities/generateSY";
+import { generateSY } from "../../../../services/utilities";
 import { School } from "../../../../services/fakeDb";
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";

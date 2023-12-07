@@ -2,7 +2,7 @@ import React from "react";
 import { MDBBtn, MDBInput } from "mdbreact";
 import AddressSelect from "../../../../components/addressSelect";
 
-export default function Address({ setActiveStep, handleForm }) {
+export default function Address({ setActiveStep, handleForm, isPublished }) {
   const { form, setForm } = handleForm;
 
   const handleChange = (key, value) => setForm({ ...form, [key]: value });
@@ -13,6 +13,7 @@ export default function Address({ setActiveStep, handleForm }) {
     <>
       <div>
         <AddressSelect
+          disabledAllExceptSelected={isPublished}
           label="Current address"
           address={current}
           handleChange={(_, value) => handleChange("current", value)}
@@ -20,6 +21,7 @@ export default function Address({ setActiveStep, handleForm }) {
         <div className="row">
           <div className="col-5">
             <MDBInput
+              readOnly={isPublished}
               label="Sitio/Street Name"
               value={current.street}
               onChange={(e) =>
@@ -32,6 +34,7 @@ export default function Address({ setActiveStep, handleForm }) {
           </div>
           <div className="col-2">
             <MDBInput
+              readOnly={isPublished}
               type="number"
               label="Zip Code"
               value={current.zip}
@@ -56,6 +59,7 @@ export default function Address({ setActiveStep, handleForm }) {
                 className="form-check-input"
                 type="checkbox"
                 checked={isSame}
+                disabled={isPublished}
                 onChange={() => handleChange("isSame", true)}
                 id="yes"
               />
@@ -69,6 +73,7 @@ export default function Address({ setActiveStep, handleForm }) {
               <input
                 className="form-check-input"
                 type="checkbox"
+                disabled={isPublished}
                 checked={!isSame}
                 onChange={() => handleChange("isSame", false)}
                 id="no"
@@ -84,6 +89,7 @@ export default function Address({ setActiveStep, handleForm }) {
       {!isSame && (
         <div className="mt-5">
           <AddressSelect
+            disabledAllExceptSelected={isPublished}
             label="Permanent address"
             address={permanent}
             handleChange={(_, value) => handleChange("permanent", value)}
@@ -91,6 +97,7 @@ export default function Address({ setActiveStep, handleForm }) {
           <div className="row">
             <div className="col-5">
               <MDBInput
+                readOnly={isPublished}
                 label="Sitio/Street Name"
                 value={permanent.street}
                 onChange={(e) =>
@@ -103,6 +110,7 @@ export default function Address({ setActiveStep, handleForm }) {
             </div>
             <div className="col-2">
               <MDBInput
+                readOnly={isPublished}
                 type="number"
                 label="Zip Code"
                 value={permanent.zip}

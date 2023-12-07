@@ -1,16 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MDBCard, MDBCardBody, MDBIcon } from "mdbreact";
-import { axioKit } from "../../../../services/utilities";
+import {
+  ENDPOINT,
+  axioKit,
+  isValidImage,
+} from "../../../../services/utilities";
 import { useSelector } from "react-redux";
+import { generateSY } from "../../../../services/utilities";
 import Swal from "sweetalert2";
 
 export default function RequirementUpload({
   label = "1x1 ID Picture",
   id = "1x1Picture",
   isPublished,
+  email,
 }) {
   const [preview, setPreview] = useState(null),
-    { email, token } = useSelector(({ auth }) => auth);
+    { token } = useSelector(({ auth }) => auth);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    if (label && email) {
+      const url = `${ENDPOINT}/assets/enrollments/${generateSY(
+        true
+      )}/${email}/${label}.jpg`;
+      isValidImage(url, (valid) => {
+        if (valid && isMounted) setPreview(url);
+      });
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, [label, email]);
 
   const handleChange = (e) => {
     const [file] = e.target.files;
@@ -24,24 +47,22 @@ export default function RequirementUpload({
         showConfirmButton: false,
       });
 
-    console.log(file);
+    const reader = new FileReader();
 
-    // const reader = new FileReader();
+    reader.onload = (e) => {
+      const { result } = e.target;
 
-    // reader.onload = (e) => {
-    //   const { result } = e.target;
+      axioKit.upload(
+        {
+          name: `${label}.jpg`,
+          base64: result.split(",")[1],
+          path: `enrollments/${generateSY(true)}/${email}`,
+        },
+        token
+      );
+    };
 
-    //   axioKit.upload(
-    //     {
-    //       name: `${label}.jpg`,
-    //       base64: result.split(",")[1],
-    //       path: `employments/${email}`,
-    //     },
-    //     token
-    //   );
-    // };
-
-    // reader.readAsDataURL(file);
+    reader.readAsDataURL(file);
   };
 
   return (
@@ -52,7 +73,7 @@ export default function RequirementUpload({
         window.open(preview, "_blank");
       }}
     >
-      <MDBCardBody>
+      <MDBCardBody className="py-1">
         {preview ? (
           <img
             className="mb-1"
@@ -62,7 +83,9 @@ export default function RequirementUpload({
             alt={preview}
           />
         ) : (
-          label
+          <div className="h-100 d-flex align-items-center">
+            <span className="mx-auto">{label}</span>
+          </div>
         )}
         <input
           className="d-none"
@@ -73,18 +96,18 @@ export default function RequirementUpload({
         />
       </MDBCardBody>
       <div className={`card-footer p-${preview ? "2" : "0"}`}>
-        {preview ? (
-          label
-        ) : (
-          <label
-            title="Upload Picture"
-            htmlFor={id}
-            className="bg-primary text-white mb-0 w-100 py-2 cursor-pointer"
-          >
-            Upload File
-            <MDBIcon className="ml-2" icon="upload" />
-          </label>
-        )}
+        {preview
+          ? label
+          : !isPublished && (
+              <label
+                title="Upload Picture"
+                htmlFor={id}
+                className="bg-primary text-white mb-0 w-100 py-2 cursor-pointer"
+              >
+                Upload File
+                <MDBIcon className="ml-2" icon="upload" />
+              </label>
+            )}
       </div>
     </MDBCard>
   );

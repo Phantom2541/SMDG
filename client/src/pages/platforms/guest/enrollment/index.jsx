@@ -18,7 +18,7 @@ import {
   fullName,
   getAge,
 } from "../../../../services/utilities";
-import generateSY from "../../../../services/utilities/generateSY";
+import { generateSY } from "../../../../services/utilities";
 import { School } from "../../../../services/fakeDb";
 import Swal from "sweetalert2";
 import { useSelector, useDispatch } from "react-redux";
@@ -47,12 +47,14 @@ const steps = [
 ];
 
 export default function EnrollmentForm() {
-  const [learner, setLearner] = useState({
+  const { token, auth, credentials } = useSelector(({ auth }) => auth),
+    [learner, setLearner] = useState({
       lrn: undefined,
       type: "new",
       department: "senior",
       course: undefined,
       gradeLvl: 1,
+      email: auth?.email,
     }),
     [basic, setBasic] = useState({
       psa: undefined,
@@ -115,7 +117,7 @@ export default function EnrollmentForm() {
     }),
     [_department, setDepartment] = useState("senior"),
     // [returning, setReturning] = useState({}),
-    { token, auth, credentials } = useSelector(({ auth }) => auth),
+
     { response, isSuccess, message } = useSelector(
       ({ enrollments }) => enrollments
     ),
@@ -157,7 +159,7 @@ export default function EnrollmentForm() {
 
   useEffect(() => {
     if (credentials?._id) {
-      setLearner({ ...credentials, lrn: auth?.lrn });
+      setLearner({ ...credentials, lrn: auth?.lrn, email: auth?.email });
     }
 
     if (auth?._id) {
@@ -428,7 +430,7 @@ export default function EnrollmentForm() {
 
         <MDBCardBody className="mx-5">
           <Step
-            isPublished={credentials.isPublished}
+            isPublished={credentials?.isPublished}
             setActiveStep={setActiveStep}
             handleForm={handleForm(activeStep)}
             handleFinalSubmit={handleFinalSubmit}

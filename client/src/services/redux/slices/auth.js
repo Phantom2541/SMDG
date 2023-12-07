@@ -20,7 +20,6 @@ const initialState = {
   email,
   image,
   maxPage,
-  progressBar: -1,
   didLogin: false,
   isSuccess: false,
   isLoading: false,
@@ -126,14 +125,7 @@ export const reduxSlice = createSlice({
   },
 });
 
-export const {
-  RESET,
-  MAXPAGE,
-  PROGRESS,
-  UPLOADBAR,
-  IMAGE,
-  INJECTROLE,
-  INJECTCREDENTIALS,
-} = reduxSlice.actions;
+export const { RESET, MAXPAGE, IMAGE, INJECTROLE, INJECTCREDENTIALS } =
+  reduxSlice.actions;
 
 export default reduxSlice.reducer;

@@ -29,7 +29,7 @@ export default function Learner({
 
   const handleChange = (key, value) => setForm({ ...form, [key]: value });
 
-  const { department, gradeLvl, lrn, type, course } = form;
+  const { department, gradeLvl, lrn, type, course, email } = form;
 
   return (
     <>
@@ -136,20 +136,12 @@ export default function Learner({
       <hr className="bg-dark" />
       <label>Upload Requirements</label>
       <MDBRow>
-        {requirements?.map(({ _id, title }) => (
-          <MDBCol md="3" className="my-2" key={_id}>
-            <RequirementUpload
-              label={title}
-              id={_id}
-              isPublished={isPublished}
-            />
-          </MDBCol>
-        ))}
         <MDBCol md="3" className="my-2">
           <RequirementUpload
             label="1x1 Photo"
             id="1*1-Photo"
             isPublished={isPublished}
+            email={email}
           />
         </MDBCol>
         <MDBCol md="3" className="my-2">
@@ -157,8 +149,19 @@ export default function Learner({
             label="Signature"
             id="signature"
             isPublished={isPublished}
+            email={email}
           />
         </MDBCol>
+        {requirements?.map(({ _id, title }) => (
+          <MDBCol md="3" className="my-2" key={_id}>
+            <RequirementUpload
+              label={title}
+              id={_id}
+              isPublished={isPublished}
+              email={email}
+            />
+          </MDBCol>
+        ))}
       </MDBRow>
       <MDBBtn
         style={{ float: "right" }}

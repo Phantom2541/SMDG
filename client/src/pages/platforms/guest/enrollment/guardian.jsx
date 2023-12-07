@@ -13,6 +13,7 @@ export default function Guardian({
   setActiveStep,
   handleForm,
   handleFinalSubmit,
+  isPublished,
 }) {
   const { form, setForm } = handleForm;
 
@@ -28,6 +29,7 @@ export default function Guardian({
         <div className="row">
           <div className="col-3">
             <MDBInput
+              readOnly={isPublished}
               label="Last Name"
               value={legal.lname}
               onChange={(e) => handleChange("legal", "lname", e.target.value)}
@@ -35,6 +37,7 @@ export default function Guardian({
           </div>
           <div className="col-3">
             <MDBInput
+              readOnly={isPublished}
               label="First Name"
               value={legal.fname}
               onChange={(e) => handleChange("legal", "fname", e.target.value)}
@@ -42,6 +45,7 @@ export default function Guardian({
           </div>
           <div className="col-3">
             <MDBInput
+              readOnly={isPublished}
               label="Middle Name"
               value={legal.mname}
               onChange={(e) => handleChange("legal", "mname", e.target.value)}
@@ -49,6 +53,7 @@ export default function Guardian({
           </div>
           <div className="col-1">
             <MDBInput
+              readOnly={isPublished}
               label="Suffix"
               value={legal.suffix}
               onChange={(e) => handleChange("legal", "suffix", e.target.value)}
@@ -56,6 +61,7 @@ export default function Guardian({
           </div>
           <div className="col-2">
             <MDBInput
+              readOnly={isPublished}
               label="Mobile No. (+63)"
               maxLength={10}
               value={legal.mobile}
@@ -76,6 +82,7 @@ export default function Guardian({
         <div className="row">
           <div className="col-3">
             <MDBInput
+              readOnly={isPublished}
               label="Last Name"
               value={father.lname}
               onChange={(e) => handleChange("father", "lname", e.target.value)}
@@ -83,6 +90,7 @@ export default function Guardian({
           </div>
           <div className="col-3">
             <MDBInput
+              readOnly={isPublished}
               label="First Name"
               value={father.fname}
               onChange={(e) => handleChange("father", "fname", e.target.value)}
@@ -90,6 +98,7 @@ export default function Guardian({
           </div>
           <div className="col-3">
             <MDBInput
+              readOnly={isPublished}
               label="Middle Name"
               value={father.mname}
               onChange={(e) => handleChange("father", "mname", e.target.value)}
@@ -97,6 +106,7 @@ export default function Guardian({
           </div>
           <div className="col-1">
             <MDBInput
+              readOnly={isPublished}
               label="Suffix"
               value={father.suffix}
               onChange={(e) => handleChange("father", "suffix", e.target.value)}
@@ -104,6 +114,7 @@ export default function Guardian({
           </div>
           <div className="col-2">
             <MDBInput
+              readOnly={isPublished}
               label="Mobile No. (+63)"
               maxLength={10}
               value={father.mobile}
@@ -124,6 +135,7 @@ export default function Guardian({
         <div className="row">
           <div className="col-3">
             <MDBInput
+              readOnly={isPublished}
               label="Last Name"
               value={mother.lname}
               onChange={(e) => handleChange("mother", "lname", e.target.value)}
@@ -131,6 +143,7 @@ export default function Guardian({
           </div>
           <div className="col-3">
             <MDBInput
+              readOnly={isPublished}
               label="First Name"
               value={mother.fname}
               onChange={(e) => handleChange("mother", "fname", e.target.value)}
@@ -138,6 +151,7 @@ export default function Guardian({
           </div>
           <div className="col-3">
             <MDBInput
+              readOnly={isPublished}
               label="Middle Name"
               value={mother.mname}
               onChange={(e) => handleChange("mother", "mname", e.target.value)}
@@ -145,6 +159,7 @@ export default function Guardian({
           </div>
           <div className="col-1">
             <MDBInput
+              readOnly={isPublished}
               label="Suffix"
               value={mother.suffix}
               onChange={(e) => handleChange("mother", "suffix", e.target.value)}
@@ -152,6 +167,7 @@ export default function Guardian({
           </div>
           <div className="col-2">
             <MDBInput
+              readOnly={isPublished}
               label="Mobile No. (+63)"
               maxLength={10}
               value={mother.mobile}
@@ -176,13 +192,15 @@ export default function Guardian({
       >
         Return
       </MDBBtn>
-      <MDBBtn
-        style={{ float: "right" }}
-        color="primary"
-        onClick={handleFinalSubmit}
-      >
-        Submit
-      </MDBBtn>
+      {!isPublished && (
+        <MDBBtn
+          style={{ float: "right" }}
+          color="primary"
+          onClick={handleFinalSubmit}
+        >
+          Submit
+        </MDBBtn>
+      )}
     </>
   );
 }

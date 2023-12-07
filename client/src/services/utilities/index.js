@@ -14,6 +14,8 @@ import getAge from "./getAge";
 import formatMobile from "./formatMobile";
 import abbreviate from "./abbreviate";
 import isValidLink from "./isValidLink";
+import generateSY from "./generateSY";
+import isValidImage from "./isValidImage";
 
 const ENDPOINT = "http://localhost:5001";
 // const ENDPOINT = window.location.origin;
@@ -26,6 +28,8 @@ const PresetImage = (gender) => {
 };
 
 export {
+  isValidImage,
+  generateSY,
   isValidLink,
   abbreviate,
   formatMobile,
