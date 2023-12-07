@@ -14,12 +14,18 @@ export default function UploadPDF({
     { token } = useSelector(({ auth }) => auth);
 
   useEffect(() => {
+    let isMounted = true;
+
     if (title && email) {
       const url = `${ENDPOINT}/assets/employments/${email}/${title}.pdf`;
       isValidLink(url, (valid) => {
-        if (valid) setPreview(url);
+        if (valid && isMounted) setPreview(url);
       });
     }
+
+    return () => {
+      isMounted = false;
+    };
   }, [title, email]);
 
   const handleUpload = (e) => {

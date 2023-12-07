@@ -7,9 +7,15 @@ import {
   MDBTable,
   MDBView,
 } from "mdbreact";
-import { formatGradeLvl, fullName, generateSY } from "../../services/utilities";
+import {
+  formatGradeLvl,
+  fullName,
+  generateSY,
+  socket,
+} from "../../services/utilities";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  ADDENROLLMENT,
   BROWSE,
   RESET,
   UPDATE,
@@ -28,6 +34,18 @@ export default function Enrollees({ status = "pending", setFilter }) {
     ),
     dispatch = useDispatch(),
     { addToast } = useToasts();
+
+  useEffect(() => {
+    socket.on("receive_enrollment", (enrollment) => {
+      if (enrollment.status === status) {
+        dispatch(ADDENROLLMENT(enrollment));
+      }
+    });
+
+    return () => {
+      socket.off("receive_enrollment");
+    };
+  }, [dispatch, status]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -97,7 +115,7 @@ export default function Enrollees({ status = "pending", setFilter }) {
     }
   };
 
-  const handlePayment = (_id) =>
+  const handlePayment = (_id, userId) =>
     Swal.fire({
       focusDeny: true,
       icon: "question",
@@ -115,7 +133,8 @@ export default function Enrollees({ status = "pending", setFilter }) {
           UPDATE({
             token,
             data: {
-              enrollment: { _id, status: "paid" },
+              user: { _id: userId },
+              enrollment: { _id, status: "paid", user: userId },
               isViewing: true,
             },
           })
@@ -202,7 +221,7 @@ export default function Enrollees({ status = "pending", setFilter }) {
                       color="primary"
                       size="sm"
                       rounded
-                      onClick={() => handlePayment(_id)}
+                      onClick={() => handlePayment(_id, user?._id)}
                     >
                       <MDBIcon icon="receipt" />
                     </MDBBtn>

@@ -1,14 +1,6 @@
 import React from "react";
 import "./style/mission.css";
-import {
-  MDBCard,
-  MDBCardBody,
-  MDBCardHeader,
-  MDBCardTitle,
-  MDBCol,
-  MDBIcon,
-  MDBRow,
-} from "mdbreact";
+import { MDBCard, MDBCardBody, MDBCol, MDBIcon, MDBRow } from "mdbreact";
 
 export default function Mission() {
   return (

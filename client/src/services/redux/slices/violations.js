@@ -98,7 +98,6 @@ export const reduxSlice = createSlice({
         state.message = "";
       })
       .addCase(SAVE.fulfilled, (state, action) => {
-        console.log("here");
         const { success, payload } = action.payload;
         state.message = success;
         state.collections.unshift(payload);

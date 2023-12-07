@@ -39,12 +39,31 @@ import { INJECTCREDENTIALS } from "../../../../services/redux/slices/auth";
 import { useToasts } from "react-toast-notifications";
 
 const steps = [
-  "Education",
-  "Personal",
-  "Address",
-  "Guardian",
-  //   "Returnee / Transferee",
-];
+    "Education",
+    "Personal",
+    "Address",
+    "Guardian",
+    //   "Returnee / Transferee",
+  ],
+  presetAddress = {
+    current: {
+      region: "REGION III (CENTRAL LUZON)",
+      province: "NUEVA ECIJA",
+      city: "CABANATUAN CITY",
+      barangay: undefined,
+      zip: undefined,
+      street: undefined,
+    },
+    permanent: {
+      region: "REGION III (CENTRAL LUZON)",
+      province: "NUEVA ECIJA",
+      city: "CABANATUAN CITY",
+      barangay: undefined,
+      zip: undefined,
+      street: undefined,
+    },
+    isSame: true,
+  };
 
 export default function EnrollmentForm() {
   const { token, auth, credentials } = useSelector(({ auth }) => auth),
@@ -53,7 +72,7 @@ export default function EnrollmentForm() {
       type: "new",
       department: "senior",
       course: undefined,
-      gradeLvl: 1,
+      gradeLvl: 11,
       email: auth?.email,
     }),
     [basic, setBasic] = useState({
@@ -73,25 +92,7 @@ export default function EnrollmentForm() {
       mobile: undefined,
       "4ps": undefined,
     }),
-    [address, setAddress] = useState({
-      current: {
-        region: "REGION III (CENTRAL LUZON)",
-        province: "NUEVA ECIJA",
-        city: "CABANATUAN CITY",
-        barangay: undefined,
-        zip: undefined,
-        street: undefined,
-      },
-      permanent: {
-        region: "REGION III (CENTRAL LUZON)",
-        province: "NUEVA ECIJA",
-        city: "CABANATUAN CITY",
-        barangay: undefined,
-        zip: undefined,
-        street: undefined,
-      },
-      isSame: true,
-    }),
+    [address, setAddress] = useState(presetAddress),
     [guardian, setGuardian] = useState({
       father: {
         fname: undefined,
@@ -158,24 +159,46 @@ export default function EnrollmentForm() {
   }, [token, dispatch, _department]);
 
   useEffect(() => {
+    const {
+      lrn = "",
+      email = "",
+      address,
+      guardians,
+      psa,
+      fullName,
+      isMale,
+      dob,
+      pob,
+      indigenousPeople,
+      disability,
+      motherTongue,
+      mobile,
+      "4ps": fourPs,
+    } = auth;
+
     if (credentials?._id) {
-      setLearner({ ...credentials, lrn: auth?.lrn, email: auth?.email });
+      setLearner({
+        ...credentials,
+        course: credentials?.course?._id,
+        lrn,
+        email,
+      });
     }
 
     if (auth?._id) {
-      setAddress(auth.address);
-      setGuardian(auth.guardians);
+      setAddress(address?.region ? address : presetAddress);
+      setGuardian(guardians);
       setBasic({
-        psa: auth.psa,
-        fullName: auth.fullName,
-        isMale: auth.isMale,
-        dob: auth.dob ? new Date(auth.dob) : new Date(),
-        pob: auth.pob,
-        indigenousPeople: auth.indigenousPeople,
-        disability: auth.disability,
-        motherTongue: auth.motherTongue,
-        mobile: auth.mobile,
-        "4ps": auth["4ps"],
+        psa,
+        fullName,
+        isMale,
+        dob: dob ? new Date(dob) : new Date(),
+        pob,
+        indigenousPeople,
+        disability,
+        motherTongue,
+        mobile,
+        "4ps": fourPs,
       });
     }
   }, [auth, credentials]);
@@ -227,6 +250,7 @@ export default function EnrollmentForm() {
   const handleValidation = () => {
     const fullname = basic.fullName,
       lrn = learner.lrn,
+      course = learner.course,
       mobile = basic.mobile,
       dob = basic.dob,
       _guardian = guardian.legal;
@@ -238,10 +262,17 @@ export default function EnrollmentForm() {
         "Double check Learners Information"
       );
 
-    if (getAge(dob, true) < 6)
+    if (!course)
+      return handleError(
+        "Invalid Course",
+        "This field is required.",
+        "Double check Learners Information"
+      );
+
+    if (getAge(dob, true) < 5)
       return handleError(
         "Invalid Age",
-        "Minimum of 6 years old only.",
+        "Minimum of 5 years old only.",
         "Double check Personal Information"
       );
 
@@ -375,8 +406,6 @@ export default function EnrollmentForm() {
       default:
         break;
     }
-
-    console.log(status);
 
     return (
       <MDBTypography className="mb-0" noteColor={color} note noteTitle={title}>

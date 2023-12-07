@@ -34,7 +34,7 @@ export default function Registrar() {
     return () => {
       dispatch(RESET);
     };
-  }, [token]);
+  }, [token, dispatch]);
 
   useEffect(() => {
     setSections(
