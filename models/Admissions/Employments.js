@@ -67,6 +67,9 @@ const modelSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isEnrollmentTeacher: {
+      type: Boolean,
+    },
     status: {
       type: String,
       enum: {

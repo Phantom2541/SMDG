@@ -218,7 +218,7 @@ exports.faculty = (req, res) => {
 };
 
 exports.employees = (req, res) =>
-  Entity.find({ status: "approved" })
+  Entity.find({ status: "approved", access: { $nin: ["VICE", "PRINCIPAL"] } })
     .populate({
       path: "user",
       select: "fullName",
