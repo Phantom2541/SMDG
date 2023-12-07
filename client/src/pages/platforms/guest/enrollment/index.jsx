@@ -248,7 +248,7 @@ export default function EnrollmentForm() {
         "Double check Personal Information"
       );
 
-    if (!fullName(_guardian))
+    if (fullName(_guardian) === "N/A")
       return handleError(
         "Invalid Legal Guardian Fullname",
         "First name and Last name are required.",
@@ -428,6 +428,7 @@ export default function EnrollmentForm() {
 
         <MDBCardBody className="mx-5">
           <Step
+            isPublished={credentials.isPublished}
             setActiveStep={setActiveStep}
             handleForm={handleForm(activeStep)}
             handleFinalSubmit={handleFinalSubmit}

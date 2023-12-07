@@ -31,7 +31,7 @@ exports.save = async (req, res) => {
 };
 
 exports.update = async (req, res) => {
-  const { user, employment } = req.body;
+  const { user, employment, didUpdate = false } = req.body;
   let _user = undefined;
 
   if (user) {
@@ -63,6 +63,7 @@ exports.update = async (req, res) => {
           user: _user,
           employment: _employment,
         },
+        didUpdate,
         shouldRefresh,
       });
     })

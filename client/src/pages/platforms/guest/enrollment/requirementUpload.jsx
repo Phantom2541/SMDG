@@ -1,17 +1,48 @@
 import React, { useState } from "react";
 import { MDBCard, MDBCardBody, MDBIcon } from "mdbreact";
+import { axioKit } from "../../../../services/utilities";
+import { useSelector } from "react-redux";
+import Swal from "sweetalert2";
 
 export default function RequirementUpload({
   label = "1x1 ID Picture",
   id = "1x1Picture",
+  isPublished,
 }) {
   const [preview, setPreview] = useState(null),
-    [file, setFile] = useState(null);
+    { email, token } = useSelector(({ auth }) => auth);
 
-  function handleChange(e) {
-    setPreview(URL.createObjectURL(e.target.files[0]));
-    setFile(file);
-  }
+  const handleChange = (e) => {
+    const [file] = e.target.files;
+    setPreview(URL.createObjectURL(file));
+
+    if (file.type !== "image/jpeg")
+      return Swal.fire({
+        icon: "error",
+        title: "Invalid File Format",
+        text: "Image must be JPG or JPEG format",
+        showConfirmButton: false,
+      });
+
+    console.log(file);
+
+    // const reader = new FileReader();
+
+    // reader.onload = (e) => {
+    //   const { result } = e.target;
+
+    //   axioKit.upload(
+    //     {
+    //       name: `${label}.jpg`,
+    //       base64: result.split(",")[1],
+    //       path: `employments/${email}`,
+    //     },
+    //     token
+    //   );
+    // };
+
+    // reader.readAsDataURL(file);
+  };
 
   return (
     <MDBCard
@@ -33,7 +64,13 @@ export default function RequirementUpload({
         ) : (
           label
         )}
-        <input className="d-none" type="file" id={id} onChange={handleChange} />
+        <input
+          className="d-none"
+          type="file"
+          id={id}
+          onChange={handleChange}
+          accept="image/jpeg"
+        />
       </MDBCardBody>
       <div className={`card-footer p-${preview ? "2" : "0"}`}>
         {preview ? (
@@ -50,20 +87,5 @@ export default function RequirementUpload({
         )}
       </div>
     </MDBCard>
-    // <div className="card pt-2 text-center" style={{ width: "145px" }}>
-    //   {preview ? (
-    //     <img className="mb-1" src={preview} alt={preview} />
-    //   ) : (
-    //     <label style={{ color: "grey" }}>{label}</label>
-    //   )}
-    //   <input className="d-none" type="file" id={id} onChange={handleChange} />
-    //   <label className="cursor-pointer btn-primary mb-0 p-2 w-30" htmlFor={id}>
-    //     {preview ? (
-    //       label
-    //     ) : (
-
-    //     )}
-    //   </label>
-    // </div>
   );
 }

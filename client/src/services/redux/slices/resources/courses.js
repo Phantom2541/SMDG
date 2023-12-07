@@ -172,13 +172,11 @@ export const reduxSlice = createSlice({
         state.isLoading = true;
         state.isSuccess = false;
         state.message = "";
-        console.log("pending");
       })
       .addCase(BROWSE.fulfilled, (state, action) => {
         const { payload } = action.payload;
         state.collections = payload;
         state.isLoading = false;
-        console.log("fullfilled");
       })
       .addCase(BROWSE.rejected, (state, action) => {
         const { error } = action;

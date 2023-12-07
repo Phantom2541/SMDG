@@ -30,19 +30,63 @@
     -->
     <title>School Management System</title>
     <style>
-      .base-loader {
-        height: 100vh;
-        width: 100vw;
+      .loader-container {
+        width: 95vw;
+        height: 95vh;
         display: grid;
         place-items: center;
+      }
+      .base-loader {
+        width: 100px;
+        height: 45px;
+        position: relative;
+      }
+      .base-loader:before,
+      .base-loader:after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: #000;
+        box-shadow: 0 0 0 50px;
+        clip-path: polygon(
+          -50px -20px,
+          10% -12px,
+          20% 0,
+          calc(50% - 15px) 0,
+          calc(50% - 10px) -20px,
+          calc(50% - 8px) -15px,
+          calc(50% + 8px) -15px,
+          calc(50% + 10px) -20px,
+          calc(50% + 15px) 0,
+          80% 0,
+          90% -12px,
+          calc(100% + 50px) -20px,
+          100% 80%,
+          calc(100% + 10px) calc(100% + 10px),
+          60% 100%,
+          50% calc(100% + 15px),
+          40% 100%,
+          -10px calc(100% + 10px),
+          0 80%
+        );
+      }
+      .base-loader:after {
+        animation: l9 1s infinite;
+        transform: perspective(300px) translateZ(0px);
+      }
+      @keyframes l9 {
+        to {
+          transform: perspective(300px) translateZ(100px);
+          opacity: 0;
+        }
       }
     </style>
   </head>
   <body>
     <noscript> You need to enable JavaScript to run this app. </noscript>
     <div id="root">
-      <div class="base-loader">
-        <span class="far fa-clock fa-spin fa-5x text-primary" />
+      <div class="loader-container">
+        <div class="base-loader"></div>
       </div>
     </div>
     <!--

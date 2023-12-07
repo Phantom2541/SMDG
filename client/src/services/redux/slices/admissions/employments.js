@@ -191,7 +191,7 @@ export const reduxSlice = createSlice({
         state.message = "";
       })
       .addCase(UPDATE.fulfilled, (state, action) => {
-        const { success, payload, shouldRefresh } = action.payload,
+        const { success, payload, shouldRefresh, didUpdate } = action.payload,
           { user, employment } = payload;
 
         //this is for employment approval
@@ -211,8 +211,13 @@ export const reduxSlice = createSlice({
             (c) => c._id === employment._id
           );
 
-          state.collections.splice(index, 1);
-          state.message = "Employment Approved Successfully";
+          if (didUpdate) {
+            state.collections[index] = employment;
+            state.message = "User Account Updated Successfully.";
+          } else {
+            state.collections.splice(index, 1);
+            state.message = "Employment Approved Successfully";
+          }
         }
 
         state.isSuccess = true;

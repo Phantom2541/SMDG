@@ -26,7 +26,12 @@ export default function UploadPDF({
     const [file] = e.target.files;
 
     if (file.type !== "application/pdf")
-      return Swal.fire("Invalid File format");
+      return Swal.fire({
+        icon: "error",
+        title: "Invalid File Format",
+        text: "File must be PDF format",
+        showConfirmButton: false,
+      });
 
     setPreview(URL.createObjectURL(file));
 

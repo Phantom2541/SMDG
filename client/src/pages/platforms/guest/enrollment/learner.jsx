@@ -6,7 +6,12 @@ import { Courses, Departments } from "../../../../services/fakeDb";
 import { formatGradeLvl } from "../../../../services/utilities";
 import { useSelector } from "react-redux";
 
-export default function Learner({ setActiveStep, handleForm, setDepartment }) {
+export default function Learner({
+  setActiveStep,
+  handleForm,
+  setDepartment,
+  isPublished,
+}) {
   const [showGrade, setShowGrade] = useState(true),
     { collections: requirements } = useSelector(
       ({ requirements }) => requirements
@@ -31,6 +36,7 @@ export default function Learner({ setActiveStep, handleForm, setDepartment }) {
       <div className="row">
         <div className="col-6">
           <MDBInput
+            readOnly={isPublished}
             value={lrn}
             onChange={(e) => handleChange("lrn", e.target.value.toUpperCase())}
             label="Learner Reference No. (LRN)"
@@ -94,6 +100,7 @@ export default function Learner({ setActiveStep, handleForm, setDepartment }) {
         </div>
         <div className="col-4">
           <CustomSelect
+            disabledAllExceptSelected={isPublished}
             choices={courses.map((course) => {
               const { name, abbreviation } = Courses.find(course.pk);
 
@@ -112,6 +119,7 @@ export default function Learner({ setActiveStep, handleForm, setDepartment }) {
         <div className="col-4">
           {showGrade && (
             <CustomSelect
+              disabledAllExceptSelected={isPublished}
               choices={Departments.getGradeLevels(department).map((id) => ({
                 id,
                 str: formatGradeLvl(department, id),
@@ -130,14 +138,26 @@ export default function Learner({ setActiveStep, handleForm, setDepartment }) {
       <MDBRow>
         {requirements?.map(({ _id, title }) => (
           <MDBCol md="3" className="my-2" key={_id}>
-            <RequirementUpload label={title} id={_id} />
+            <RequirementUpload
+              label={title}
+              id={_id}
+              isPublished={isPublished}
+            />
           </MDBCol>
         ))}
         <MDBCol md="3" className="my-2">
-          <RequirementUpload label="1x1 Photo" id="1*1-Photo" />
+          <RequirementUpload
+            label="1x1 Photo"
+            id="1*1-Photo"
+            isPublished={isPublished}
+          />
         </MDBCol>
         <MDBCol md="3" className="my-2">
-          <RequirementUpload label="Signature" id="signature" />
+          <RequirementUpload
+            label="Signature"
+            id="signature"
+            isPublished={isPublished}
+          />
         </MDBCol>
       </MDBRow>
       <MDBBtn
