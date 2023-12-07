@@ -49,6 +49,7 @@ exports.update = async (req, res) => {
 
       let shouldRefresh = false;
 
+      // principal chooses to approve one of these roles
       if (
         employment.status === "approved" &&
         ["HEAD", "MASTER", "VICE"].includes(employment.access)

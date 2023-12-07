@@ -1,9 +1,7 @@
 import { Departments } from "../../fakeDb";
 
-const { getName } = Departments;
-
 const formatGradeLvl = (department, id) => {
-  const name = getName(department);
+  const name = Departments.getName(department);
 
   if (department !== "college") return `${name} ${id}`;
 

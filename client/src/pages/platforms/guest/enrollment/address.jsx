@@ -7,17 +7,10 @@ export default function Address({ setActiveStep, handleForm }) {
 
   const handleChange = (key, value) => setForm({ ...form, [key]: value });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(form);
-
-    setActiveStep(3);
-  };
-
   const { current, permanent, isSame } = form;
 
   return (
-    <form onSubmit={handleSubmit}>
+    <>
       <div>
         <AddressSelect
           label="Current address"
@@ -128,15 +121,18 @@ export default function Address({ setActiveStep, handleForm }) {
         onClick={() => setActiveStep(1)}
         style={{ float: "left" }}
         color="dark"
-        type="button"
         className="z-depth-0"
         outline
       >
         Return
       </MDBBtn>
-      <MDBBtn style={{ float: "right" }} color="primary" type="submit">
+      <MDBBtn
+        style={{ float: "right" }}
+        color="info"
+        onClick={() => setActiveStep(3)}
+      >
         Next
       </MDBBtn>
-    </form>
+    </>
   );
 }

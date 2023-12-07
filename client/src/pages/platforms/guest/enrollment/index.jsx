@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   MDBCard,
   MDBCardBody,
@@ -21,6 +21,22 @@ import {
 import generateSY from "../../../../services/utilities/generateSY";
 import { School } from "../../../../services/fakeDb";
 import Swal from "sweetalert2";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  BROWSE,
+  RESET,
+} from "../../../../services/redux/slices/admissions/requirements";
+import {
+  SAVE,
+  UPDATE,
+  RESET as ENROLLMENTRESET,
+} from "../../../../services/redux/slices/admissions/enrollments";
+import {
+  BROWSE as COURSES,
+  RESET as COURSESRESET,
+} from "../../../../services/redux/slices/resources/courses";
+import { INJECTCREDENTIALS } from "../../../../services/redux/slices/auth";
+import { useToasts } from "react-toast-notifications";
 
 const steps = [
   "Education",
@@ -30,79 +46,170 @@ const steps = [
   //   "Returnee / Transferee",
 ];
 
-const requirements = 6;
-
 export default function EnrollmentForm() {
   const [learner, setLearner] = useState({
-      lrn: "",
+      lrn: undefined,
       type: "new",
-      department: "grade",
+      department: "senior",
+      course: undefined,
       gradeLvl: 1,
-      requirements: [],
     }),
     [basic, setBasic] = useState({
-      psa: "TEST",
-      fullName: { fname: "", mname: "", lname: "", suffix: "" },
+      psa: undefined,
+      fullName: {
+        fname: undefined,
+        mname: undefined,
+        lname: undefined,
+        suffix: undefined,
+      },
       isMale: false,
       dob: new Date(),
-      pob: "",
-      ip: "",
-      disability: "",
-      motherTongue: "",
-      mobile: "",
-      "4ps": "",
+      pob: undefined,
+      indigenousPeople: undefined,
+      disability: undefined,
+      motherTongue: undefined,
+      mobile: undefined,
+      "4ps": undefined,
     }),
     [address, setAddress] = useState({
       current: {
         region: "REGION III (CENTRAL LUZON)",
         province: "NUEVA ECIJA",
         city: "CABANATUAN CITY",
-        barangay: "",
-        zip: "",
-        street: "",
+        barangay: undefined,
+        zip: undefined,
+        street: undefined,
       },
       permanent: {
         region: "REGION III (CENTRAL LUZON)",
         province: "NUEVA ECIJA",
         city: "CABANATUAN CITY",
-        barangay: "",
-        zip: "",
-        street: "",
+        barangay: undefined,
+        zip: undefined,
+        street: undefined,
       },
       isSame: true,
     }),
     [guardian, setGuardian] = useState({
       father: {
-        fname: "",
-        mname: "",
-        lname: "",
-        suffix: "",
-        mobile: "",
+        fname: undefined,
+        mname: undefined,
+        lname: undefined,
+        suffix: undefined,
+        mobile: undefined,
       },
       mother: {
-        fname: "",
-        mname: "",
-        lname: "",
-        suffix: "",
-        mobile: "",
+        fname: undefined,
+        mname: undefined,
+        lname: undefined,
+        suffix: undefined,
+        mobile: undefined,
       },
       legal: {
-        fname: "",
-        mname: "",
-        lname: "",
-        suffix: "",
-        mobile: "",
+        fname: undefined,
+        mname: undefined,
+        lname: undefined,
+        suffix: undefined,
+        mobile: undefined,
       },
     }),
+    [_department, setDepartment] = useState("senior"),
     // [returning, setReturning] = useState({}),
-    [activeStep, setActiveStep] = useState(0);
+    { token, auth, credentials } = useSelector(({ auth }) => auth),
+    { response, isSuccess, message } = useSelector(
+      ({ enrollments }) => enrollments
+    ),
+    [activeStep, setActiveStep] = useState(0),
+    dispatch = useDispatch(),
+    { addToast } = useToasts();
+
+  useEffect(() => {
+    if (isSuccess && response) {
+      const { enrollment, user } = response;
+      localStorage.setItem("credentials", JSON.stringify(enrollment));
+      localStorage.setItem("auth", JSON.stringify(user));
+      setTimeout(() => window.location.reload(), 500);
+      dispatch(INJECTCREDENTIALS({ user, credentials: enrollment }));
+    }
+  }, [response, isSuccess, dispatch]);
+
+  useEffect(() => {
+    if (message) {
+      addToast(message, {
+        appearance: isSuccess ? "success" : "error",
+      });
+    }
+
+    return () => dispatch(ENROLLMENTRESET());
+  }, [message, addToast, dispatch, isSuccess]);
+
+  useEffect(() => {
+    if (token && _department) {
+      dispatch(BROWSE({ token, key: { department: _department } }));
+      dispatch(COURSES({ token, key: { department: _department } }));
+    }
+
+    return () => {
+      dispatch(RESET());
+      dispatch(COURSESRESET());
+    };
+  }, [token, dispatch, _department]);
+
+  useEffect(() => {
+    if (credentials?._id) {
+      setLearner({ ...credentials, lrn: auth?.lrn });
+    }
+
+    if (auth?._id) {
+      setAddress(auth.address);
+      setGuardian(auth.guardians);
+      setBasic({
+        psa: auth.psa,
+        fullName: auth.fullName,
+        isMale: auth.isMale,
+        dob: auth.dob ? new Date(auth.dob) : new Date(),
+        pob: auth.pob,
+        indigenousPeople: auth.indigenousPeople,
+        disability: auth.disability,
+        motherTongue: auth.motherTongue,
+        mobile: auth.mobile,
+        "4ps": auth["4ps"],
+      });
+    }
+  }, [auth, credentials]);
 
   const handleSave = (isPublished) => {
-    const form = { ...learner, ...basic, address, ...guardian, isPublished };
+    const user = { ...basic, address, guardians: guardian, lrn: learner.lrn },
+      enrollment = {
+        ...learner,
+        isPublished,
+        batch: generateSY(),
+        user: auth._id,
+      };
 
-    if (address.isSame) form.address.permanent = address.current;
+    if (address.isSame) user.address.permanent = address.current;
 
-    console.log(form);
+    if (credentials?._id) {
+      dispatch(
+        UPDATE({
+          data: {
+            enrollment,
+            user,
+          },
+          token,
+        })
+      );
+    } else {
+      dispatch(
+        SAVE({
+          data: {
+            enrollment,
+            user,
+          },
+          token,
+        })
+      );
+    }
   };
 
   const handleError = (title, text, footer) =>
@@ -115,8 +222,7 @@ export default function EnrollmentForm() {
     });
 
   const handleValidation = () => {
-    const formRequirements = learner.requirements,
-      fullname = basic.fullName,
+    const fullname = basic.fullName,
       mobile = basic.mobile,
       dob = basic.dob,
       _guardian = guardian.legal;
@@ -133,13 +239,6 @@ export default function EnrollmentForm() {
         "Invalid Mobile",
         "Please input valid mobile number.",
         "Double check Personal Information"
-      );
-
-    if (!formRequirements.length || formRequirements.length !== requirements)
-      return handleError(
-        "Invalid Requirements",
-        "Please upload the photos.",
-        "Double check Education Information"
       );
 
     if (!fullName(fullname))
@@ -227,6 +326,35 @@ export default function EnrollmentForm() {
     return stateMap[index];
   };
 
+  const handleRemarks = () => {
+    if (!credentials?._id) return;
+
+    const { isPublished, status, remarks } = credentials;
+
+    let title = "Rejected: ",
+      color = "danger",
+      text = remarks;
+
+    if (status === "pending") {
+      if (isPublished) {
+        title = "Published: ";
+        color = "success";
+        text =
+          "The form has been submitted; please await validation by the enrollment teacher.";
+      } else {
+        title = "Draft: ";
+        color = "info";
+        text = "Form saved as draft.";
+      }
+    }
+
+    return (
+      <MDBTypography className="mb-0" noteColor={color} note noteTitle={title}>
+        {text}
+      </MDBTypography>
+    );
+  };
+
   const Step = componentMap[activeStep];
 
   const { department, gradeLvl } = learner;
@@ -295,14 +423,7 @@ export default function EnrollmentForm() {
               );
             })}
           </ul>
-          <MDBTypography
-            className="mb-0"
-            noteColor="info"
-            note
-            noteTitle="DRAFT: "
-          >
-            text
-          </MDBTypography>
+          {handleRemarks()}
         </MDBCardBody>
 
         <MDBCardBody className="mx-5">
@@ -310,6 +431,7 @@ export default function EnrollmentForm() {
             setActiveStep={setActiveStep}
             handleForm={handleForm(activeStep)}
             handleFinalSubmit={handleFinalSubmit}
+            setDepartment={setDepartment}
           />
         </MDBCardBody>
       </MDBCard>

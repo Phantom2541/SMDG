@@ -87,7 +87,7 @@ export default function EmploymentForm() {
       const { employment, user } = response;
       localStorage.setItem("credentials", JSON.stringify(employment));
       localStorage.setItem("auth", JSON.stringify(user));
-      dispatch(INJECTCREDENTIALS(response));
+      dispatch(INJECTCREDENTIALS({ user, credentials: employment }));
     }
   }, [response, isSuccess, dispatch]);
 

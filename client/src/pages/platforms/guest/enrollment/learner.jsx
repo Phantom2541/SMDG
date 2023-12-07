@@ -1,27 +1,30 @@
-import React from "react";
-import { MDBBtn, MDBInput } from "mdbreact";
+import React, { useState, useEffect } from "react";
+import { MDBBtn, MDBCol, MDBInput, MDBRow } from "mdbreact";
 import RequirementUpload from "./requirementUpload";
 import CustomSelect from "../../../../components/customSelect";
-import { Departments } from "../../../../services/fakeDb";
+import { Courses, Departments } from "../../../../services/fakeDb";
 import { formatGradeLvl } from "../../../../services/utilities";
+import { useSelector } from "react-redux";
 
-const { collections, getGradeLevels } = Departments;
-
-export default function Learner({ setActiveStep, handleForm }) {
-  // const [showGrade, setShowGrade] = useState(true);
+export default function Learner({ setActiveStep, handleForm, setDepartment }) {
+  const [showGrade, setShowGrade] = useState(true),
+    { collections: requirements } = useSelector(
+      ({ requirements }) => requirements
+    ),
+    { collections: courses } = useSelector(({ courses }) => courses);
 
   const { form, setForm } = handleForm;
 
   // used for rerendering MDBSelect
-  // useEffect(() => {
-  //   if (!showGrade) {
-  //     setTimeout(() => setShowGrade(true), 1);
-  //   }
-  // }, [showGrade]);
+  useEffect(() => {
+    if (!showGrade) {
+      setTimeout(() => setShowGrade(true), 1);
+    }
+  }, [showGrade]);
 
   const handleChange = (key, value) => setForm({ ...form, [key]: value });
 
-  const { department, gradeLvl, lrn } = form;
+  const { department, gradeLvl, lrn, type, course } = form;
 
   return (
     <>
@@ -34,56 +37,112 @@ export default function Learner({ setActiveStep, handleForm }) {
           />
         </div>
         <div className="col-6">
-          <MDBInput
-            value="new"
-            onChange={(e) => handleChange("tpye", e.target.value)}
-            label="Leaners Type (New)"
-            disabled
+          <CustomSelect
+            label="Learner Type"
+            disabledAllExceptSelected
+            preValue={type}
+            choices={[
+              {
+                str: "New",
+                value: "new",
+              },
+              {
+                str: "Old",
+                value: "old",
+              },
+              {
+                str: "Returning Leaner (Balik-Aral)",
+                value: "returning",
+              },
+              {
+                str: "Transferee",
+                value: "transferee",
+              },
+              {
+                str: "Repeater",
+                value: "repeater",
+              },
+              {
+                str: "Shifter",
+                value: "shifter",
+              },
+            ]}
+            texts="str"
+            values="value"
+            onChange={(type) => handleChange("type", type)}
           />
         </div>
       </div>
       <div className="row">
-        <div className="col-6">
+        <div className="col-4">
           <CustomSelect
-            choices={collections}
+            disabledAllExceptSelected
+            choices={Departments.collections}
             label="Department"
             preValue={department}
             values="key"
             texts="name"
-            onChange={(e) => {
+            onChange={(department) => {
+              setDepartment(department);
               setForm({
                 ...form,
-                department: e,
-                gradeLvl: getGradeLevels(e)[0],
+                department,
               });
-              // setShowGrade(false);
+              setShowGrade(false);
             }}
           />
         </div>
-        <div className="col-6">
-          {/* {showGrade && ( */}
+        <div className="col-4">
           <CustomSelect
-            choices={getGradeLevels(department).map((id) => ({
-              id,
-              str: formatGradeLvl(department, id),
-            }))}
-            label="Grade Level"
-            preValue={gradeLvl}
-            values="id"
+            choices={courses.map((course) => {
+              const { name, abbreviation } = Courses.find(course.pk);
+
+              return {
+                str: `(${abbreviation}) ${name}`,
+                ...course,
+              };
+            })}
+            label={department === "college" ? "Courses" : "Strands"}
+            preValue={course}
+            values="_id"
             texts="str"
-            onChange={(e) => handleChange("gradeLvl", e)}
+            onChange={(e) => handleChange("course", e)}
           />
-          {/* )} */}
+        </div>
+        <div className="col-4">
+          {showGrade && (
+            <CustomSelect
+              choices={Departments.getGradeLevels(department).map((id) => ({
+                id,
+                str: formatGradeLvl(department, id),
+              }))}
+              label="Grade Level"
+              preValue={gradeLvl}
+              values="id"
+              texts="str"
+              onChange={(e) => handleChange("gradeLvl", e)}
+            />
+          )}
         </div>
       </div>
-      <div className="row">
-        <div className="col-6">
-          <RequirementUpload />
-        </div>
-      </div>
+      <hr className="bg-dark" />
+      <label>Upload Requirements</label>
+      <MDBRow>
+        {requirements?.map(({ _id, title }) => (
+          <MDBCol md="3" className="my-2" key={_id}>
+            <RequirementUpload label={title} id={_id} />
+          </MDBCol>
+        ))}
+        <MDBCol md="3" className="my-2">
+          <RequirementUpload label="1x1 Photo" id="1*1-Photo" />
+        </MDBCol>
+        <MDBCol md="3" className="my-2">
+          <RequirementUpload label="Signature" id="signature" />
+        </MDBCol>
+      </MDBRow>
       <MDBBtn
         style={{ float: "right" }}
-        color="primary"
+        color="info"
         onClick={() => setActiveStep(1)}
       >
         Next

@@ -13,10 +13,20 @@ const modelSchema = new mongoose.Schema(
     type: {
       type: String,
       enum: {
-        values: ["new", "transferee", "repeater", "shifter", "old"],
+        values: [
+          "new",
+          "old",
+          "transferee",
+          "repeater",
+          "shifter",
+          "returning",
+        ],
         message: "Please choose a valid type from the predefined options.",
       },
       default: "new",
+    },
+    department: {
+      type: String,
     },
     gradeLvl: {
       type: Number,

@@ -89,7 +89,6 @@ const userSchema = new mongoose.Schema(
         values: ["single", "married", "live-in", "widowed"],
         message: "Please choose a valid type from the predefined options.",
       },
-      default: "single",
     },
     guardians: {
       father: {

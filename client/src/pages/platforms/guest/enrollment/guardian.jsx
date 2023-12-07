@@ -1,6 +1,14 @@
 import { MDBBtn, MDBInput } from "mdbreact";
 import React from "react";
 
+const _preset = {
+  fname: undefined,
+  lname: undefined,
+  mname: undefined,
+  suffix: undefined,
+  mobile: undefined,
+};
+
 export default function Guardian({
   setActiveStep,
   handleForm,
@@ -11,16 +19,11 @@ export default function Guardian({
   const handleChange = (obj, key, value) =>
     setForm({ ...form, [obj]: { ...form[obj], [key]: value.toUpperCase() } });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    handleFinalSubmit();
-  };
-
-  const { father, mother, legal } = form;
+  const { father = _preset, mother = _preset, legal = _preset } = form;
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
+    <>
+      <div className="border p-2">
         <span>Legal Guardian's Name</span>
         <div className="row">
           <div className="col-3">
@@ -68,7 +71,7 @@ export default function Guardian({
         </div>
       </div>
 
-      <div>
+      <div className="border p-2 my-2">
         <span>Father's Name</span>
         <div className="row">
           <div className="col-3">
@@ -116,7 +119,7 @@ export default function Guardian({
         </div>
       </div>
 
-      <div>
+      <div className="border p-2">
         <span>Mother's Maiden Name</span>
         <div className="row">
           <div className="col-3">
@@ -168,15 +171,18 @@ export default function Guardian({
         onClick={() => setActiveStep(2)}
         style={{ float: "left" }}
         color="dark"
-        type="button"
         className="z-depth-0"
         outline
       >
         Return
       </MDBBtn>
-      <MDBBtn style={{ float: "right" }} color="primary" type="submit">
+      <MDBBtn
+        style={{ float: "right" }}
+        color="primary"
+        onClick={handleFinalSubmit}
+      >
         Submit
       </MDBBtn>
-    </form>
+    </>
   );
 }

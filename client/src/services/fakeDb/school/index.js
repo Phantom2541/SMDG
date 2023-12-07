@@ -2,8 +2,8 @@ import logo from "../../../assets/school_logo.png";
 
 const School = {
   id: "12345-test", //school id from deped
-  name: "Nueva Ecija University of Science and Technology",
-  abbreviation: "NEUST",
+  name: "Mount Carmel College",
+  abbreviation: "MCC",
   logo,
   address: {
     region: "REGION III (CENTRAL LUZON)",

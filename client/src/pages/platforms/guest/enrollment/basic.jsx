@@ -10,7 +10,7 @@ export default function Basic({ setActiveStep, handleForm }) {
   const {
     fullName,
     pob,
-    ip,
+    indigenousPeople,
     disability,
     psa,
     isMale,
@@ -22,20 +22,8 @@ export default function Basic({ setActiveStep, handleForm }) {
 
   const { fname, mname, lname, suffix } = fullName;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    // if (!mobile.startsWith("9")) return console.log("error");
-
-    console.log(form);
-
-    setActiveStep(2);
-
-    // setActiveStep(0);
-  };
-
   return (
-    <form onSubmit={handleSubmit}>
+    <>
       <div className="row">
         <div className="col-6">
           <MDBInput
@@ -163,26 +151,25 @@ export default function Basic({ setActiveStep, handleForm }) {
         </div>
         <div className="col-7">
           <MDBInput
-            label="Do you belong to any Indigenous Peoples Community/Cultural Community? If Yes, please specify"
-            value={ip}
-            className="mt-0"
-            onChange={(e) => handleChange("ip", e.target.value.toUpperCase())}
+            label="Are you part of any Indigenous or Cultural Community? If yes, please specify."
+            value={indigenousPeople}
+            onChange={(e) =>
+              handleChange("indigenousPeople", e.target.value.toUpperCase())
+            }
           />
         </div>
       </div>
       <div className="row">
-        <div className="col-5">
-          <label>Is your family a beneficiary of 4Ps? </label>
+        <div className="col-6">
           <MDBInput
-            label="If Yes, write the 4Ps Household ID Number"
+            label="Are you a beneficiary of 4Ps? If Yes, write the 4Ps Household ID"
             value={fourPs}
             onChange={(e) => handleChange("4ps", e.target.value.toUpperCase())}
           />
         </div>
-        <div className="col-7">
-          <label>Do you have a Disability?</label>
+        <div className="col-6">
           <MDBInput
-            label="If Yes, specify the type of disability"
+            label="Do you have a Disability? If Yes, specify the type of disability"
             value={disability}
             onChange={(e) =>
               handleChange("disability", e.target.value.toUpperCase())
@@ -194,15 +181,18 @@ export default function Basic({ setActiveStep, handleForm }) {
         onClick={() => setActiveStep(0)}
         style={{ float: "left" }}
         color="dark"
-        type="button"
         className="z-depth-0"
         outline
       >
         Return
       </MDBBtn>
-      <MDBBtn style={{ float: "right" }} color="primary" type="submit">
+      <MDBBtn
+        onClick={() => setActiveStep(2)}
+        style={{ float: "right" }}
+        color="info"
+      >
         Next
       </MDBBtn>
-    </form>
+    </>
   );
 }

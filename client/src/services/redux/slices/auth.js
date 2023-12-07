@@ -75,9 +75,9 @@ export const reduxSlice = createSlice({
       state.role = data.payload;
     },
     INJECTCREDENTIALS: (state, data) => {
-      const { employment, user } = data.payload;
+      const { credentials, user } = data.payload;
       state.auth = user;
-      state.credentials = employment;
+      state.credentials = credentials;
     },
   },
   extraReducers: (builder) => {

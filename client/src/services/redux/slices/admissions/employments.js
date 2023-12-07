@@ -194,9 +194,11 @@ export const reduxSlice = createSlice({
         const { success, payload, shouldRefresh } = action.payload,
           { user, employment } = payload;
 
+        //this is for employment approval
         if (shouldRefresh) window.location.reload();
 
         if (user) {
+          // this is for employment submission
           state.response = payload;
           state.message = success;
 
@@ -204,6 +206,7 @@ export const reduxSlice = createSlice({
             socket.emit("send_employment", { ...employment, user });
           }
         } else {
+          // this is for employment approval
           const index = state.collections.findIndex(
             (c) => c._id === employment._id
           );
