@@ -1,9 +1,8 @@
 const mongoose = require("mongoose"),
   { red, green } = require("colorette");
 
-const connectToDB = () => {
-  console.log(process.env.ATLAS_URI);
-  return mongoose
+const connectToDB = () =>
+  mongoose
     .connect(process.env.ATLAS_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -16,6 +15,5 @@ const connectToDB = () => {
       console.log(red("[MongoDB] connection failed."));
       throw new Error(err);
     });
-};
 
 module.exports = connectToDB;
