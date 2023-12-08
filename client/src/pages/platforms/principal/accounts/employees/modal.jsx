@@ -11,7 +11,6 @@ import CustomSelect from "../../../../../components/customSelect";
 import { fullName } from "../../../../../services/utilities";
 import { useDispatch, useSelector } from "react-redux";
 import { UPDATE } from "../../../../../services/redux/slices/admissions/employments";
-import { useToasts } from "react-toast-notifications";
 
 // declare your expected items
 const _form = {
@@ -23,17 +22,7 @@ const _form = {
 export default function Modal({ show, toggle, selected }) {
   const [form, setForm] = useState(_form),
     { token } = useSelector(({ auth }) => auth),
-    dispatch = useDispatch(),
-    { isSuccess, message } = useSelector(({ employments }) => employments),
-    { addToast } = useToasts();
-
-  useEffect(() => {
-    if (message) {
-      addToast(message, {
-        appearance: isSuccess ? "success" : "error",
-      });
-    }
-  }, [isSuccess, message, addToast]);
+    dispatch = useDispatch();
 
   useEffect(() => {
     setForm(selected);

@@ -139,7 +139,7 @@ export default function Learner({
       )}
 
       <hr className="bg-dark" />
-      <label>Upload Requirements</label>
+      <label>Upload{isPublished && "ed"} Images</label>
       <MDBRow>
         <RequirementUpload
           label="1x1 Photo"

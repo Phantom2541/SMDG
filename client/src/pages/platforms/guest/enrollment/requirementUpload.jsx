@@ -87,7 +87,7 @@ export default function RequirementUpload({
           ) : (
             <div className="h-100 d-flex align-items-center">
               <i className="mx-auto" style={{ color: "grey" }}>
-                No Image
+                {label}
               </i>
             </div>
           )}

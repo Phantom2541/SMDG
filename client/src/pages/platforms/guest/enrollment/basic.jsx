@@ -13,7 +13,12 @@ export default function Basic({
   const handleChange = (key, value) => setForm({ ...form, [key]: value });
 
   const {
-    fullName,
+    fullName = {
+      fname: "",
+      lname: "",
+      mname: "",
+      suffix: "",
+    },
     pob,
     indigenousPeople,
     disability,
