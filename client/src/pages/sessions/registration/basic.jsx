@@ -1,15 +1,21 @@
 import React from "react";
-import { MDBCol, MDBInput, MDBRow, DatePicker, MDBContainer } from "mdbreact";
+import {
+  MDBCol,
+  MDBInput,
+  MDBRow,
+  DatePicker,
+  MDBContainer,
+  MDBIcon,
+} from "mdbreact";
 import AddressSelect from "../../../components/addressSelect";
+import { getAge } from "../../../services/utilities";
 
 export default function Basic({ handleChange, form }) {
   const {
-      fname,
-      mname,
-      lname,
-      suffix,
+      fullName,
       email,
       password,
+      cpassword,
       pob,
       dob,
       isMale,
@@ -19,6 +25,7 @@ export default function Basic({ handleChange, form }) {
       address,
       role,
     } = form,
+    { fname, mname, lname, suffix } = fullName,
     { current, permanent, isSame } = address;
 
   return (
@@ -36,7 +43,14 @@ export default function Basic({ handleChange, form }) {
               label="First name"
               type="text"
               outline
-              onChange={(e) => handleChange("fname", e.target.value)}
+              required
+              value={fname}
+              onChange={(e) =>
+                handleChange("fullName", {
+                  ...fullName,
+                  fname: e.target.value.toUpperCase(),
+                })
+              }
             />
           </MDBCol>
           <MDBCol className="px-1" md="3">
@@ -44,7 +58,13 @@ export default function Basic({ handleChange, form }) {
               label="Middle name"
               type="text"
               outline
-              onChange={(e) => handleChange("mname", e.target.value)}
+              value={mname}
+              onChange={(e) =>
+                handleChange("fullName", {
+                  ...fullName,
+                  mname: e.target.value.toUpperCase(),
+                })
+              }
             />
           </MDBCol>
           <MDBCol className="px-1" md="3">
@@ -52,7 +72,14 @@ export default function Basic({ handleChange, form }) {
               label="Last name"
               type="text"
               outline
-              onChange={(e) => handleChange("lname", e.target.value)}
+              required
+              value={lname}
+              onChange={(e) =>
+                handleChange("fullName", {
+                  ...fullName,
+                  lname: e.target.value.toUpperCase(),
+                })
+              }
             />
           </MDBCol>
           <MDBCol className="px-1" md="2">
@@ -60,7 +87,13 @@ export default function Basic({ handleChange, form }) {
               label="Suffix"
               type="text"
               outline
-              onChange={(e) => handleChange("suffix", e.target.value)}
+              value={suffix}
+              onChange={(e) =>
+                handleChange("fullName", {
+                  ...fullName,
+                  suffix: e.target.value.toUpperCase(),
+                })
+              }
             />
           </MDBCol>
         </MDBRow>
@@ -69,16 +102,22 @@ export default function Basic({ handleChange, form }) {
           <i>Indicate your birth of place & birth date correctly</i>
         </label>
         <MDBRow>
-          <MDBCol md="4" className="px-1">
+          <MDBCol md="5" className="px-1">
             <MDBInput
               label="Place of birth"
               type="text"
+              value={pob}
               outline
               onChange={(e) => handleChange("pob", e.target.value)}
             />
           </MDBCol>
-          <MDBCol md="2" className="px-1">
-            <DatePicker getValue={(e) => handleChange("dob", e)} />
+          <MDBCol md="2" className="px-1 d-flex align-items-center">
+            <DatePicker value={dob} getValue={(e) => handleChange("dob", e)} />
+            <MDBIcon
+              title={getAge(dob)}
+              icon="info-circle"
+              className="text-info"
+            />
           </MDBCol>
           <MDBCol md="2">
             <div className="form-check">
@@ -106,12 +145,16 @@ export default function Basic({ handleChange, form }) {
               </label>
             </div>
           </MDBCol>
-          <MDBCol md="4" className="px-1">
+          <MDBCol md="3" className="px-1">
             <MDBInput
-              label="Mobile No."
-              type="number"
+              label="Mobile No. (+63)"
+              maxLength={10}
+              required
               outline
-              onChange={(e) => handleChange("mobile", e.target.value)}
+              value={mobile}
+              onChange={(e) =>
+                handleChange("mobile", e.target.value.replace(/\D/g, ""))
+              }
             />
           </MDBCol>
         </MDBRow>
@@ -121,6 +164,7 @@ export default function Basic({ handleChange, form }) {
               label="Do you have any Disabilities? If Yes, specify the type of disability"
               type="text"
               outline
+              value={disability}
               onChange={(e) => handleChange("disability", e.target.value)}
             />
           </MDBCol>
@@ -129,6 +173,7 @@ export default function Basic({ handleChange, form }) {
               label="Mother Tongue (ex: Tagalog, English)"
               type="text"
               outline
+              value={mothertounge}
               onChange={(e) => handleChange("motherTounge", e.target.value)}
             />
           </MDBCol>
@@ -146,7 +191,7 @@ export default function Basic({ handleChange, form }) {
           </i>
         </label>
         <AddressSelect
-          address={address.current}
+          address={current}
           label="Current Address"
           handleChange={(_, current) =>
             handleChange("address", { ...address, current })
@@ -185,10 +230,9 @@ export default function Basic({ handleChange, form }) {
             </label>
           </div>
         </div>
-        {/* yes or no */}
         {!isSame && (
           <AddressSelect
-            address={address.permanent}
+            address={permanent}
             label="Permanent Address"
             handleChange={(_, permanent) =>
               handleChange("address", { ...address, permanent })
@@ -199,7 +243,6 @@ export default function Basic({ handleChange, form }) {
       <div className="blue darken-3 px-5 py-2 text-white font-weight-bold h5-responsive">
         III. ACCOUNT INFORMATION
       </div>
-
       <MDBContainer className="px-5" fluid>
         <label className="mb-0 pb-0 mt-3">
           4. <b>Email & Password</b> -
@@ -211,6 +254,8 @@ export default function Basic({ handleChange, form }) {
               label="Enter E-mail Address"
               type="text"
               outline
+              required
+              value={email}
               onChange={(e) => handleChange("email", e.target.value)}
             />
           </MDBCol>
@@ -218,6 +263,8 @@ export default function Basic({ handleChange, form }) {
             <MDBInput
               label="Enter Password"
               type="password"
+              required
+              value={password}
               outline
               onChange={(e) => handleChange("password", e.target.value)}
             />
@@ -226,8 +273,10 @@ export default function Basic({ handleChange, form }) {
             <MDBInput
               label="Re-enter Password"
               type="password"
+              required
+              value={cpassword}
               outline
-              onChange={(e) => handleChange("password", e.target.value)}
+              onChange={(e) => handleChange("cpassword", e.target.value)}
             />
           </MDBCol>
           <MDBCol md="2">

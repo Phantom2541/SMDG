@@ -11,8 +11,6 @@ export default function AddressSelect({
   const handleAddress = (key, value) => {
     const _address = { ...address };
 
-    console.log(key, value);
-
     switch (key) {
       case "region":
         _address.region = value;

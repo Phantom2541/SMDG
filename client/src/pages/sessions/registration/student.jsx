@@ -4,6 +4,7 @@ import { MDBCol, MDBContainer, MDBInput, MDBRow } from "mdbreact";
 export default function Student({ handleChange, form }) {
   const { lrn, psa, indigenousPeople, "4ps": fourPs, guardians } = form,
     { mother, father } = guardians;
+
   return (
     <>
       <div className="blue darken-3 px-5 py-2 text-white font-weight-bold h5-responsive">
@@ -14,10 +15,12 @@ export default function Student({ handleChange, form }) {
           5. <b>LRN & PSA</b> -<i>Enter your LRN & PSA correctly</i>
         </label>
         <MDBRow>
-          <MDBCol className="px-1" md="3">
+          <MDBCol className="px-1" md="5">
             <MDBInput
               label="Learner Reference No. (LRN)"
               type="number"
+              required
+              value={lrn}
               outline
               onChange={(e) => handleChange("lrn", e.target.value)}
             />
@@ -26,6 +29,7 @@ export default function Student({ handleChange, form }) {
             <MDBInput
               label="PSA Birth Certificate No. (if available upon registration)"
               type="number"
+              value={psa}
               outline
               onChange={(e) => handleChange("psa", e.target.value)}
             />
@@ -34,34 +38,37 @@ export default function Student({ handleChange, form }) {
         <MDBRow>
           <MDBCol className="px-1">
             <MDBInput
-              label="Are you part of any Indigenous or Cultural Community? If yes, please specify."
+              label="Are you part of any Indigenous or Cultural Community?"
               type="text"
               outline
+              value={indigenousPeople}
               onChange={(e) => handleChange("indigenousPeople", e.target.value)}
             />
           </MDBCol>
           <MDBCol className="px-1">
             <MDBInput
-              label="Are you a beneficiary of 4Ps? If Yes, write the 4Ps Household ID"
+              label="Are you a beneficiary of 4Ps?"
               type="text"
               outline
+              value={fourPs}
               onChange={(e) => handleChange("4ps", e.target.value)}
             />
           </MDBCol>
         </MDBRow>
         <label>
-          6. <b>Mother's Maiden Name</b>
+          6. <b>Mother's Maiden Information</b>
         </label>
-        <MDBRow className="border">
+        <MDBRow>
           <MDBCol className="px-1">
             <MDBInput
               label="First name"
               type="text"
               outline
+              value={mother?.fname}
               onChange={(e) =>
                 handleChange("guardians", {
                   ...guardians,
-                  mother: { ...mother, fname: e.target.value },
+                  mother: { ...mother, fname: e.target.value.toUpperCase() },
                 })
               }
             />
@@ -71,10 +78,11 @@ export default function Student({ handleChange, form }) {
               label="Middle name"
               type="text"
               outline
+              value={mother?.mname}
               onChange={(e) =>
                 handleChange("guardians", {
                   ...guardians,
-                  mother: { ...mother, mname: e.target.value },
+                  mother: { ...mother, mname: e.target.value.toUpperCase() },
                 })
               }
             />
@@ -84,10 +92,11 @@ export default function Student({ handleChange, form }) {
               label="Last name"
               type="text"
               outline
+              value={mother?.lname}
               onChange={(e) =>
                 handleChange("guardians", {
                   ...guardians,
-                  mother: { ...mother, lname: e.target.value },
+                  mother: { ...mother, lname: e.target.value.toUpperCase() },
                 })
               }
             />
@@ -97,23 +106,28 @@ export default function Student({ handleChange, form }) {
               label="Suffix"
               type="text"
               outline
+              value={mother?.suffix}
               onChange={(e) =>
                 handleChange("guardians", {
                   ...guardians,
-                  mother: { ...mother, suffix: e.target.value },
+                  mother: { ...mother, suffix: e.target.value.toUpperCase() },
                 })
               }
             />
           </MDBCol>
           <MDBCol className="px-1">
             <MDBInput
-              label="Mobile No."
-              type="number"
+              label="Mobile No. (+63)"
+              maxLength={10}
               outline
+              value={mother?.mobile}
               onChange={(e) =>
                 handleChange("guardians", {
                   ...guardians,
-                  mother: { ...mother, mobile: e.target.value },
+                  mother: {
+                    ...mother,
+                    mobile: e.target.value.replace(/\D/g, ""),
+                  },
                 })
               }
             />
@@ -121,18 +135,19 @@ export default function Student({ handleChange, form }) {
         </MDBRow>
 
         <label>
-          7. <b>Father's Name</b>
+          7. <b>Father's Information</b>
         </label>
-        <MDBRow className="border">
+        <MDBRow>
           <MDBCol className="px-1">
             <MDBInput
               label="First name"
               type="text"
               outline
+              value={father?.fname}
               onChange={(e) =>
                 handleChange("guardians", {
                   ...guardians,
-                  mother: { ...father, fname: e.target.value },
+                  father: { ...father, fname: e.target.value.toUpperCase() },
                 })
               }
             />
@@ -142,10 +157,11 @@ export default function Student({ handleChange, form }) {
               label="Middle name"
               type="text"
               outline
+              value={father?.mname}
               onChange={(e) =>
                 handleChange("guardians", {
                   ...guardians,
-                  mother: { ...father, mname: e.target.value },
+                  father: { ...father, mname: e.target.value.toUpperCase() },
                 })
               }
             />
@@ -155,10 +171,11 @@ export default function Student({ handleChange, form }) {
               label="Last name"
               type="text"
               outline
+              value={father?.lname}
               onChange={(e) =>
                 handleChange("guardians", {
                   ...guardians,
-                  mother: { ...father, lname: e.target.value },
+                  father: { ...father, lname: e.target.value.toUpperCase() },
                 })
               }
             />
@@ -168,23 +185,29 @@ export default function Student({ handleChange, form }) {
               label="Suffix"
               type="text"
               outline
+              maxLength={10}
+              value={father?.suffix}
               onChange={(e) =>
                 handleChange("guardians", {
                   ...guardians,
-                  mother: { ...father, suffix: e.target.value },
+                  father: { ...father, suffix: e.target.value.toUpperCase() },
                 })
               }
             />
           </MDBCol>
           <MDBCol className="px-1">
             <MDBInput
-              label="Mobile No."
-              type="number"
+              label="Mobile No. (+63)"
+              maxLength={10}
               outline
+              value={father?.mobile}
               onChange={(e) =>
                 handleChange("guardians", {
                   ...guardians,
-                  mother: { ...father, mobile: e.target.value },
+                  father: {
+                    ...father,
+                    father: e.target.value.replace(/\D/g, ""),
+                  },
                 })
               }
             />
