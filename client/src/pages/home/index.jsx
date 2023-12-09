@@ -14,7 +14,7 @@ import { School } from "../../services/fakeDb";
 import Banner from "./banner";
 import Features from "./features";
 import "./index.css";
-// import Register from "./register";
+import Register from "./register";
 import Mission from "./mission";
 
 export default function Home() {
@@ -69,7 +69,7 @@ export default function Home() {
 
         <Banner />
         <Features />
-        {/* <Register /> */}
+        <Register />
         <Mission />
       </div>
     </>

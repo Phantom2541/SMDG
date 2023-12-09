@@ -1,35 +1,44 @@
 import React from "react";
+import { MDBIcon } from "mdbreact";
 import "./style/mission.css";
 import { MDBCard, MDBCardBody, MDBCol, MDBIcon, MDBRow } from "mdbreact";
 
 export default function Mission() {
   return (
-    <section id="mission">
+    <section className="mission-content" id="mission">
       <div className="mission-wrapper">
-        <MDBRow>
-          <MDBCol md="4">
-            <MDBCard style={{ borderRadius: "60px" }}>
-              <MDBCardBody>
-                <div className="text-center">
-                  <MDBIcon
-                    className="p-4"
-                    icon="bullseye"
-                    style={{ fontSize: "80px" }}
-                  ></MDBIcon>
-                  <h1>MISSION</h1>
-                  <h6>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Repellendus, exercitationem? Atque corrupti maxime
-                    accusantium nihil, commodi labore numquam repudiandae
-                    provident consequatur mollitia perferendis deserunt, tenetur
-                    reprehenderit assumenda ut, dolorem sequi?
-                  </h6>
-                </div>
-              </MDBCardBody>
-            </MDBCard>
-            <hr className="line" />
-          </MDBCol>
-        </MDBRow>
+        <div className="mission-card">
+          <div className="mission-cardBody text-center">
+            <MDBIcon
+              icon="user"
+              className="mb-5"
+              style={{ fontSize: "70px" }}
+            />
+            <h2 className="font-weight-bold">MISSIONE</h2>
+          </div>
+          <div className="mission-dot-1"></div>
+          <div className="line-bottom"></div>
+        </div>
+      </div>
+      <div className="mission-wrapper">
+        <div className="mission-card">
+          <div className="mission-cardBody text-center">
+            <MDBIcon
+              icon="user"
+              className="mb-5"
+              style={{ fontSize: "70px" }}
+            />
+            <h2 className="font-weight-bold">MISSIONE</h2>
+          </div>
+          <div className="mission-dot-2"></div>
+          <div className="mission-circle"></div>
+          <div className="line-top"></div>
+        </div>
+      </div>
+      <div className="mission-wrapper">
+        <div className="mission-card">
+          <div className="line-bottom"></div>
+        </div>
       </div>
     </section>
   );
