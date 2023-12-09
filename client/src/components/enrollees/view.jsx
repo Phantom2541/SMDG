@@ -94,7 +94,7 @@ export default function View({ enrollment, setSelected }) {
     return () => {
       dispatch(RESET());
     };
-  }, [token, department]);
+  }, [token, department, dispatch]);
 
   useEffect(() => {
     if (enrollment?._id) {

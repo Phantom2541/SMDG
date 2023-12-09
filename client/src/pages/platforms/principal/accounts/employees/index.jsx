@@ -11,6 +11,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { EMPLOYEES } from "../../../../../services/redux/slices/admissions/employments";
 import { fullName } from "../../../../../services/utilities";
+import { useToasts } from "react-toast-notifications";
 import Modal from "./modal";
 import Disable from "./disable";
 
@@ -21,7 +22,17 @@ export default function Employees() {
     [selected, setSelected] = useState({}),
     { collections } = useSelector(({ employments }) => employments),
     { token } = useSelector(({ auth }) => auth),
+    { isSuccess, message } = useSelector(({ employments }) => employments),
+    { addToast } = useToasts(),
     dispatch = useDispatch();
+
+  useEffect(() => {
+    if (message) {
+      addToast(message, {
+        appearance: isSuccess ? "success" : "error",
+      });
+    }
+  }, [isSuccess, message, addToast]);
 
   useEffect(() => {
     if (token) {

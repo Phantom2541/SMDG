@@ -16,7 +16,7 @@ import { Departments, Roles } from "../../../../services/fakeDb";
 import { useSelector } from "react-redux";
 
 const TEACHERS = ["HEAD", "MASTER", "TEACHER"],
-  requirements = ["Application Letter", "Résumé", "Personal Data Sheet"];
+  requirements = ["Application Letter", "Resumé", "Personal Data Sheet"];
 
 export default function Form({
   user = {},
@@ -578,7 +578,7 @@ export default function Form({
         </div>
         <hr color="primray" />
 
-        <p>Upload{!isGuest && "ed"} PDF'S</p>
+        <p>Upload{!isGuest && "ed"} PDF's</p>
         <MDBRow>
           {requirements.map((requirement, index) => (
             <MDBCol md="4" key={requirement}>

@@ -135,28 +135,6 @@ const userSchema = new mongoose.Schema(
           trim: true,
         },
       },
-      legal: {
-        fname: {
-          type: String,
-          trim: true,
-        },
-        lname: {
-          type: String,
-          trim: true,
-        },
-        mname: {
-          type: String,
-          trim: true,
-        },
-        suffix: {
-          type: String,
-          trim: true,
-        },
-        mobile: {
-          type: String,
-          trim: true,
-        },
-      },
     },
     childId: {
       type: mongoose.Schema.Types.ObjectId,

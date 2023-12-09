@@ -15,14 +15,26 @@ import {
   ADDEMPLOYMENT,
 } from "../../../../../services/redux/slices/admissions/employments";
 import { fullName, socket } from "../../../../../services/utilities";
+import { useToasts } from "react-toast-notifications";
 
 export default function Employments() {
   const [employments, setEmployments] = useState([]),
     [selected, setSelected] = useState({}),
     [show, setShow] = useState(false),
     { token } = useSelector(({ auth }) => auth),
-    { collections } = useSelector(({ employments }) => employments),
+    { collections, isSuccess, message } = useSelector(
+      ({ employments }) => employments
+    ),
+    { addToast } = useToasts(),
     dispatch = useDispatch();
+
+  useEffect(() => {
+    if (message) {
+      addToast(message, {
+        appearance: isSuccess ? "success" : "error",
+      });
+    }
+  }, [isSuccess, message, addToast]);
 
   useEffect(() => {
     socket.on("receive_employment", (employment) =>

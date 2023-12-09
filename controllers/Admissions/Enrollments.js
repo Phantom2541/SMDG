@@ -13,17 +13,24 @@ exports.save = async (req, res) => {
   }
 
   Entity.create(enrollment)
-    .then((_enrollment) => {
+    .then(async (_enrollment) => {
       var success =
         "The form has been submitted; please await validation by the enrollment teacher.";
 
       if (!enrollment.isPublished) success = "Form draft saved.";
 
+      const populatedEnrollment = await Entity.findById(
+        _enrollment._id
+      ).populate({
+        path: "course",
+        select: "pk",
+      });
+
       res.status(201).json({
         success,
         payload: {
           user: _user,
-          enrollment: _enrollment,
+          enrollment: populatedEnrollment,
         },
       });
     })
@@ -41,6 +48,10 @@ exports.update = async (req, res) => {
   }
 
   Entity.findByIdAndUpdate(enrollment._id, enrollment, { new: true })
+    .populate({
+      path: "course",
+      select: "pk",
+    })
     .then((_enrollment) => {
       var success =
         "The form has been submitted; please await validation by the enrollment teacher.";

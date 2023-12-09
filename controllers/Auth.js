@@ -1,6 +1,7 @@
 const Entity = require("../models/Users"),
   Enrollments = require("../models/Admissions/Enrollments"),
   Employments = require("../models/Admissions/Employments"),
+  Sections = require("../models/Resources/Sections"),
   generateToken = require("../config/generateToken"),
   fs = require("fs");
 
@@ -10,12 +11,24 @@ const fetchAccess = async (user) => {
 
   const [employment, enrollment] = await Promise.all([
     Employments.findOne({ user }).select("-updatedAt -__v"),
-    Enrollments.findOne({ user }).select("-updatedAt -__v"),
+    Enrollments.findOne({ user })
+      .select("-updatedAt -__v")
+      .populate({
+        path: "course",
+        select: "pk",
+      })
+      .populate("section"),
   ]);
 
   if (employment) {
     if (employment.status === "approved") access = employment.access;
-    credentials = employment;
+    let section = undefined;
+    if (employment.access === "TEACHER")
+      section = await Sections.findOne({ adviser: employment._id }).populate({
+        path: "course",
+        select: "pk",
+      });
+    credentials = { ...employment._doc, section };
   } else if (enrollment) {
     if (enrollment.status === "approved") access = "STUDENT";
     credentials = enrollment;

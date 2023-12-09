@@ -37,6 +37,10 @@ const modelSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Courses",
     },
+    section: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Sections",
+    },
     batch: {
       start: {
         type: Number,
@@ -62,6 +66,31 @@ const modelSchema = new mongoose.Schema(
     remarks: {
       type: String,
       default: "",
+    },
+    guardian: {
+      relationship: {
+        type: String,
+      },
+      fname: {
+        type: String,
+        trim: true,
+      },
+      lname: {
+        type: String,
+        trim: true,
+      },
+      mname: {
+        type: String,
+        trim: true,
+      },
+      suffix: {
+        type: String,
+        trim: true,
+      },
+      mobile: {
+        type: String,
+        trim: true,
+      },
     },
   },
   {

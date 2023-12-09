@@ -8,6 +8,10 @@ const socket = (io) =>
       stream.broadcast.emit("receive_employment", data)
     );
 
+    stream.on("send_enrollment", (data) =>
+      stream.broadcast.emit("receive_enrollment", data)
+    );
+
     stream.on("join_room", (room) => stream.join(room));
 
     stream.on("logout", (roomId) => stream.to(roomId).emit("logout"));

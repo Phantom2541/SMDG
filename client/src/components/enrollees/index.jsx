@@ -7,9 +7,15 @@ import {
   MDBTable,
   MDBView,
 } from "mdbreact";
-import { formatGradeLvl, fullName, generateSY } from "../../services/utilities";
+import {
+  formatGradeLvl,
+  fullName,
+  generateSY,
+  socket,
+} from "../../services/utilities";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  ADDENROLLMENT,
   BROWSE,
   RESET,
   UPDATE,
@@ -19,7 +25,7 @@ import View from "./view";
 import { useToasts } from "react-toast-notifications";
 import Swal from "sweetalert2";
 
-export default function Enrollees({ status = "pending" }) {
+export default function Enrollees({ status = "pending", setFilter }) {
   const [students, setStudents] = useState([]),
     [selected, setSelected] = useState({}),
     { token } = useSelector(({ auth }) => auth),
@@ -28,6 +34,18 @@ export default function Enrollees({ status = "pending" }) {
     ),
     dispatch = useDispatch(),
     { addToast } = useToasts();
+
+  useEffect(() => {
+    socket.on("receive_enrollment", (enrollment) => {
+      if (enrollment.status === status) {
+        dispatch(ADDENROLLMENT(enrollment));
+      }
+    });
+
+    return () => {
+      socket.off("receive_enrollment");
+    };
+  }, [dispatch, status]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -60,16 +78,52 @@ export default function Enrollees({ status = "pending" }) {
     setStudents(collections);
   }, [collections]);
 
-  const handleDirectApproval = (_id, status, text) =>
+  const handleReject = async (_id) => {
+    const { value: remarks } = await Swal.fire({
+      icon: "question",
+      title: "Reject this person?",
+      input: "textarea",
+      inputLabel: "Please specify your reason.",
+      inputPlaceholder: "Write a reason for rejection...",
+      showCancelButton: true,
+      cancelButtonColor: "#fff",
+      cancelButtonText: `<span class="text-dark">Cancel</span>`,
+
+      confirmButtonColor: "#d33",
+      confirmButtonText: "Yes, Reject!",
+      inputValidator: (value) => {
+        if (!value) {
+          return "You need to write something!";
+        }
+      },
+    });
+    if (remarks) {
+      dispatch(
+        UPDATE({
+          data: {
+            enrollment: {
+              status: "rejected",
+              _id,
+              remarks,
+              isPublished: false,
+            },
+            isViewing: true,
+          },
+          token,
+        })
+      );
+    }
+  };
+
+  const handlePayment = (_id, userId) =>
     Swal.fire({
       focusDeny: true,
       icon: "question",
       title: "Are you sure?",
-      text,
+      text: "You are about to mark this enrollee as paid.",
       footer: "This action is irreversible.",
       confirmButtonText: `<span class="text-dark">Cancel</span>`,
       confirmButtonColor: "#fff",
-
       showDenyButton: true,
       denyButtonText: `Proceed`,
       denyButtonColor: "#3B71CA",
@@ -79,7 +133,8 @@ export default function Enrollees({ status = "pending" }) {
           UPDATE({
             token,
             data: {
-              enrollment: { _id, status },
+              user: { _id: userId },
+              enrollment: { _id, status: "paid", user: userId },
               isViewing: true,
             },
           })
@@ -104,7 +159,7 @@ export default function Enrollees({ status = "pending" }) {
         cascade
         className="gradient-card-header blue-gradient py-2 mx-4 d-flex justify-content-between align-items-center"
       >
-        <span className="ml-3">Employee List</span>
+        <span className="ml-3">Enrollee List</span>
 
         <form
           //   onSubmit={handleSearch}
@@ -115,7 +170,7 @@ export default function Enrollees({ status = "pending" }) {
             <input
               className="form-control w-80 placeholder-white text-white"
               type="text"
-              placeholder="Fullname Search..."
+              placeholder="Keyword Search..."
               name="searchKey"
               required
             />
@@ -155,7 +210,8 @@ export default function Enrollees({ status = "pending" }) {
               </tr>
             )}
             {students?.map((student) => {
-              const { user, department, gradeLvl, course, _id } = student;
+              const { user, department, gradeLvl, course, _id } = student,
+                gradeTxt = formatGradeLvl(department, gradeLvl, true);
 
               const handleActionBtn = () => {
                 if (status === "validated")
@@ -165,36 +221,59 @@ export default function Enrollees({ status = "pending" }) {
                       color="primary"
                       size="sm"
                       rounded
-                      onClick={() =>
-                        handleDirectApproval(
-                          _id,
-                          "paid",
-                          "You are about to mark this enrollee as paid."
-                        )
-                      }
+                      onClick={() => handlePayment(_id, user?._id)}
                     >
                       <MDBIcon icon="receipt" />
                     </MDBBtn>
                   );
 
+                if (status === "pending")
+                  return (
+                    <MDBBtn
+                      title="View Informations"
+                      color="info"
+                      size="sm"
+                      rounded
+                      onClick={() => setSelected(student)}
+                    >
+                      <MDBIcon icon="eye" />
+                    </MDBBtn>
+                  );
+
                 return (
                   <MDBBtn
-                    title="View Informations"
-                    color="info"
+                    title="Reject Enrollee"
+                    color="danger"
                     size="sm"
                     rounded
-                    onClick={() => setSelected(student)}
+                    onClick={() => handleReject(_id)}
                   >
-                    <MDBIcon icon="eye" />
+                    <MDBIcon icon="user-times" />
                   </MDBBtn>
                 );
               };
 
               return (
-                <tr key={_id}>
+                <tr
+                  key={_id}
+                  draggable={status === "paid"}
+                  onDragStart={(e) => {
+                    e.dataTransfer.setData(
+                      "text/plain",
+                      JSON.stringify({
+                        enrollmentId: _id,
+                        fullName: fullName(user?.fullName),
+                      })
+                    );
+                    setFilter({
+                      course: course._id,
+                      gradeLvl,
+                    });
+                  }}
+                >
                   <td>{user?.lrn}</td>
                   <td>{fullName(user?.fullName)}</td>
-                  <td>{formatGradeLvl(department, gradeLvl, true)}</td>
+                  <td>{gradeTxt}</td>
                   <td>{Courses.displayName(course?.pk)}</td>
                   <td className="py-2 text-center">{handleActionBtn()}</td>
                 </tr>

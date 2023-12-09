@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { MDBBtn, MDBCol, MDBInput, MDBRow } from "mdbreact";
+import { MDBBtn, MDBInput, MDBRow } from "mdbreact";
 import RequirementUpload from "./requirementUpload";
 import CustomSelect from "../../../../components/customSelect";
 import { Courses, Departments } from "../../../../services/fakeDb";
@@ -139,33 +139,30 @@ export default function Learner({
       )}
 
       <hr className="bg-dark" />
-      <label>Upload Requirements</label>
+      <label>Upload{isPublished && "ed"} Images</label>
       <MDBRow>
-        <MDBCol md="3" className="my-2">
-          <RequirementUpload
-            label="1x1 Photo"
-            id="1*1-Photo"
-            isPublished={isPublished || viewing}
-            email={email}
-          />
-        </MDBCol>
-        <MDBCol md="3" className="my-2">
-          <RequirementUpload
-            label="Signature"
-            id="signature"
-            isPublished={isPublished || viewing}
-            email={email}
-          />
-        </MDBCol>
+        <RequirementUpload
+          label="1x1 Photo"
+          id="1*1-Photo"
+          isPublished={isPublished || viewing}
+          email={email}
+        />
+
+        <RequirementUpload
+          label="Signature"
+          id="signature"
+          isPublished={isPublished || viewing}
+          email={email}
+        />
+
         {requirements?.map(({ _id, title }) => (
-          <MDBCol md="3" className="my-2" key={_id}>
-            <RequirementUpload
-              label={title}
-              id={_id}
-              isPublished={isPublished || viewing}
-              email={email}
-            />
-          </MDBCol>
+          <RequirementUpload
+            key={_id}
+            label={title}
+            id={_id}
+            isPublished={isPublished || viewing}
+            email={email}
+          />
         ))}
       </MDBRow>
       <MDBBtn

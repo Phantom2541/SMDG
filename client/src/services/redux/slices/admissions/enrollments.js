@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { axioKit } from "../../../utilities";
+import { axioKit, socket } from "../../../utilities";
 
 const name = "admissions/enrollments";
 
@@ -73,6 +73,9 @@ export const reduxSlice = createSlice({
       state.isSuccess = false;
       state.message = "";
     },
+    ADDENROLLMENT: (state, data) => {
+      state.collections.unshift(data.payload);
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -98,12 +101,12 @@ export const reduxSlice = createSlice({
         state.message = "";
       })
       .addCase(SAVE.fulfilled, (state, action) => {
-        const { success, payload } = action.payload;
-        //   { enrollment, user } = payload;
+        const { success, payload } = action.payload,
+          { enrollment, user } = payload;
 
-        // if (enrollment?.isPublished) {
-        //   socket.emit("send_employment", { ...employment, user });
-        // }
+        if (enrollment?.isPublished) {
+          socket.emit("send_enrollment", { ...enrollment, user });
+        }
 
         state.message = success;
         state.response = payload;
@@ -133,11 +136,13 @@ export const reduxSlice = createSlice({
 
             case "validated":
               state.message = "Enrollment validation is complete.";
+              socket.emit("send_enrollment", { ...enrollment, user });
               break;
 
             case "paid":
               state.message =
                 "Payment for the enrollment has been processed and confirmed.";
+              socket.emit("send_enrollment", { ...enrollment, user });
               break;
 
             default:
@@ -151,23 +156,12 @@ export const reduxSlice = createSlice({
 
           state.collections.splice(index, 1);
         } else {
+          if (enrollment?.isPublished) {
+            socket.emit("send_enrollment", { ...enrollment, user });
+          }
           state.response = payload;
           state.message = success;
         }
-
-        // if (user) {
-
-        //   if (employment?.isPublished) {
-        //     socket.emit("send_employment", { ...employment, user });
-        //   }
-        // } else {
-        //   const index = state.collections.findIndex(
-        //     (c) => c._id === employment._id
-        //   );
-
-        //   state.collections.splice(index, 1);
-        //   state.message = "Employment Approved Successfully";
-        // }
 
         state.isSuccess = true;
         state.isLoading = false;
@@ -180,6 +174,6 @@ export const reduxSlice = createSlice({
   },
 });
 
-export const { RESET } = reduxSlice.actions;
+export const { RESET, ADDENROLLMENT } = reduxSlice.actions;
 
 export default reduxSlice.reducer;

@@ -1,6 +1,7 @@
 import React from "react";
 import { MDBIcon } from "mdbreact";
 import "./style/mission.css";
+import { MDBCard, MDBCardBody, MDBCol, MDBIcon, MDBRow } from "mdbreact";
 
 export default function Mission() {
   return (

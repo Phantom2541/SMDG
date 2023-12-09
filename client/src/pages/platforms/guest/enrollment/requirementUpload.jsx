@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { MDBCard, MDBCardBody, MDBIcon } from "mdbreact";
+import { MDBCard, MDBCardBody, MDBCol, MDBIcon } from "mdbreact";
 import {
   ENDPOINT,
   axioKit,
@@ -66,49 +66,54 @@ export default function RequirementUpload({
   };
 
   return (
-    <MDBCard
-      className={`h-100 text-center ${preview && "cursor-pointer"}`}
-      onClick={() => {
-        if (!preview) return;
-        window.open(preview, "_blank");
-      }}
-    >
-      <MDBCardBody className="py-1">
-        {preview ? (
-          <img
-            className="mb-1"
-            height="100px"
-            width="auto"
-            src={preview}
-            alt={preview}
-          />
-        ) : (
-          <div className="h-100 d-flex align-items-center">
-            <span className="mx-auto">{label}</span>
-          </div>
-        )}
-        <input
-          className="d-none"
-          type="file"
-          id={id}
-          onChange={handleChange}
-          accept="image/jpeg"
-        />
-      </MDBCardBody>
-      <div className={`card-footer p-${preview ? "2" : "0"}`}>
-        {preview
-          ? label
-          : !isPublished && (
-              <label
-                title="Upload Picture"
-                htmlFor={id}
-                className="bg-primary text-white mb-0 w-100 py-2 cursor-pointer"
-              >
+    <MDBCol md="3" className="my-2">
+      <input
+        className="d-none"
+        type="file"
+        id={id}
+        onChange={handleChange}
+        accept="image/jpeg"
+      />
+      <MDBCard className="h-100 text-center">
+        <MDBCardBody className="py-1">
+          {preview ? (
+            <img
+              className="mb-1"
+              height="100px"
+              width="auto"
+              src={preview}
+              alt={preview}
+            />
+          ) : (
+            <div className="h-100 d-flex align-items-center">
+              <i className="mx-auto" style={{ color: "grey" }}>
+                {label}
+              </i>
+            </div>
+          )}
+        </MDBCardBody>
+        <div className="card-footer p-0">
+          <label
+            title="Upload Picture"
+            htmlFor={isPublished ? "" : id}
+            onClick={() => {
+              if (!isPublished || !preview) return;
+
+              window.open(preview, "_blank");
+            }}
+            className="bg-primary text-white mb-0 w-100 py-2 cursor-pointer"
+          >
+            {isPublished ? (
+              label
+            ) : (
+              <>
                 Upload File
                 <MDBIcon className="ml-2" icon="upload" />
-              </label>
+              </>
             )}
-      </div>
-    </MDBCard>
+          </label>
+        </div>
+      </MDBCard>
+    </MDBCol>
   );
 }

@@ -11,7 +11,7 @@ const connectToDB = () =>
       console.log(green("[MongoDB] connection established successfully."));
       return true;
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(red("[MongoDB] connection failed."));
       throw new Error(err);
     });

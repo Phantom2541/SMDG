@@ -2,18 +2,13 @@ import React, { useState, useEffect } from "react";
 import SideNavigation from "../../components/sidebar";
 import TopNavigation from "../../components/topbar";
 import Routes from "../Routes";
-import Login from "../home/login";
-import { useDispatch, useSelector } from "react-redux";
 import { socket } from "../../services/utilities";
 
 const breakWidth = 1400;
 export default function Platforms() {
-  const [show, setShow] = useState(false),
-    [windowWidth, setWindowWidth] = useState(window.innerWidth),
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth),
     [sideNavToggled, setSideNavToggled] = useState(false),
-    [dynamicLeftPadding, setDynamicLeftPadding] = useState("0"),
-    { email, auth } = useSelector(({ auth }) => auth),
-    dispatch = useDispatch();
+    [dynamicLeftPadding, setDynamicLeftPadding] = useState("0");
 
   const handleResize = () => setWindowWidth(window.innerWidth);
 
@@ -23,14 +18,6 @@ export default function Platforms() {
 
     return () => socket.off("me");
   }, []);
-
-  useEffect(() => {
-    if (email && !auth._id) {
-      setShow(true);
-    } else {
-      setShow(false);
-    }
-  }, [email, auth, dispatch]);
 
   useEffect(() => {
     if (windowWidth > breakWidth) {
@@ -71,7 +58,6 @@ export default function Platforms() {
         <main
           style={{ paddingLeft: dynamicLeftPadding, margin: "8rem 6% 6rem" }}
         >
-          <Login show={show} />
           <Routes />
         </main>
       </div>
