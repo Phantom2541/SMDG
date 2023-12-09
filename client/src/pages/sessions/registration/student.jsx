@@ -32,7 +32,7 @@ export default function Student({ handleChange, form }) {
           </MDBCol>
         </MDBRow>
         <MDBRow>
-          <MDBCol>
+          <MDBCol className="px-1">
             <MDBInput
               label="Are you part of any Indigenous or Cultural Community? If yes, please specify."
               type="text"
@@ -40,7 +40,7 @@ export default function Student({ handleChange, form }) {
               onChange={(e) => handleChange("indigenousPeople", e.target.value)}
             />
           </MDBCol>
-          <MDBCol>
+          <MDBCol className="px-1">
             <MDBInput
               label="Are you a beneficiary of 4Ps? If Yes, write the 4Ps Household ID"
               type="text"
@@ -94,7 +94,7 @@ export default function Student({ handleChange, form }) {
           </MDBCol>
           <MDBCol className="px-1">
             <MDBInput
-              label="suffix"
+              label="Suffix"
               type="text"
               outline
               onChange={(e) =>
@@ -165,7 +165,7 @@ export default function Student({ handleChange, form }) {
           </MDBCol>
           <MDBCol className="px-1">
             <MDBInput
-              label="suffix"
+              label="Suffix"
               type="text"
               outline
               onChange={(e) =>

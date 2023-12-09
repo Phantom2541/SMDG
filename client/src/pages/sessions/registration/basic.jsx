@@ -31,9 +31,9 @@ export default function Basic({ handleChange, form }) {
           1. <b>Name</b> - <i>Enter your name correctly</i>
         </label>
         <MDBRow>
-          <MDBCol className="px-1">
+          <MDBCol className="px-1" md="4">
             <MDBInput
-              label="First name (Pangalan)"
+              label="First name"
               type="text"
               outline
               onChange={(e) => handleChange("fname", e.target.value)}
@@ -41,15 +41,15 @@ export default function Basic({ handleChange, form }) {
           </MDBCol>
           <MDBCol className="px-1" md="3">
             <MDBInput
-              label="Middle name (Gitnang Pangalan)"
+              label="Middle name"
               type="text"
               outline
               onChange={(e) => handleChange("mname", e.target.value)}
             />
           </MDBCol>
-          <MDBCol className="px-1">
+          <MDBCol className="px-1" md="3">
             <MDBInput
-              label="Last name (Apelyido)"
+              label="Last name"
               type="text"
               outline
               onChange={(e) => handleChange("lname", e.target.value)}
