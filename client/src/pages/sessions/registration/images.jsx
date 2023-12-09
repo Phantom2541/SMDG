@@ -6,15 +6,27 @@ import {
   MDBIcon,
   MDBRow,
 } from "mdbreact";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 const FileInput = ({ label }) => {
-  const [preview, setPreview] = useState(null);
+  const [preview, setPreview] = useState(null),
+    canvasRef = useRef(null);
 
   const handleChange = (e) => {};
 
-  const handleCamera = () => {
-    console.log("camera");
+  const handleCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+
+      const imageCapture = new ImageCapture(stream.getVideoTracks()[0]);
+
+      const photoBlob = await imageCapture.takePhoto();
+      const imageUrl = URL.createObjectURL(photoBlob);
+
+      setPreview(imageUrl);
+    } catch (error) {
+      console.error("Error accessing camera:", error);
+    }
   };
 
   return (
@@ -31,6 +43,7 @@ const FileInput = ({ label }) => {
       <MDBRow>
         <MDBCol md="2">
           <MDBCard className="z-depth-0">
+            <canvas ref={canvasRef} className="d-none" />
             <img src={preview} height="150" />
             <label
               className="bg-primary text-white text-center mb-0 w-100 py-2 cursor-pointer my-2"
