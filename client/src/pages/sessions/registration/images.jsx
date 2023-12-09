@@ -44,7 +44,7 @@ const FileInput = ({ label }) => {
         <MDBCol md="2">
           <MDBCard className="z-depth-0">
             <canvas ref={canvasRef} className="d-none" />
-            <img src={preview} height="150" />
+            <img src={preview} height="150" width="auto" />
             <label
               className="bg-primary text-white text-center mb-0 w-100 py-2 cursor-pointer my-2"
               htmlFor="uploadimg"
