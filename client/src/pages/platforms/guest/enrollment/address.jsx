@@ -54,7 +54,7 @@ export default function Address({
           </div>
         </div>
         <div className="d-flex">
-          <div className="">
+          <div>
             <label>
               Is your permanent address is same with your current address?
             </label>

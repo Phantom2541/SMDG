@@ -55,9 +55,7 @@ export default function Home() {
                   </MDBNavLink>
                 </MDBNavItem>
                 <MDBNavItem>
-                  <MDBNavLink onClick={toggleLogin} to="#">
-                    Register
-                  </MDBNavLink>
+                  <MDBNavLink to="/register">Register</MDBNavLink>
                 </MDBNavItem>
                 <MDBNavItem>
                   <MDBNavLink onClick={toggleLogin} to="#">
