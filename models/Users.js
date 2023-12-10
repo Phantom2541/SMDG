@@ -86,7 +86,14 @@ const userSchema = new mongoose.Schema(
     civilStatus: {
       type: String,
       enum: {
-        values: ["single", "married", "live-in", "widowed"],
+        values: [
+          "single",
+          "married",
+          "divorced",
+          "widowed",
+          "separated",
+          "annulled",
+        ],
         message: "Please choose a valid type from the predefined options.",
       },
     },

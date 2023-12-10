@@ -1,9 +1,12 @@
 import React from "react";
 import { MDBBtn, MDBCard, MDBCardBody, MDBCol, MDBIcon } from "mdbreact";
 import { useHistory } from "react-router";
+import { useDispatch } from "react-redux";
+import { RESET } from "../../../services/redux/slices/users";
 
 export default function Success() {
-  const history = useHistory();
+  const history = useHistory(),
+    dispatch = useDispatch();
 
   return (
     <div style={{ height: "100vh" }} className="d-flex align-items-center">
@@ -19,7 +22,10 @@ export default function Success() {
               Please proceed to the home page to login.
             </p>
             <MDBBtn
-              onClick={() => history.push("/")}
+              onClick={() => {
+                dispatch(RESET());
+                history.push("/");
+              }}
               color="success"
               className="mt-3"
               outline

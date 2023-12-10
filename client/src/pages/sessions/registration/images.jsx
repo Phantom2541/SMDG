@@ -1,8 +1,10 @@
-import { MDBCard, MDBCol, MDBContainer, MDBIcon, MDBRow } from "mdbreact";
 import React, { useState } from "react";
+import { MDBCard, MDBCol, MDBContainer, MDBIcon, MDBRow } from "mdbreact";
+import UserImg from "../../../assets/registration/1x1.jpg";
+import Signature from "../../../assets/registration/eSignature.jpg";
 
-const FileInput = ({ label, id, num, description }) => {
-  const [preview, setPreview] = useState(null);
+const FileInput = ({ label, id, description, errorImg, aspectRatio }) => {
+  const [preview, setPreview] = useState(errorImg);
   // canvasRef = useRef(null);
 
   const handleChange = (e) => {
@@ -29,7 +31,7 @@ const FileInput = ({ label, id, num, description }) => {
   return (
     <>
       <label className="mt-4">
-        {num}. <b>{label}</b>
+        <b>{label}</b>
       </label>
       <input
         type="file"
@@ -44,10 +46,14 @@ const FileInput = ({ label, id, num, description }) => {
             {/* <canvas ref={canvasRef} className="d-none" /> */}
             <img
               src={preview}
-              height="150"
-              width="auto"
               alt={id}
               className="border"
+              style={{
+                aspectRatio,
+                width: "auto",
+                height: "150px",
+                objectFit: "contain",
+              }}
             />
             <label
               className="bg-primary text-white text-center mb-0 w-100 py-2 cursor-pointer my-2"
@@ -77,13 +83,15 @@ export default function Images() {
         <FileInput
           label="1 x 1 Photo"
           id="1x1"
-          num="8"
+          aspectRatio="1/1"
+          errorImg={UserImg}
           description="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nihil quo, corporis nesciunt velit consequuntur optio eum harum dolore cum illum aliquam quod fugiat consectetur fuga incidunt, reiciendis saepe soluta facilis!"
         />
         <FileInput
           label="Photo of E-Signature"
           id="eSignature"
-          num="9"
+          aspectRatio="16/9"
+          errorImg={Signature}
           description="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nihil quo, corporis nesciunt velit consequuntur optio eum harum dolore cum illum aliquam quod fugiat consectetur fuga incidunt, reiciendis saepe soluta facilis!"
         />
       </MDBContainer>

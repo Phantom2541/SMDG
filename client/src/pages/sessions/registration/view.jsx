@@ -6,18 +6,33 @@ import {
   MDBContainer,
   MDBRow,
 } from "mdbreact";
-import React from "react";
-import {
-  formatMobile,
-  fullAddress,
-  fullName,
-  getAge,
-} from "../../../services/utilities";
-import { useDispatch } from "react-redux";
+import React, { useEffect } from "react";
+import { fullName } from "../../../services/utilities";
+import { useDispatch, useSelector } from "react-redux";
 import { SAVE } from "../../../services/redux/slices/users";
+import Basic from "./basic";
+import UserImg from "../../../assets/registration/1x1.jpg";
+import Signature from "../../../assets/registration/eSignature.jpg";
+import Student from "./student";
+import Employee from "./employee";
+import Swal from "sweetalert2";
 
 export default function View({ goBack, user = {} }) {
-  const dispatch = useDispatch();
+  const { isSuccess, message } = useSelector(({ users }) => users),
+    dispatch = useDispatch();
+
+  useEffect(() => {
+    if (message) {
+      Swal.fire({
+        title: "Oops.",
+        icon: "warning",
+        text: message,
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+      });
+    }
+  }, [isSuccess, message]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -29,24 +44,14 @@ export default function View({ goBack, user = {} }) {
     dispatch(SAVE(user));
   };
 
-  const {
-      fullName: fullname,
-      address,
-      role,
-      pob,
-      dob,
-      isMale,
-      mobile,
-      disability,
-      motherTounge,
-      email,
-      lrn,
-      psa,
-      indigenousPeople,
-      "4ps": fourPs,
-      guardians = {},
-    } = user,
-    { mother = {}, father = {} } = guardians;
+  const Roles = {
+    student: Student,
+    employee: Employee,
+  };
+
+  const { fullName: fullname, role } = user;
+
+  const OtherInformation = Roles[role];
 
   return (
     <MDBCol md="8" className="offset-md-2 py-5">
@@ -55,127 +60,37 @@ export default function View({ goBack, user = {} }) {
           <h1 className="font-weight-bold mb-0">CHECK YOUR ENTRIES</h1>
           <h3>Scroll down below and check your entries before you submit.</h3>
         </MDBCardHeader>
-        <MDBContainer className="px-5 mt-4" fluid>
+        <MDBContainer className="px-5 my-4" fluid>
           <MDBRow>
-            <MDBCol md="2" className="text-center">
+            <MDBCol md="2" className="d-flex align-items-center">
               <img
-                src="https://i.pinimg.com/originals/f1/0f/f7/f10ff70a7155e5ab666bcdd1b45b726d.jpg"
-                height="100"
-                width="100"
+                src={UserImg}
+                className="mx-auto border"
+                style={{ width: "100px", aspectRatio: "1/1" }}
                 alt="User"
+                title="1x1 Photo"
               />
             </MDBCol>
             <MDBCol>
-              <h4 className="font-weight-bold">{fullName(fullname)}</h4>
-              <h5>{role.toUpperCase()}</h5>
+              <h4 className="font-weight-bold mb-0">{fullName(fullname)}</h4>
+              <img
+                style={{
+                  width: "auto",
+                  height: "100px",
+                  aspectRatio: "16/9",
+                }}
+                className="border"
+                src={Signature}
+                height="75"
+                width="auto"
+                alt="E-Signature"
+                title="E-Signature"
+              />
             </MDBCol>
           </MDBRow>
         </MDBContainer>
-        <div className="blue darken-3 px-5 py-2 mt-4 text-white font-weight-bold h5-responsive">
-          I. IDENTIFYING INFORMATION
-        </div>
-        <MDBContainer className="px-5 mt-4" fluid>
-          {pob && (
-            <h5>
-              Place of Birth: <b>{pob}</b>
-            </h5>
-          )}
-          <h5>
-            Date of Birth:{" "}
-            <b>
-              {new Date(dob).toDateString()}, {getAge(dob)}
-            </b>
-          </h5>
-          <h5>
-            Gender: <b>{isMale ? "MALE" : "FEMALE"}</b>
-          </h5>
-          {disability && (
-            <h5>
-              Disability: <b>{disability}</b>
-            </h5>
-          )}
-          {motherTounge && (
-            <h5>
-              Mother Tounge: <b>{motherTounge}</b>
-            </h5>
-          )}
-          <h5 className="mb-0">
-            Mobile Number: <b>{formatMobile(mobile)}</b>
-          </h5>
-        </MDBContainer>
-        <div className="blue darken-3 px-5 py-2 mt-4 text-white font-weight-bold h5-responsive">
-          II. ADDRESS INFORMATION
-        </div>
-        <MDBContainer className="px-5 mt-4" fluid>
-          <h5>
-            Current Address: <b>{fullAddress(address.current)}</b>
-          </h5>
-          <h5 className={`${address.isSame && "mb-0"}`}>
-            Same as Permanent Address: <b>{address.isSame ? "YES" : "NO"}</b>
-          </h5>
-          {!address.isSame && (
-            <h5 className="mb-0">
-              Permanent Address: <b>{fullAddress(address.permanent)}</b>
-            </h5>
-          )}
-        </MDBContainer>
-        <div className="blue darken-3 px-5 py-2 mt-4 text-white font-weight-bold h5-responsive">
-          III. ACCOUNT INFORMATION
-        </div>
-        <MDBContainer className="px-5 mt-4" fluid>
-          <h5 className="mb-0">
-            Email Address: <b>{email}</b>
-          </h5>
-        </MDBContainer>
-        <div className="blue darken-3 px-5 py-2 mt-4 text-white font-weight-bold h5-responsive">
-          IV. STUDENT ADDITIONAL INFORMATION
-        </div>
-        <MDBContainer className="px-5 mt-4" fluid>
-          <h5>
-            LRN: <b>{lrn}</b>
-          </h5>
-          {psa && (
-            <h5>
-              PSA: <b>{psa}</b>
-            </h5>
-          )}
-          {indigenousPeople && (
-            <h5>
-              Indigenous or Cultural Community: <b>{indigenousPeople}</b>
-            </h5>
-          )}
-          {fourPs && (
-            <h5>
-              4ps: <b>{fourPs}</b>
-            </h5>
-          )}
-          {mother.fname && (
-            <>
-              <h5 className="font-weight-bold">Mother's Maiden Information</h5>
-              <h5>
-                Fullname: <b>{fullName(mother)}</b>
-              </h5>
-              {mother?.mobile && (
-                <h5>
-                  Mobile Number: <b>{formatMobile(mother?.mobile)}</b>
-                </h5>
-              )}
-            </>
-          )}
-          {father.fname && (
-            <>
-              <h5 className="font-weight-bold">Father's Information</h5>
-              <h5>
-                Fullname: <b>{fullName(father)}</b>
-              </h5>
-              {father?.mobile && (
-                <h5>
-                  Mobile Number: <b>{formatMobile(father?.mobile)}</b>
-                </h5>
-              )}
-            </>
-          )}
-        </MDBContainer>
+        <Basic form={user} view />
+        <OtherInformation form={user} view />
         <div className="blue lighten-3 px-5 py-5 mt-4 font-weight-bold">
           <h5 className="text-danger mb-0 font-weight-bold">WARNING:</h5>
           <p>

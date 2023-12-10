@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 export default function Learner({ setForm, form }) {
   const { collections: courses } = useSelector(({ courses }) => courses);
 
-  const { department, course, gradeLvl } = form;
+  const { department, gradeLvl } = form;
 
   const depColSize = department === "grade" ? "6" : "4";
 

@@ -49,14 +49,16 @@ exports.update = (req, res) => {
 exports.save = ({ body }, res) =>
   Entity.create(body)
     .then(async (payload) => {
-      const { role } = body;
+      const { role, position } = body;
 
-      const EntityMap = {
-        student: Enrollments,
-        employee: Employments,
-      };
+      if (role) {
+        const EntityMap = {
+          student: Enrollments,
+          employee: Employments,
+        };
 
-      await EntityMap[role].create({ user: payload._id });
+        await EntityMap[role].create({ user: payload._id, position });
+      }
 
       res.status(201).json({
         success: "Registration Success, Proceed to Login",

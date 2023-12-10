@@ -1,12 +1,5 @@
 import Dashboard from "./dashboard";
-import Announcements from "../principal/socials/announcements";
-import Violations from "../principal/socials/violations";
-import Tree from "../principal/orgCharts";
-import Subjects from "../principal/resources/subjects";
-import Enrollments from "../principal/admissions/enrollments";
-import Requirements from "../principal/admissions/requirements";
-import Rooms from "../principal/resources/rooms";
-import Sections from "../principal/resources/sections";
+import Employees from "./accounts/employees";
 
 const access = [
   {
@@ -16,67 +9,23 @@ const access = [
     component: Dashboard,
   },
   {
-    name: "Users",
+    name: "Accounts",
     icon: "users",
-    path: "/users",
+    path: "/accounts",
     children: [
       {
-        name: "Moderators",
-        path: "/moderators",
+        name: "Employees",
+        path: "/employees",
+        component: Employees,
+        props: {
+          query: { access: JSON.stringify({ $nin: ["ADMINISTRATOR"] }) },
+        },
       },
       {
-        name: "Members",
-        path: "/members",
+        name: "Students",
+        path: "/students",
       },
     ],
-  },
-  {
-    name: "Announcements",
-    icon: "bullhorn",
-    path: "/announcements",
-    component: Announcements,
-  },
-  {
-    name: "Violations",
-    icon: "skull-crossbones",
-    path: "/violations",
-    component: Violations,
-  },
-  {
-    name: "Org Chart",
-    icon: "tree",
-    path: "/orgChart",
-    component: Tree,
-  },
-  {
-    name: "Subjects",
-    icon: "book",
-    path: "/subjects",
-    component: Subjects,
-  },
-  {
-    name: "Enrollment List",
-    icon: "list",
-    path: "/enrollmentList",
-    component: Enrollments,
-  },
-  {
-    name: "Requirements",
-    icon: "list",
-    path: "/requirements",
-    component: Requirements,
-  },
-  {
-    name: "Rooms",
-    icon: "list",
-    path: "/rooms",
-    component: Rooms,
-  },
-  {
-    name: "Sections",
-    icon: "list",
-    path: "/section",
-    component: Sections,
   },
 ];
 

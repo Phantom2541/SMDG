@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  MDBCard,
-  MDBCardBody,
-  MDBCol,
-  MDBRow,
-  MDBBtn,
-  MDBIcon,
-} from "mdbreact";
+import { MDBCard, MDBCardBody, MDBCol, MDBBtn, MDBIcon } from "mdbreact";
 import Student from "./student";
 import View from "./view";
 import Basic from "./basic";
@@ -18,65 +11,68 @@ import Swal from "sweetalert2";
 import Success from "./success";
 import { useHistory } from "react-router";
 import { useSelector } from "react-redux";
+import Employee from "./employee";
 
 const _form = {
-  fullName: {
-    fname: "",
-    lname: "",
-    mname: "",
-    suffix: "",
+    fullName: {
+      fname: "",
+      lname: "",
+      mname: "",
+      suffix: "",
+    },
+    email: "",
+    password: "",
+    cpassword: "",
+    pob: undefined,
+    dob: new Date(),
+    isMale: false,
+    mobile: "",
+    civilStatus: undefined,
+    position: undefined,
+    address: {
+      isSame: true,
+      current: {
+        region: "REGION III (CENTRAL LUZON)",
+        province: "NUEVA ECIJA",
+        city: "CABANATUAN CITY",
+        barangay: undefined,
+        street: "",
+        zip: "",
+      },
+      permanent: {
+        region: "REGION III (CENTRAL LUZON)",
+        province: "NUEVA ECIJA",
+        city: "CABANATUAN CITY",
+        barangay: undefined,
+        street: "",
+        zip: "",
+      },
+    },
+    disability: undefined,
+    role: "student",
+    lrn: undefined,
+    psa: undefined,
+    motherTongue: undefined,
+    indigenousPeople: undefined,
+    "4ps": undefined,
+    guardians: {
+      mother: {
+        fname: undefined,
+        lname: undefined,
+        mname: undefined,
+        suffix: undefined,
+        mobile: undefined,
+      },
+      father: {
+        fname: undefined,
+        lname: undefined,
+        mname: undefined,
+        suffix: undefined,
+        mobile: undefined,
+      },
+    },
   },
-  email: "",
-  password: "",
-  cpassword: "",
-  pob: undefined,
-  dob: new Date(),
-  isMale: false,
-  mobile: "",
-  civilStatus: undefined,
-  address: {
-    isSame: true,
-    current: {
-      region: "REGION III (CENTRAL LUZON)",
-      province: "NUEVA ECIJA",
-      city: "CABANATUAN CITY",
-      barangay: undefined,
-      street: "",
-      zip: "",
-    },
-    permanent: {
-      region: "REGION III (CENTRAL LUZON)",
-      province: "NUEVA ECIJA",
-      city: "CABANATUAN CITY",
-      barangay: undefined,
-      street: "",
-      zip: "",
-    },
-  },
-  disability: undefined,
-  role: "student",
-  lrn: undefined,
-  psa: undefined,
-  motherTounge: undefined,
-  indigenousPeople: undefined,
-  "4ps": undefined,
-  guardians: {
-    mother: {
-      fname: undefined,
-      lname: undefined,
-      mname: undefined,
-      suffix: undefined,
-      mobile: undefined,
-    },
-    father: {
-      fname: undefined,
-      lname: undefined,
-      mname: undefined,
-      suffix: undefined,
-      mobile: undefined,
-    },
-  },
-};
+  { name, logo, address: sAddress, id } = School;
 
 export default function Registration() {
   const [form, setForm] = useState(_form),
@@ -91,6 +87,7 @@ export default function Registration() {
       icon: "error",
       showConfirmButton: false,
       timer: 5000,
+      timerProgressBar: true,
     });
 
   const handleSubmit = (e) => {
@@ -111,11 +108,17 @@ export default function Registration() {
       return handleError("Invalid Age", "Minimum age of 18 year old");
 
     setView(true);
+    console.log(form);
   };
 
   const handleChange = (key, value) => setForm({ ...form, [key]: value });
 
-  const { name, logo, address: sAddress, id } = School;
+  const Roles = {
+    student: Student,
+    employee: Employee,
+  };
+
+  const OtherInformation = Roles[form.role];
 
   if (isSuccess) return <Success />;
 
@@ -169,27 +172,7 @@ export default function Registration() {
             </div>
             <form onSubmit={handleSubmit}>
               <Basic handleChange={handleChange} form={form} />
-              <MDBRow>
-                {form.role === "employee" && (
-                  <MDBCol>
-                    <label className="mb-0">Civil Status</label>
-                    <select
-                      className="form-control"
-                      onChange={(e) =>
-                        handleChange("civilStatus", e.target.value)
-                      }
-                    >
-                      <option value="single">Single</option>
-                      <option value="live-in">Live in</option>
-                      <option value="married">Married</option>
-                      <option value="widowed">Widowed</option>
-                    </select>
-                  </MDBCol>
-                )}
-              </MDBRow>
-              {form.role === "student" && (
-                <Student handleChange={handleChange} form={form} />
-              )}
+              <OtherInformation handleChange={handleChange} form={form} />
               <Images />
               <Agreement School={School} />
               <MDBBtn color="primary" type="submit" className="mt-3 mx-5">

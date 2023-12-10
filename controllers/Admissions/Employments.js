@@ -1,6 +1,7 @@
 const Entity = require("../../models/Admissions/Employments"),
   Users = require("../../models/Users"),
-  Sections = require("../../models/Resources/Sections");
+  Sections = require("../../models/Resources/Sections"),
+  handleQuery = require("../../config/query");
 
 exports.save = async (req, res) => {
   const { user, employment } = req.body;
@@ -223,7 +224,7 @@ exports.faculty = (req, res) => {
 };
 
 exports.employees = (req, res) =>
-  Entity.find({ status: "approved", access: { $nin: ["VICE", "PRINCIPAL"] } })
+  Entity.find(handleQuery(req.query))
     .populate({
       path: "user",
       select: "fullName",
