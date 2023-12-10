@@ -6,33 +6,36 @@ const Entity = require("../models/Users"),
   fs = require("fs");
 
 const fetchAccess = async (user) => {
-  let access = "GUEST",
-    credentials = undefined;
+  let access = undefined,
+    credentials = await Employments.findOne({ user }).select("-updatedAt -__v");
 
-  const [employment, enrollment] = await Promise.all([
-    Employments.findOne({ user }).select("-updatedAt -__v"),
-    Enrollments.findOne({ user })
+  if (credentials) {
+    access = credentials.access;
+  } else {
+    credentials = await Enrollments.findOne({ user })
       .select("-updatedAt -__v")
       .populate({
         path: "course",
         select: "pk",
       })
-      .populate("section"),
-  ]);
-
-  if (employment) {
-    if (employment.status === "approved") access = employment.access;
-    let section = undefined;
-    if (employment.access === "TEACHER")
-      section = await Sections.findOne({ adviser: employment._id }).populate({
-        path: "course",
-        select: "pk",
-      });
-    credentials = { ...employment._doc, section };
-  } else if (enrollment) {
-    if (enrollment.status === "approved") access = "STUDENT";
-    credentials = enrollment;
+      .populate("section");
+    access = "STUDENT";
   }
+
+  // const [employment, enrollment] = await Promise.all([, ,]);
+
+  // if (employment) {
+  //   if (employment.status === "approved") access = employment.access;
+  //   let section = undefined;
+  //   if (employment.access === "TEACHER")
+  //     section = await Sections.findOne({ adviser: employment._id }).populate({
+  //       path: "course",
+  //       select: "pk",
+  //     });
+  //   credentials = { ...employment._doc, section };
+  // } else if (enrollment) {
+  //   credentials = enrollment;
+  // }
 
   return { access, credentials };
 };

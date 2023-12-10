@@ -13,9 +13,8 @@ import { LOGIN, RESET } from "../../../services/redux/slices/auth";
 import { PresetImage } from "../../../services/utilities";
 
 export default function Login({ show, toggle = null }) {
-  const { auth, email, isLoading, didLogin, message, image } = useSelector(
-      ({ auth }) => auth
-    ),
+  const { auth, email, isLoading, didLogin, message, image, credentials } =
+      useSelector(({ auth }) => auth),
     [isLocked, setIsLocked] = useState(true),
     history = useHistory(),
     location = useLocation(),
@@ -36,10 +35,16 @@ export default function Login({ show, toggle = null }) {
 
   useEffect(() => {
     if (auth._id && didLogin) {
-      history.push("/dashboard");
+      let basePath = "/dashboard";
+      if (credentials.status === "pending") {
+        basePath = "/enrollment";
+        if (credentials.access) basePath = "/employment";
+      }
+
+      history.push(basePath);
       dispatch(RESET());
     }
-  }, [auth, didLogin, history, location, dispatch]);
+  }, [auth, didLogin, history, location, credentials, dispatch]);
 
   return (
     <MDBModal

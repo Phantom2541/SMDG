@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { MDBCard, MDBCardBody, MDBCol, MDBRow, MDBBtn } from "mdbreact";
+import {
+  MDBCard,
+  MDBCardBody,
+  MDBCol,
+  MDBRow,
+  MDBBtn,
+  MDBIcon,
+} from "mdbreact";
 import Student from "./student";
 import View from "./view";
 import Basic from "./basic";
@@ -9,6 +16,8 @@ import Images from "./images";
 import Agreement from "./agreement";
 import Swal from "sweetalert2";
 import Success from "./success";
+import { useHistory } from "react-router";
+import { useSelector } from "react-redux";
 
 const _form = {
   fullName: {
@@ -69,11 +78,11 @@ const _form = {
   },
 };
 
-const isSuccess = true;
-
 export default function Registration() {
   const [form, setForm] = useState(_form),
-    [view, setView] = useState(false);
+    [view, setView] = useState(false),
+    { isSuccess } = useSelector(({ users }) => users),
+    history = useHistory();
 
   const handleError = (title, text) =>
     Swal.fire({
@@ -110,16 +119,27 @@ export default function Registration() {
 
   if (isSuccess) return <Success />;
 
-  if (view) return <View goBack={() => setView(false)} />;
+  if (view) return <View user={form} goBack={() => setView(false)} />;
 
   return (
     <>
       <MDBCol md="8" className="offset-md-2 py-5">
         <MDBCard>
           <MDBCardBody className="px-0">
-            <div className="text-center">
-              <h1 className="font-weight-bold text-primary mb-0">{name}</h1>
-              <p className="mt-0 font-weight-bold">{fullAddress(sAddress)}</p>
+            <div className="text-center d-flex align-items-center justify-content-between">
+              <MDBBtn
+                onClick={() => history.push("/")}
+                color="transparent"
+                className="z-depth-0"
+              >
+                <MDBIcon icon="arrow-left" className="mr-2" />
+                return
+              </MDBBtn>
+              <div>
+                <h1 className="font-weight-bold text-primary mb-0">{name}</h1>
+                <p className="mt-0 font-weight-bold">{fullAddress(sAddress)}</p>
+              </div>
+              <MDBBtn className="invisible">preset</MDBBtn>
             </div>
             <div
               className="d-flex align-items-center justify-content-between mb-5 bg-primary"
@@ -138,7 +158,14 @@ export default function Registration() {
                 />
               </div>
               <div className="text-white h1">REGISTRATION FORM</div>
-              <div className="text-white invisible">REGISTRATION FORM</div>
+              <div className="invisible">
+                <img
+                  src={logo}
+                  alt={id}
+                  height="150"
+                  className="bg-white rounded-circle"
+                />
+              </div>
             </div>
             <form onSubmit={handleSubmit}>
               <Basic handleChange={handleChange} form={form} />

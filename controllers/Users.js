@@ -1,4 +1,6 @@
 const Entity = require("../models/Users"),
+  Enrollments = require("../models/Admissions/Enrollments"),
+  Employments = require("../models/Admissions/Employments"),
   handleDuplicate = require("../config/duplicate"),
   handleQuery = require("../config/query"),
   bulkWrite = require("../config/bulkWrite");
@@ -46,20 +48,18 @@ exports.update = (req, res) => {
 
 exports.save = ({ body }, res) =>
   Entity.create(body)
-    .then((_payload) => {
-      const { employment, enrollment } = body;
+    .then(async (payload) => {
+      const { role } = body;
 
-      if (employment) {
-        console.log("employee");
-      }
+      const EntityMap = {
+        student: Enrollments,
+        employee: Employments,
+      };
 
-      if (enrollment) {
-        console.log("student");
-      }
+      await EntityMap[role].create({ user: payload._id });
 
       res.status(201).json({
         success: "Registration Success, Proceed to Login",
-        payload: { ..._payload._doc, password: undefined },
       });
     })
     .catch((error) => res.status(400).json({ error: handleDuplicate(error) }));

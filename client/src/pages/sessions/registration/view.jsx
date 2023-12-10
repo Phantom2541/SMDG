@@ -13,67 +13,20 @@ import {
   fullName,
   getAge,
 } from "../../../services/utilities";
+import { useDispatch } from "react-redux";
+import { SAVE } from "../../../services/redux/slices/users";
 
-export default function View({
-  goBack,
-  user = {
-    fullName: {
-      fname: "BENEDICT EARLE GABRIEL",
-      lname: "PAJARILLAGA",
-      mname: "ROMERO",
-      suffix: "",
-    },
-    email: "benedictearle@gmail.com",
-    password: "password",
-    cpassword: "password",
-    pob: "Cabanatuan City",
-    dob: "2000-09-07T17:24:00.000Z",
-    isMale: true,
-    mobile: "9511231231",
-    address: {
-      isSame: true,
-      current: {
-        region: "REGION III (CENTRAL LUZON)",
-        province: "NUEVA ECIJA",
-        city: "CABANATUAN CITY",
-        barangay: "Mabini Extension",
-        street: "Purok 4",
-        zip: 3100,
-      },
-      permanent: {
-        region: "REGION III (CENTRAL LUZON)",
-        province: "NUEVA ECIJA",
-        city: "CABANATUAN CITY",
-        street: "",
-        zip: "",
-      },
-    },
-    disability: "ADHD",
-    role: "student",
-    lrn: "123123",
-    psa: "123123",
-    motherTounge: "Tagalog, English",
-    guardians: {
-      mother: {
-        fname: "DEBRALENE GAY",
-        lname: "PAJARILLAGA",
-        mname: "ROMERO",
-        mobile: "95123123123123123123",
-      },
-      father: {
-        fname: "TOMAS",
-        lname: "PAJARILLAGA",
-        mname: "BAUTISTA",
-        suffix: "JR",
-        mobile: "9123123123123",
-      },
-    },
-  },
-}) {
+export default function View({ goBack, user = {} }) {
+  const dispatch = useDispatch();
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log(user);
+    const form = { ...user };
+
+    if (user?.address.isSame) form.address.permanent = user?.address?.current;
+
+    dispatch(SAVE(user));
   };
 
   const {
@@ -91,7 +44,7 @@ export default function View({
       psa,
       indigenousPeople,
       "4ps": fourPs,
-      guardians,
+      guardians = {},
     } = user,
     { mother = {}, father = {} } = guardians;
 
@@ -104,7 +57,7 @@ export default function View({
         </MDBCardHeader>
         <MDBContainer className="px-5 mt-4" fluid>
           <MDBRow>
-            <MDBCol md="2">
+            <MDBCol md="2" className="text-center">
               <img
                 src="https://i.pinimg.com/originals/f1/0f/f7/f10ff70a7155e5ab666bcdd1b45b726d.jpg"
                 height="100"
@@ -122,9 +75,11 @@ export default function View({
           I. IDENTIFYING INFORMATION
         </div>
         <MDBContainer className="px-5 mt-4" fluid>
-          <h5>
-            Place of Birth: <b>{pob}</b>
-          </h5>
+          {pob && (
+            <h5>
+              Place of Birth: <b>{pob}</b>
+            </h5>
+          )}
           <h5>
             Date of Birth:{" "}
             <b>

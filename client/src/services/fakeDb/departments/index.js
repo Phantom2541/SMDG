@@ -9,7 +9,7 @@ const Departments = {
     return this.find(pk).name;
   },
   getGradeLevels: function (pk) {
-    return this.find(pk).gradeLevels;
+    return this.find(pk)?.gradeLevels;
   },
   getInitialGrade: function (pk) {
     return this.getGradeLevels(pk)[0];

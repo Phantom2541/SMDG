@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { MDBBtn, MDBIcon, MDBTypography } from "mdbreact";
 import { formatGradeLvl, fullName } from "../../services/utilities";
 import { Courses } from "../../services/fakeDb";
-import Learner from "../../pages/platforms/guest/enrollment/learner";
-import Basic from "../../pages/platforms/guest/enrollment/basic";
-import Address from "../../pages/platforms/guest/enrollment/address";
-import Guardian from "../../pages/platforms/guest/enrollment/guardian";
+import Learner from "../../pages/platforms/student/enrollment/learner";
+import Basic from "../../pages/platforms/student/enrollment/basic";
+import Address from "../../pages/platforms/student/enrollment/address";
+import Guardian from "../../pages/platforms/student/enrollment/guardian";
 import { useDispatch, useSelector } from "react-redux";
 import {
   BROWSE,

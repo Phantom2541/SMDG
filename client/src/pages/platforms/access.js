@@ -8,7 +8,7 @@ import REGISTRAR from "./registrar/access";
 import CASHIER from "./cashier/access";
 import GUIDANCE from "./guidance/access";
 import OTHERS from "./others/access";
-import GUEST from "./guest/access";
+import STUDENT from "./student/access";
 
 const ACCESS = {
   ADMINISTRATOR,
@@ -21,7 +21,7 @@ const ACCESS = {
   GUIDANCE,
   OTHERS,
   HEAD,
-  GUEST,
+  STUDENT,
 };
 
 export default ACCESS;

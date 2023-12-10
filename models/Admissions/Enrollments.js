@@ -44,11 +44,9 @@ const modelSchema = new mongoose.Schema(
     batch: {
       start: {
         type: Number,
-        required: true,
       },
       end: {
         type: Number,
-        required: true,
       },
     },
     isPublished: {

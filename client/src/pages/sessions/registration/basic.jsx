@@ -264,6 +264,7 @@ export default function Basic({ handleChange, form }) {
               label="Enter Password"
               type="password"
               required
+              minLength={8}
               value={password}
               outline
               onChange={(e) => handleChange("password", e.target.value)}
@@ -274,6 +275,7 @@ export default function Basic({ handleChange, form }) {
               label="Re-enter Password"
               type="password"
               required
+              minLength={8}
               value={cpassword}
               outline
               onChange={(e) => handleChange("cpassword", e.target.value)}

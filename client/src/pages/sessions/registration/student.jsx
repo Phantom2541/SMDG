@@ -18,7 +18,7 @@ export default function Student({ handleChange, form }) {
           <MDBCol className="px-1" md="5">
             <MDBInput
               label="Learner Reference No. (LRN)"
-              type="number"
+              type="string"
               required
               value={lrn}
               outline
@@ -206,7 +206,7 @@ export default function Student({ handleChange, form }) {
                   ...guardians,
                   father: {
                     ...father,
-                    father: e.target.value.replace(/\D/g, ""),
+                    mobile: e.target.value.replace(/\D/g, ""),
                   },
                 })
               }

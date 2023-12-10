@@ -30,9 +30,9 @@ export const FIND = createAsyncThunk(
   }
 );
 
-export const SAVE = createAsyncThunk(`${name}/save`, (form, thunkAPI) => {
+export const SAVE = createAsyncThunk(`${name}/save`, (data, thunkAPI) => {
   try {
-    return axioKit.save(name, form);
+    return axioKit.save(name, data);
   } catch (error) {
     const message =
       (error.response && error.response.data && error.response.data.message) ||
@@ -68,14 +68,14 @@ export const reduxSlice = createSlice({
     CUSTOMALERT: (state, data) => {
       state.message = data.payload;
     },
-    RESET: state => {
+    RESET: (state) => {
       state.isSuccess = false;
       state.message = "";
     },
   },
-  extraReducers: builder => {
+  extraReducers: (builder) => {
     builder
-      .addCase(FIND.pending, state => {
+      .addCase(FIND.pending, (state) => {
         state.isLoading = true;
         state.isSuccess = false;
         state.message = "";
@@ -91,7 +91,7 @@ export const reduxSlice = createSlice({
         state.isLoading = false;
       })
 
-      .addCase(UPDATE.pending, state => {
+      .addCase(UPDATE.pending, (state) => {
         state.isLoading = true;
         state.isSuccess = false;
         state.message = "";
@@ -115,7 +115,7 @@ export const reduxSlice = createSlice({
         state.isLoading = false;
       })
 
-      .addCase(SAVE.pending, state => {
+      .addCase(SAVE.pending, (state) => {
         state.isLoading = true;
         state.isSuccess = false;
         state.message = "";
