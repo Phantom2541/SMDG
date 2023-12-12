@@ -23,7 +23,7 @@ export default function Form({ form, handleChange, view = false }) {
             {view ? (
               <>
                 <h6 className="mb-0">Applying Postion:</h6>
-                <h5 className="font-weight-bold">{position}</h5>
+                <h5 className="font-weight-bold">{position || <i>N/A</i>}</h5>
               </>
             ) : (
               <MDBInput
@@ -42,8 +42,10 @@ export default function Form({ form, handleChange, view = false }) {
             <MDBCol>
               {view ? (
                 <>
-                  <h6 className="mb-0">Department</h6>
-                  <h5 className="font-weight-bold">{department}</h5>
+                  <h6 className="mb-0">Department:</h6>
+                  <h5 className="font-weight-bold">
+                    {department || <i>N/A</i>}
+                  </h5>
                 </>
               ) : (
                 <>
@@ -77,8 +79,10 @@ export default function Form({ form, handleChange, view = false }) {
           <MDBCol>
             {view ? (
               <>
-                <h6 className="mb-0">Fullname</h6>
-                <h5 className="font-weight-bold">{primary.name}</h5>
+                <h6 className="mb-0">Fullname:</h6>
+                <h5 className="font-weight-bold">
+                  {primary.name || <i>N/A</i>}
+                </h5>
               </>
             ) : (
               <MDBInput
@@ -99,8 +103,10 @@ export default function Form({ form, handleChange, view = false }) {
           <MDBCol>
             {view ? (
               <>
-                <h6 className="mb-0">Relationship</h6>
-                <h5 className="font-weight-bold">{primary.relationship}</h5>
+                <h6 className="mb-0">Relationship:</h6>
+                <h5 className="font-weight-bold">
+                  {primary.relationship || <i>N/A</i>}
+                </h5>
               </>
             ) : (
               <MDBInput
@@ -121,8 +127,10 @@ export default function Form({ form, handleChange, view = false }) {
           <MDBCol>
             {view ? (
               <>
-                <h6 className="mb-0">Mobile No.</h6>
-                <h5 className="font-weight-bold">{primary.mobile}</h5>
+                <h6 className="mb-0">Mobile No.:</h6>
+                <h5 className="font-weight-bold">
+                  {primary.mobile || <i>N/A</i>}
+                </h5>
               </>
             ) : (
               <MDBInput
@@ -150,8 +158,10 @@ export default function Form({ form, handleChange, view = false }) {
           <MDBCol>
             {view ? (
               <>
-                <h6 className="mb-0">Fullname</h6>
-                <h5 className="font-weight-bold">{secondary.name}</h5>
+                <h6 className="mb-0">Fullname:</h6>
+                <h5 className="font-weight-bold">
+                  {secondary.name || <i>N/A</i>}
+                </h5>
               </>
             ) : (
               <MDBInput
@@ -170,8 +180,10 @@ export default function Form({ form, handleChange, view = false }) {
           <MDBCol>
             {view ? (
               <>
-                <h6 className="mb-0">Relationship</h6>
-                <h5 className="font-weight-bold">{secondary.relationship}</h5>
+                <h6 className="mb-0">Relationship:</h6>
+                <h5 className="font-weight-bold">
+                  {secondary.relationship || <i>N/A</i>}
+                </h5>
               </>
             ) : (
               <MDBInput
@@ -191,8 +203,10 @@ export default function Form({ form, handleChange, view = false }) {
           <MDBCol>
             {view ? (
               <>
-                <h6 className="mb-0">Mobile No.</h6>
-                <h5 className="font-weight-bold">{secondary.mobile}</h5>
+                <h6 className="mb-0">Mobile No.:</h6>
+                <h5 className="font-weight-bold">
+                  {secondary.mobile || <i>N/A</i>}
+                </h5>
               </>
             ) : (
               <MDBInput

@@ -1,57 +1,23 @@
 import React from "react";
-import {
-  MDBBtn,
-  MDBCard,
-  MDBCardHeader,
-  MDBCol,
-  MDBContainer,
-  MDBRow,
-} from "mdbreact";
+import { MDBBtn, MDBCard, MDBCardHeader, MDBCol, MDBContainer } from "mdbreact";
 import Form from "./form";
 
-export default function View({ form }) {
+export default function View({ form, goBack }) {
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("biew", form);
   };
   return (
-    <MDBCol md="8" className="offset-md-2 py-5">
+    <MDBCol md="12" className=" py-5">
       <MDBCard className="pb-3">
         <MDBCardHeader className="bg-primary text-white text-center">
           <h1 className="font-weight-bold mb-0">CHECK YOUR ENTRIES</h1>
           <h3>Scroll down below and check your entries before you submit.</h3>
         </MDBCardHeader>
-        <MDBContainer className="px-5 my-4" fluid>
-          <MDBRow>
-            <MDBCol md="2" className="d-flex align-items-center">
-              {/* <img
-                src={UserImg}
-                className="mx-auto border"
-                style={{ width: "100px", aspectRatio: "1/1" }}
-                alt="User"
-                title="1x1 Photo"
-              /> */}
-            </MDBCol>
-            <MDBCol>
-              {/* <h4 className="font-weight-bold mb-0">{fullName(fullname)}</h4> */}
-              {/* <img
-                style={{
-                  width: "auto",
-                  height: "100px",
-                  aspectRatio: "16/9",
-                }}
-                className="border"
-                src={Signature}
-                height="75"
-                width="auto"
-                alt="E-Signature"
-                title="E-Signature"
-              /> */}
-            </MDBCol>
-          </MDBRow>
-        </MDBContainer>
+        <MDBContainer className="px-5 my-4" fluid></MDBContainer>
         <Form form={form} view />
-        <div className="blue lighten-3 px-5 py-5 mt-4 font-weight-bold">
-          <h5 className="text-danger mb-0 font-weight-bold">WARNING:</h5>
+        <div className="blue lighten-3 px-4 py-3 mt-4 font-weight-bold">
+          <h5 className="text-danger mb-0 mt-3 font-weight-bold">WARNING:</h5>
           <p>
             CHECK ALL YOUR ENTRIES BEFORE YOU SUBMIT THEM. EDITING THE DATA IS
             COMPLICATED AS IT DEMANDS RIGOROUS TIME TO CORRECT.
@@ -84,7 +50,7 @@ export default function View({ form }) {
                 Submit Now!
               </MDBBtn>
               <MDBBtn
-                // onClick={goBack}
+                onClick={goBack}
                 type="button"
                 color="primary"
                 size="lg"
