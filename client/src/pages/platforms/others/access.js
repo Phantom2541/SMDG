@@ -1,4 +1,5 @@
 import Dashboard from "./dashboard";
+import Employment from "./employment";
 
 const access = [
   {
@@ -6,6 +7,12 @@ const access = [
     icon: "tachometer-alt",
     path: "/dashboard",
     component: Dashboard,
+  },
+  {
+    name: "Employment",
+    icon: "user",
+    path: "/employment",
+    component: Employment,
   },
 ];
 
