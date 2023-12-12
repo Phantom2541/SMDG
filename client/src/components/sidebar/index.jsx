@@ -21,6 +21,8 @@ export default function SideNavigation({
     if (role) {
       let access = ACCESS[role] || [];
 
+      console.log(access);
+
       if (credentials.status === "pending") {
         let showOnly = "Enrollment";
         if (credentials.access) showOnly = "Employment";

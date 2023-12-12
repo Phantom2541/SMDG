@@ -90,7 +90,7 @@ export default function Employees({ query = undefined }) {
             <tbody>
               {!employees?.length && (
                 <tr>
-                  <td className="text-center" colSpan="4">
+                  <td className="text-center" colSpan="5">
                     No recent records.
                   </td>
                 </tr>

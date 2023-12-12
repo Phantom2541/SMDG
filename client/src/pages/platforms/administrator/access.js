@@ -18,7 +18,10 @@ const access = [
         path: "/employees",
         component: Employees,
         props: {
-          query: { access: JSON.stringify({ $nin: ["ADMINISTRATOR"] }) },
+          query: {
+            access: JSON.stringify({ $nin: ["ADMINISTRATOR"] }),
+            isPublished: true,
+          },
         },
       },
       {
