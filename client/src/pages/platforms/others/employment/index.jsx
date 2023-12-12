@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MDBBtn, MDBCard, MDBCardBody } from "mdbreact";
 import { School } from "../../../../services/fakeDb";
 import { fullAddress } from "../../../../services/utilities";
 import Form from "./form";
 import View from "./view";
+import Agreement from "./agreement";
+import { useSelector } from "react-redux";
 
 const { name, address: sAddress, logo, id } = School;
 
@@ -14,19 +16,30 @@ const _form = {
     primary: {
       name: "",
       relationship: "",
-      mobile: 0,
+      mobile: "",
     },
     secondary: {
       name: "",
       relationship: "",
-      mobile: 0,
+      mobile: "",
     },
   },
 };
 
 export default function Employment() {
   const [form, setForm] = useState(_form),
-    [view, setView] = useState(false);
+    [view, setView] = useState(false),
+    { credentials } = useSelector(({ auth }) => auth);
+
+  useEffect(() => {
+    if (credentials._id) {
+      setForm((prev) => ({
+        ...prev,
+        position: credentials.position,
+        _id: credentials._id,
+      }));
+    }
+  }, [credentials]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -36,7 +49,8 @@ export default function Employment() {
 
   const handleChange = (key, value) => setForm({ ...form, [key]: value });
 
-  if (view) return <View goBack={() => setView(false)} />;
+  if (view) return <View goBack={() => setView(false)} form={form} />;
+
   return (
     <>
       <MDBCard>
@@ -72,7 +86,8 @@ export default function Employment() {
             </div>
           </div>
           <form onSubmit={handleSubmit}>
-            <Form setForm={setForm} form={form} handleChange={handleChange} />
+            <Form form={form} handleChange={handleChange} />
+            <Agreement />
             <MDBBtn type="submit" color="primary" className="ml-5 mt-3">
               Proceed to Submit
             </MDBBtn>

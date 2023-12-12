@@ -2,9 +2,11 @@ import { MDBCol, MDBContainer, MDBInput, MDBRow } from "mdbreact";
 import React from "react";
 import { Departments } from "../../../../services/fakeDb";
 
-export default function Form({ form, setForm, handleChange, view = false }) {
+export default function Form({ form, handleChange, view = false }) {
   const { position, department, emergencyContact } = form,
     { primary, secondary } = emergencyContact;
+
+  const isTeacher = position.includes("TEACHER");
   return (
     <>
       <div className="blue darken-3 px-5 py-2 text-white font-weight-bold h5-responsive">
@@ -12,8 +14,9 @@ export default function Form({ form, setForm, handleChange, view = false }) {
       </div>
       <MDBContainer className="px-5" fluid>
         <label className="mb-0 pb-0 mt-4">
-          <b>Position & Department</b>
-          &nbsp;-&nbsp;<i>Enter your Position & Department correctly</i>
+          <b>Position {isTeacher && "& Department"}</b>
+          &nbsp;-&nbsp;
+          <i>Enter your Position {isTeacher && "& Department"} correctly</i>
         </label>
         <MDBRow>
           <MDBCol>
@@ -24,36 +27,41 @@ export default function Form({ form, setForm, handleChange, view = false }) {
               </>
             ) : (
               <MDBInput
+                required
                 label="Applying Position"
                 type="text"
                 outline
                 value={position}
-                onChange={(e) => handleChange("position", e.target.value)}
+                onChange={(e) =>
+                  handleChange("position", e.target.value.toUpperCase())
+                }
               />
             )}
           </MDBCol>
-          <MDBCol>
-            {view ? (
-              <>
-                <h6 className="mb-0">Department</h6>
-                <h5 className="font-weight-bold">{department}</h5>
-              </>
-            ) : (
-              <>
-                <label className="mb-0">Department</label>
-                <select
-                  className="form-control"
-                  onChange={(e) => handleChange("department", e.target.value)}
-                >
-                  {Departments.collections?.map(({ key, name }) => (
-                    <option key={key} value={key}>
-                      {name}
-                    </option>
-                  ))}
-                </select>
-              </>
-            )}
-          </MDBCol>
+          {isTeacher && (
+            <MDBCol>
+              {view ? (
+                <>
+                  <h6 className="mb-0">Department</h6>
+                  <h5 className="font-weight-bold">{department}</h5>
+                </>
+              ) : (
+                <>
+                  <label className="mb-0">Department</label>
+                  <select
+                    className="form-control"
+                    onChange={(e) => handleChange("department", e.target.value)}
+                  >
+                    {Departments.collections?.map(({ key, name }) => (
+                      <option key={key} value={key}>
+                        {name}
+                      </option>
+                    ))}
+                  </select>
+                </>
+              )}
+            </MDBCol>
+          )}
         </MDBRow>
       </MDBContainer>
       <div className="blue darken-3 px-5 py-2 text-white font-weight-bold h5-responsive">
@@ -74,6 +82,7 @@ export default function Form({ form, setForm, handleChange, view = false }) {
               </>
             ) : (
               <MDBInput
+                required
                 label="Fullname"
                 type="text"
                 outline
@@ -95,6 +104,7 @@ export default function Form({ form, setForm, handleChange, view = false }) {
               </>
             ) : (
               <MDBInput
+                required
                 label="Relationship"
                 type="text"
                 outline
@@ -116,14 +126,19 @@ export default function Form({ form, setForm, handleChange, view = false }) {
               </>
             ) : (
               <MDBInput
-                label="Mobile No."
-                type="number"
+                required
+                label="Mobile No. (+63)"
+                type="text"
+                maxLength={10}
                 outline
                 value={primary.mobile}
                 onChange={(e) =>
                   handleChange("emergencyContact", {
                     ...emergencyContact,
-                    primary: { ...primary, mobile: e.target.value },
+                    primary: {
+                      ...primary,
+                      mobile: e.target.value.replace(/\D/g, ""),
+                    },
                   })
                 }
               />
@@ -182,36 +197,24 @@ export default function Form({ form, setForm, handleChange, view = false }) {
             ) : (
               <MDBInput
                 label="Mobile No."
-                type="number"
+                type="text"
                 outline
+                maxLength={10}
+                max={10}
                 value={secondary.mobile}
                 onChange={(e) =>
                   handleChange("emergencyContact", {
                     ...emergencyContact,
-                    secondary: { ...secondary, mobile: e.target.value },
+                    secondary: {
+                      ...secondary,
+                      mobile: e.target.value.replace(/\D/g, ""),
+                    },
                   })
                 }
               />
             )}
           </MDBCol>
         </MDBRow>
-      </MDBContainer>
-      <div className="blue darken-3 px-5 py-2 text-white font-weight-bold h5-responsive text-center">
-        COFIRMATION TO ALLOW THE STORAGE AND USE OF MY PERSONAL DATA
-      </div>
-      <MDBContainer className="px-5 m-3" fluid>
-        <div className="form-check">
-          <input className="form-check-input" type="checkbox" id="1" />
-          <label className="form-check-label" htmlFor="1">
-            The information entered above is true and correct.
-          </label>
-        </div>
-        <div className="form-check">
-          <input className="form-check-input" type="checkbox" id="1" />
-          <label className="form-check-label" htmlFor="1">
-            I have the full knowledge in providing the above information.
-          </label>
-        </div>
       </MDBContainer>
     </>
   );

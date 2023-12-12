@@ -7,8 +7,9 @@ import {
   MDBContainer,
   MDBRow,
 } from "mdbreact";
+import Form from "./form";
 
-export default function View() {
+export default function View({ form }) {
   const handleSubmit = (e) => {
     e.preventDefault();
   };
@@ -48,8 +49,7 @@ export default function View() {
             </MDBCol>
           </MDBRow>
         </MDBContainer>
-        {/* <Basic form={user} view />
-        <OtherInformation form={user} view /> */}
+        <Form form={form} view />
         <div className="blue lighten-3 px-5 py-5 mt-4 font-weight-bold">
           <h5 className="text-danger mb-0 font-weight-bold">WARNING:</h5>
           <p>

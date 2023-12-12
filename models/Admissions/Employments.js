@@ -64,10 +64,6 @@ const modelSchema = new mongoose.Schema(
         },
       },
     },
-    isPublished: {
-      type: Boolean,
-      default: false,
-    },
     isEnrollmentTeacher: {
       type: Boolean,
     },
