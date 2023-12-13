@@ -1,5 +1,5 @@
 const Entity = require("../models/Users"),
-  Enrollments = require("../models/Admissions/Enrollments"),
+  // Enrollments = require("../models/Admissions/Enrollments"),
   Employments = require("../models/Admissions/Employments"),
   handleDuplicate = require("../config/duplicate"),
   handleQuery = require("../config/query"),
@@ -53,7 +53,7 @@ exports.save = ({ body }, res) =>
 
       if (role) {
         const EntityMap = {
-          student: Enrollments,
+          // student: Enrollments,
           employee: Employments,
         };
 

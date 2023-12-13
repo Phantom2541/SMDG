@@ -1,6 +1,6 @@
 const Entity = require("../../models/Resources/Sections"),
-  Employments = require("../../models/Admissions/Employments"),
-  Enrollments = require("../../models/Admissions/Enrollments");
+  Employments = require("../../models/Admissions/Employments");
+// Enrollments = require("../../models/Admissions/Enrollments");
 
 exports.save = (req, res) => {
   const { adviser, name, gradeLvl, department } = req.body;
@@ -189,22 +189,22 @@ exports.getAll = (req, res) => {
     .then(async (sections) => {
       const payload = [];
 
-      for (const section of sections) {
-        const count = await Enrollments.countDocuments({
-          section: section._id,
-          status: "approved",
-          batch: JSON.parse(batch),
-        });
+      // for (const section of sections) {
+      //   const count = await Enrollments.countDocuments({
+      //     section: section._id,
+      //     status: "approved",
+      //     batch: JSON.parse(batch),
+      //   });
 
-        payload.push({
-          ...section,
-          adviser: {
-            _id: section?.adviser?._id,
-            fullName: section?.adviser?.user?.fullName,
-          },
-          count,
-        });
-      }
+      //   payload.push({
+      //     ...section,
+      //     adviser: {
+      //       _id: section?.adviser?._id,
+      //       fullName: section?.adviser?.user?.fullName,
+      //     },
+      //     count,
+      //   });
+      // }
 
       res.json({
         success: "All Sections Fetched Successfully.",

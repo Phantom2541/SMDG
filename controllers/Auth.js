@@ -1,5 +1,5 @@
 const Entity = require("../models/Users"),
-  Enrollments = require("../models/Admissions/Enrollments"),
+  // Enrollments = require("../models/Admissions/Enrollments"),
   Employments = require("../models/Admissions/Employments"),
   Sections = require("../models/Resources/Sections"),
   generateToken = require("../config/generateToken"),
@@ -12,14 +12,14 @@ const fetchAccess = async (user) => {
   if (credentials) {
     access = credentials.access;
   } else {
-    credentials = await Enrollments.findOne({ user })
-      .select("-updatedAt -__v")
-      .populate({
-        path: "course",
-        select: "pk",
-      })
-      .populate("section");
-    access = "STUDENT";
+    // credentials = await Enrollments.findOne({ user })
+    //   .select("-updatedAt -__v")
+    //   .populate({
+    //     path: "course",
+    //     select: "pk",
+    //   })
+    //   .populate("section");
+    // access = "STUDENT";
   }
 
   // const [employment, enrollment] = await Promise.all([, ,]);
