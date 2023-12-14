@@ -21,12 +21,12 @@ export default function SideNavigation({
     if (role) {
       let access = ACCESS[role] || [];
 
-      if (credentials.status === "pending") {
-        let showOnly = "Enrollment";
-        if (credentials.access) showOnly = "Employment";
+      // if (credentials.status === "pending") {
+      //   let showOnly = "Enrollment";
+      //   if (credentials.access) showOnly = "Employment";
 
-        access = access.filter((a) => a.name === showOnly);
-      }
+      //   access = access.filter((a) => a.name === showOnly);
+      // }
 
       setLinks(access);
     }
